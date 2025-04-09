@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="it" data-theme="light">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+
+    <!-- Title of the browser tab -->
+    <title>Login</title>
+
+    <!-- Link to the styles sheet -->
+    <link rel="stylesheet" href="../css/styles.css">
+
+    <!-- Link to the authentication styles sheet -->
+    <link rel="stylesheet" href="../css/auth.css">
+
+    <!-- Link to the responsive styles sheet -->
+    <link rel="stylesheet" href="../css/responsive.css">
+
+    <!-- Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <!-- Script that manages the theme mode, animations, navbar... -->
+    <script src="../js/page_setup.js" defer></script>
+    
+    <!-- Script that validates the form -->
+    <script src="../js/validation_login.js" defer></script>
+</head>
+
+<body>
+    <?php include_once 'header_navbar.php'; ?>
+
+    <main>
+        <section class="auth-section" id="login">
+            <div class="main-container">
+                <div class="auth-container">
+                    <div class="auth-header">
+                        <h2 class="heading-2">Accedi al tuo account</h2>
+                        <p>Inserisci le tue credenziali scolastiche per accedere al servizio</p>
+                    </div>
+
+                    <form id="login-form" class="auth-form" action="" method="post">
+                        <div class="form-group">
+                            <label for="email">Email scolastica</label>
+                            <div class="input-group">
+                                <i class="fas fa-envelope" id="email-icon"></i>
+                                <input type="text" id="email" name="email" placeholder="nome.cognome@itisavogadro.it" required>
+                                <!-- La email deve appartenere al dominio: @itisavogadro.it -->
+                            </div>
+                            <div id="emailFeedback" style="display: none;"></div>
+                            <div id="verificationResult" class="verification-feedback"></div>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="password">Password</label>
+                            <div class="input-group">
+                                <i class="fas fa-lock" id="password-icon"></i>
+                                <input type="password" id="password" name="password" placeholder="La tua password" required>
+                                <button type="button" class="btn-icon password-toggle">
+                                    <i class="fas fa-eye"></i>
+                                </button>
+                            </div>
+                            <div id="passwordFeedback" style="display: none;"></div>
+                        </div>
+
+                        <div class="form-options">
+                            <div class="remember-me">
+                                <input type="checkbox" id="remember" name="remember">
+                                <label for="remember">Ricordami</label>
+                            </div>
+                            <!--
+                            Password dimenticata, da implementare in futuro
+                            <a href="#" class="forgot-password">Password dimenticata?</a>
+                            -->
+                        </div>
+
+                        <button type="submit" class="btn btn-primary btn-block" onclick="checkLoginData()">Accedi</button>
+
+                        <div class="auth-footer">
+                            <p>Non hai un account? <a href="register.php">Registrati</a></p>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <?php include_once "footer.php" ?>
+
+</body>
+
+</html>

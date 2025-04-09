@@ -1,0 +1,142 @@
+/* ===== RESPONSIVE STYLES ===== */
+@media (max-width: 1200px) {
+  .main-container {
+    padding: 0 var(--spacing-lg);
+  }
+}
+
+@media (max-width: 992px) {
+  .main-banner .main-container {
+    flex-direction: column;
+    text-align: center;
+  }
+
+  .banner-actions {
+    justify-content: center;
+  }
+
+  .banner-image {
+    width: 80%;
+  }
+
+  .features-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (max-width: 768px) {
+  .main-nav {
+    position: fixed;
+    top: 80px;
+    left: 0;
+    width: 100%;
+    background-color: var(--color-card);
+    box-shadow: var(--shadow-md);
+    padding: var(--spacing-md);
+    transform: translateY(-150%);
+    opacity: 0;
+    transition: all var(--transition-normal);
+  }
+
+  .main-nav.active {
+    transform: translateY(0);
+    opacity: 1;
+  }
+
+  .main-nav ul {
+    flex-direction: column;
+    text-align: center;
+    gap: var(--spacing-md);
+  }
+
+  .mobile-menu-toggle {
+    display: block;
+  }
+
+  .filter-controls {
+    flex-direction: column;
+    gap: var(--spacing-md);
+  }
+
+  .products-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .footer-grid {
+    grid-template-columns: 1fr;
+    gap: var(--spacing-lg);
+  }
+
+  .footer-bottom {
+    flex-direction: column;
+    gap: var(--spacing-md);
+    text-align: center;
+  }
+
+  .btn,
+  .main-nav a {
+    min-height: 48px;
+    min-width: 48px;
+  }
+
+  .booking-filters {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .summary-actions {
+    flex-direction: column;
+  }
+
+  .lockers-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 576px) {
+  .features-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .banner-actions {
+    flex-direction: column;
+  }
+
+  .products-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .product-actions {
+    flex-direction: column;
+  }
+
+  input,
+  select,
+  textarea {
+    font-size: 16px;
+  }
+
+  .auth-container {
+    padding: var(--spacing-lg);
+    min-width:auto;
+    width: 95%;
+  }
+
+  .auth-header {
+    margin-bottom: var(--spacing-lg);
+  }
+}
+
+@media (max-width: 400px) {
+  :root {
+    --font-size-base: 14px;
+  }
+
+  .main-header .main-container {
+    padding: var(--spacing-sm);
+  }
+
+  .main-banner {
+    padding: var(--spacing-xl) 0;
+  }
+}
