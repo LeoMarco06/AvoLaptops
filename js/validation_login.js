@@ -1,5 +1,13 @@
 document.addEventListener("DOMContentLoaded", () => {
   togglePasswordVisibility();
+
+  document
+  .getElementById("login-form")
+  .addEventListener("submit", function (e) {
+    if (!validateForm()) {
+      e.preventDefault();
+    }
+  });
 });
 
 function togglePasswordVisibility() {
@@ -20,13 +28,13 @@ function togglePasswordVisibility() {
   });
 }
 
-function checkLoginData() {
-  if(validateEmailInput()){
-    document.getElementById("login-form").event.preventDefault();
-  }
-  else if(validatePassword()){
-    document.getElementById("login-form").event.preventDefault();
-  }
+function validateForm() {
+  let isValid = true;
+
+  isValid &= !validateEmailInput();
+  isValid &= !validatePassword();
+
+  return isValid;
 }
 
 function validateEmailInput() {
@@ -39,7 +47,7 @@ function validateEmailInput() {
     getComputedStyle(emailInput).getPropertyValue("--color-border");
   let colorIcon =
     getComputedStyle(emailIcon).getPropertyValue("--color-text-light");
-  const error = false;
+  let error = false;
 
   if (emailRegex.test(emailValue)) {
     emailInput.style.borderColor = colorBorder;

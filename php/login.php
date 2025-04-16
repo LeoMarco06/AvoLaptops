@@ -22,7 +22,7 @@
 
     <!-- Script that manages the theme mode, animations, navbar... -->
     <script src="../js/page_setup.js" defer></script>
-    
+
     <!-- Script that validates the form -->
     <script src="../js/validation_login.js" defer></script>
 </head>
@@ -44,7 +44,8 @@
                             <label for="email">Email scolastica</label>
                             <div class="input-group">
                                 <i class="fas fa-envelope" id="email-icon"></i>
-                                <input type="text" id="email" name="email" placeholder="nome.cognome@itisavogadro.it" required>
+                                <input type="text" id="email" name="email" placeholder="nome.cognome@itisavogadro.it"
+                                    required>
                                 <!-- La email deve appartenere al dominio: @itisavogadro.it -->
                             </div>
                             <div id="emailFeedback" style="display: none;"></div>
@@ -55,7 +56,8 @@
                             <label for="password">Password</label>
                             <div class="input-group">
                                 <i class="fas fa-lock" id="password-icon"></i>
-                                <input type="password" id="password" name="password" placeholder="La tua password" required>
+                                <input type="password" id="password" name="password" placeholder="La tua password"
+                                    required>
                                 <button type="button" class="btn-icon password-toggle">
                                     <i class="fas fa-eye"></i>
                                 </button>
@@ -74,7 +76,7 @@
                             -->
                         </div>
 
-                        <button type="submit" class="btn btn-primary btn-block" onclick="checkLoginData()">Accedi</button>
+                        <button type="submit" class="btn btn-primary btn-block" onclick="validateForm()">Accedi</button>
 
                         <div class="auth-footer">
                             <p>Non hai un account? <a href="register.php">Registrati</a></p>
