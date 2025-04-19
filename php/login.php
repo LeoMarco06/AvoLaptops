@@ -1,6 +1,10 @@
 <!DOCTYPE html>
 <html lang="it" data-theme="light">
 
+<?php
+session_start();
+?>
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
@@ -90,5 +94,43 @@
     <?php include_once "footer.php" ?>
 
 </body>
+
+<?php
+include './include/connection.php';
+
+$conn = connectToDatabase();
+
+if ($_SERVER["REQUEST_METHOD"] == "POST") {
+    $email = $_POST['email'];
+    $password = $_POST['password'];//htmlspecialchars($_POST['password']);
+
+
+    // Query to check if the user exists
+    $sql = "SELECT * FROM users WHERE u_email = ?";
+    $stmt = $conn->prepare($sql);
+    $stmt->bind_param("s", $email);
+
+    $stmt->execute();
+    $result = $stmt->get_result();
+
+    if ($result->num_rows > 0) {
+        while ($row = $result->fetch_assoc()) {
+            if (password_verify($password, $row['u_password'])) {
+                // Password is correct, set session variables
+                $_SESSION['id'] = $row['u_id'];
+                $_SESSION['email'] = $row['u_email'];
+                // Redirect to the home page or dashboard
+                echo "<script>alert('Login effettuato con successo.');</script>";
+            } else {
+                echo "<script>alert('Password errata.');</script>";
+            }
+        }
+
+    } else {
+        echo "<script>alert('Email o password errati.');</script>";
+    }
+}
+
+?>
 
 </html>

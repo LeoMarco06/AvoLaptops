@@ -26,6 +26,27 @@
     <script src="../js/book.js"></script>
 </head>
 
+<?php
+include './include/connection.php';
+$conn = connectToDatabase();
+
+$sql = "SELECT lap_id, lap_locker, m.mod_name as lap_model, lap_status, lap_name 
+        FROM laptops l
+        INNER JOIN models as m 
+        ON m.mod_id = l.lap_model";
+$result = $conn->query($sql);
+
+$laptops = [];
+
+if ($result && $result->num_rows > 0) {
+    while ($row = $result->fetch_assoc()) {
+        $laptops[] = $row;
+    }
+}
+
+$laptops_json = json_encode($laptops);
+?>
+
 <body>
     <?php include_once 'header_navbar.php'; ?>
 
@@ -57,7 +78,8 @@
                         </ul>
                         <div class="summary-actions">
                             <button id="clear-selection" class="btn btn-outline btn-small">Annulla selezione</button>
-                            <button id="confirm-booking" class="btn btn-primary btn-small" disabled>Conferma prenotazione</button>
+                            <button id="confirm-booking" class="btn btn-primary btn-small" disabled>Conferma
+                                prenotazione</button>
                         </div>
                     </div>
                 </div>
@@ -66,14 +88,14 @@
                 <div class="lockers-container">
                     <h3 class="heading-3">Seleziona dall'armadietto</h3>
                     <div class="lockers-grid">
-                        <!-- Armadietto 1 -->
+                        <!-- Locker Example -->
                         <div class="locker-card">
                             <div class="locker-header">
                                 <h4 class="heading-4">Armadietto A1</h4>
                                 <span class="locker-status">4/6 disponibili</span>
                             </div>
                             <div class="locker-laptops">
-                                <!-- Portatile 1 -->
+                                <!-- Laptop Example -->
                                 <div class="laptop-item available" data-laptop-id="A1-001">
                                     <div class="laptop-info">
                                         <i class="fas fa-laptop"></i>
@@ -83,125 +105,8 @@
                                         <i class="fas fa-plus"></i>
                                     </button>
                                 </div>
-                                <!-- Portatile 2 -->
-                                <div class="laptop-item available" data-laptop-id="A1-002">
-                                    <div class="laptop-info">
-                                        <i class="fas fa-laptop"></i>
-                                        <span>A1-002 (Modello 1)</span>
-                                    </div>
-                                    <button class="btn-icon select-laptop">
-                                        <i class="fas fa-plus"></i>
-                                    </button>
-                                </div>
-
-                                <!-- Portatile 3 - In manutenzione -->
-                                <div class="laptop-item maintenance" data-laptop-id="A1-003">
-                                    <div class="laptop-info">
-                                        <i class="fas fa-laptop"></i>
-                                        <span>A1-003 (Modello 2)</span>
-                                    </div>
-                                    <span class="status-badge"><i class="fas fa-tools"></i> Manutenzione</span>
-                                </div>
-
-                                <!-- Portatile 4 - Non disponibile -->
-                                <div class="laptop-item unavailable" data-laptop-id="A1-004">
-                                    <div class="laptop-info">
-                                        <i class="fas fa-laptop"></i>
-                                        <span>A1-004 (Modello 2)</span>
-                                    </div>
-                                    <span class="status-badge"><i class="fas fa-times"></i> Non disponibile</span>
-                                </div>
-
-                                <!-- Portatile 5 -->
-                                <div class="laptop-item available" data-laptop-id="A1-005">
-                                    <div class="laptop-info">
-                                        <i class="fas fa-laptop"></i>
-                                        <span>A1-005 (Modello 1)</span>
-                                    </div>
-                                    <button class="btn-icon select-laptop">
-                                        <i class="fas fa-plus"></i>
-                                    </button>
-                                </div>
-
-                                <!-- Portatile 6 -->
-                                <div class="laptop-item available" data-laptop-id="A1-006">
-                                    <div class="laptop-info">
-                                        <i class="fas fa-laptop"></i>
-                                        <span>A1-006 (Modello 2)</span>
-                                    </div>
-                                    <button class="btn-icon select-laptop">
-                                        <i class="fas fa-plus"></i>
-                                    </button>
-                                </div>
-
-                                <!-- Portatile 7 -->
-                                <div class="laptop-item available" data-laptop-id="A1-006">
-                                    <div class="laptop-info">
-                                        <i class="fas fa-laptop"></i>
-                                        <span>A1-007 (Modello 2)</span>
-                                    </div>
-                                    <button class="btn-icon select-laptop">
-                                        <i class="fas fa-plus"></i>
-                                    </button>
-                                </div>
                             </div>
                         </div>
-
-                        <!-- Armadietto 2 -->
-                        <div class="locker-card">
-                            <div class="locker-header">
-                                <h4 class="heading-4">Armadietto A2</h4>
-                                <span class="locker-status">2/5 disponibili</span>
-                            </div>
-                            <div class="locker-laptops">
-                                <!-- Portatili armadietto 2... -->
-                                <div class="laptop-item available" data-laptop-id="A2-001">
-                                    <div class="laptop-info">
-                                        <i class="fas fa-laptop"></i>
-                                        <span>A2-001 (Modello 1)</span>
-                                    </div>
-                                    <button class="btn-icon select-laptop">
-                                        <i class="fas fa-plus"></i>
-                                    </button>
-                                </div>
-
-                                <div class="laptop-item unavailable" data-laptop-id="A2-002">
-                                    <div class="laptop-info">
-                                        <i class="fas fa-laptop"></i>
-                                        <span>A2-002 (Modello 1)</span>
-                                    </div>
-                                    <span class="status-badge"><i class="fas fa-times"></i> Non disponibile</span>
-                                </div>
-
-                                <div class="laptop-item maintenance" data-laptop-id="A2-003">
-                                    <div class="laptop-info">
-                                        <i class="fas fa-laptop"></i>
-                                        <span>A2-003 (Modello 2)</span>
-                                    </div>
-                                    <span class="status-badge"><i class="fas fa-tools"></i> Manutenzione</span>
-                                </div>
-
-                                <div class="laptop-item maintenance" data-laptop-id="A2-004">
-                                    <div class="laptop-info">
-                                        <i class="fas fa-laptop"></i>
-                                        <span>A2-004 (Modello 2)</span>
-                                    </div>
-                                    <span class="status-badge"><i class="fas fa-tools"></i> Manutenzione</span>
-                                </div>
-
-                                <div class="laptop-item available" data-laptop-id="A2-005">
-                                    <div class="laptop-info">
-                                        <i class="fas fa-laptop"></i>
-                                        <span>A2-005 (Modello 1)</span>
-                                    </div>
-                                    <button class="btn-icon select-laptop">
-                                        <i class="fas fa-plus"></i>
-                                    </button>
-                                </div>
-                            </div>
-                        </div>
-
-                        <!-- Altri armadietti... -->
                     </div>
                 </div>
             </div>
@@ -213,3 +118,112 @@
 </body>
 
 </html>
+
+<script>
+    function createLaptop(laptop) {
+        const div = document.createElement('div');
+        div.dataset.laptopId = laptop.id;
+
+        const info = `
+        <div class="laptop-info">
+            <i class="fas fa-laptop"></i>
+            <span>${laptop.name} (${laptop.model})</span>
+        </div>
+    `;
+
+        if (laptop.status == "1") {
+            div.classList.add('laptop-item', "available");
+            div.innerHTML = info + `
+            <button class="btn-icon select-laptop">
+                <i class="fas fa-plus"></i>
+            </button>
+        `;
+        } else if (laptop.status == "-1") {
+            div.classList.add('laptop-item', "maintenance");
+            div.innerHTML = info + `
+            <span class="status-badge"><i class="fas fa-tools"></i> Maintenance</span>
+        `;
+        } else if (laptop.status == "0") {
+            div.classList.add('laptop-item', "unavailable");
+            div.innerHTML = info + `
+            <span class="status-badge"><i class="fas fa-times"></i> Unavailable</span>
+        `;
+        }
+
+        return div;
+    }
+
+    function createLocker(locker) {
+        const card = document.createElement('div');
+        card.classList.add('locker-card');
+
+        const header = `
+        <div class="locker-header">
+            <h4 class="heading-4">${locker.name}</h4>
+            <span class="locker-status">${locker.available}/${locker.total} available</span>
+        </div>
+    `;
+
+        const laptopContainer = document.createElement('div');
+        laptopContainer.classList.add('locker-laptops');
+
+        locker.laptops.forEach(laptop => {
+            const laptopElement = createLaptop(laptop);
+            laptopContainer.appendChild(laptopElement);
+        });
+
+        card.innerHTML = header;
+        card.appendChild(laptopContainer);
+
+        return card;
+    }
+
+    function loadAllLockers(data) {
+        const container = document.querySelector('.lockers-grid');
+        container.innerHTML = ''; // clear existing content
+
+        data.forEach(locker => {
+            const card = createLocker(locker);
+            container.appendChild(card);
+        });
+    }
+
+    // Group laptops by locker
+    function groupByLocker(data) {
+        const lockerMap = {};
+
+        data.forEach(item => {
+            const lockerId = item.lap_locker;
+
+            if (!lockerMap[lockerId]) {
+                lockerMap[lockerId] = {
+                    name: `Locker ${lockerId}`,
+                    total: 0,
+                    available: 0,
+                    laptops: []
+                };
+            }
+
+            const laptop = {
+                id: item.lap_id,
+                name: item.lap_name,
+                model: item.lap_model,
+                status: item.lap_status // change this logic if needed
+            };
+
+            lockerMap[lockerId].laptops.push(laptop);
+            lockerMap[lockerId].total++;
+            if (item.lap_status == "1") {
+                lockerMap[lockerId].available++;
+            }
+        });
+
+        return Object.values(lockerMap);
+    }
+
+    const lockersData = <?php echo $laptops_json; ?>;
+
+    const groupedLockers = groupByLocker(lockersData);
+    loadAllLockers(groupedLockers);
+
+</script>
