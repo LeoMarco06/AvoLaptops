@@ -6,7 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
 
     <!-- Title of the browser tab -->
-    <title>Registrati</title>
+    <title>Avo Laptops | Registrati</title>
 
     <!-- Link to the styles sheet -->
     <link rel="stylesheet" href="../css/styles.css">

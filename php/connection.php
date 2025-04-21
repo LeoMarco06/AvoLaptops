@@ -3,7 +3,7 @@
         $servername = "localhost";
         $username = "root";
         $password = "";
-        $dbname = "noleggioPortatiliDB";
+        $dbname = "avo_laptops_DB";
 
         // Create connection
         $conn = new mysqli($servername, $username, $password, $dbname);

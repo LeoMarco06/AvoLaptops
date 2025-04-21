@@ -6,7 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
 
     <!-- Title of the browser tab -->
-    <title>Noleggio Portatili | IIS Amedeo Avogadro</title>
+    <title>Avo Laptops | Prenotazioni</title>
 
     <!-- Link to the styles sheet -->
     <link rel="stylesheet" href="../css/styles.css">
@@ -22,6 +22,9 @@
 
     <!-- Script that manages the theme mode, animations, navbar... -->
     <script src="../js/page_setup.js" defer></script>
+
+    <!-- Script that manages the reservations UX... -->
+    <script src="../js/manage_reservations.js" defer></script>
 </head>
 
 <body>
@@ -31,7 +34,7 @@
         <section id="prenotazioni" class="my-bookings-section">
             <div class="main-container">
                 <h2 class="section-header">Le Mie Prenotazioni</h2>
-                
+
                 <!-- Booking filters -->
                 <div class="bookings-filters">
                     <div class="filter-tabs">
@@ -48,7 +51,7 @@
                             <i class="fas fa-check-circle"></i> Terminate
                         </button>
                     </div>
-                    
+
                     <div class="search-box">
                         <div class="input-group">
                             <i class="fas fa-search"></i>
@@ -56,7 +59,7 @@
                         </div>
                     </div>
                 </div>
-                
+
                 <!-- Booking list -->
                 <div class="bookings-list">
                     <!-- Prenotazione 1 - In attesa -->
@@ -67,7 +70,7 @@
                                 <i class="fas fa-hourglass-half"></i> In attesa di accettazione
                             </span>
                         </div>
-                        
+
                         <div class="booking-details">
                             <div class="detail-group">
                                 <h4 class="detail-label">Portatili prenotati:</h4>
@@ -84,18 +87,18 @@
                                     <li>A1-005 (Modello 1)</li>
                                 </ul>
                             </div>
-                            
+
                             <div class="detail-group">
                                 <h4 class="detail-label">Periodo:</h4>
                                 <p>Dal 15/01/2025 al 22/01/2025</p>
                             </div>
-                            
+
                             <div class="detail-group">
                                 <h4 class="detail-label">Data prenotazione:</h4>
                                 <p>10/01/2025</p>
                             </div>
                         </div>
-                        
+
                         <div class="booking-actions">
                             <button class="btn btn-outline btn-small">
                                 <i class="fas fa-info-circle"></i> Dettagli
@@ -105,7 +108,7 @@
                             </button>
                         </div>
                     </div>
-                    
+
                     <!-- Prenotazione 2 - In corso -->
                     <div class="booking-card active" data-booking-id="PR-2023-002">
                         <div class="booking-header">
@@ -114,7 +117,7 @@
                                 <i class="fas fa-laptop"></i> In corso
                             </span>
                         </div>
-                        
+
                         <div class="booking-details">
                             <div class="detail-group">
                                 <h4 class="detail-label">Portatili prenotati:</h4>
@@ -122,18 +125,18 @@
                                     <li>A2-001 (Modello 1)</li>
                                 </ul>
                             </div>
-                            
+
                             <div class="detail-group">
                                 <h4 class="detail-label">Periodo:</h4>
                                 <p>Dal 05/01/2025 al 12/01/2025</p>
                             </div>
-                            
+
                             <div class="detail-group">
                                 <h4 class="detail-label">Data prenotazione:</h4>
                                 <p>28/12/2024</p>
                             </div>
                         </div>
-                        
+
                         <div class="booking-actions">
                             <button class="btn btn-outline btn-small">
                                 <i class="fas fa-info-circle"></i> Dettagli
@@ -143,7 +146,7 @@
                             </button>
                         </div>
                     </div>
-                    
+
                     <!-- Prenotazione 3 - Terminata -->
                     <div class="booking-card completed" data-booking-id="PR-2023-003">
                         <div class="booking-header">
@@ -152,7 +155,7 @@
                                 <i class="fas fa-check-circle"></i> Terminata
                             </span>
                         </div>
-                        
+
                         <div class="booking-details">
                             <div class="detail-group">
                                 <h4 class="detail-label">Portatili prenotati:</h4>
@@ -160,23 +163,24 @@
                                     <li>A1-006 (Modello 2)</li>
                                 </ul>
                             </div>
-                            
+
                             <div class="detail-group">
                                 <h4 class="detail-label">Periodo:</h4>
                                 <p>Dal 10/12/2024 al 17/12/2024</p>
                             </div>
-                            
+
                             <div class="detail-group">
                                 <h4 class="detail-label">Data prenotazione:</h4>
                                 <p>05/12/2024</p>
                             </div>
-                            
+
                             <div class="detail-group">
                                 <h4 class="detail-label">Stato restituzione:</h4>
-                                <p><i class="fas fa-check" style="color: var(--color-success);"></i> Restituito il 17/12/2024</p>
+                                <p><i class="fas fa-check" style="color: var(--color-success);"></i> Restituito il
+                                    17/12/2024</p>
                             </div>
                         </div>
-                        
+
                         <div class="booking-actions">
                             <button class="btn btn-outline btn-small">
                                 <i class="fas fa-info-circle"></i> Dettagli
@@ -189,7 +193,7 @@
                             </button>
                         </div>
                     </div>
-                    
+
                     <!-- Messaggio se non ci sono prenotazioni -->
                     <div class="no-bookings-message">
                         <i class="fas fa-calendar-times"></i>
@@ -205,80 +209,3 @@
 </body>
 
 </html>
-
-<script>
-        document.addEventListener('DOMContentLoaded', function() {
-            // Filtro per stato prenotazione
-            const filterTabs = document.querySelectorAll('.filter-tab');
-            const bookingCards = document.querySelectorAll('.booking-card');
-            
-            filterTabs.forEach(tab => {
-                tab.addEventListener('click', function() {
-                    // Aggiorna tab attivo
-                    filterTabs.forEach(t => t.classList.remove('active'));
-                    this.classList.add('active');
-                    
-                    const status = this.dataset.status;
-                    
-                    // Filtra le prenotazioni
-                    bookingCards.forEach(card => {
-                        if(status === 'all' || card.classList.contains(status)) {
-                            card.style.display = 'block';
-                        } else {
-                            card.style.display = 'none';
-                        }
-                    });
-                    
-                    // Mostra/nascondi messaggio "nessuna prenotazione"
-                    updateNoBookingsMessage();
-                });
-            });
-            
-            // Ricerca prenotazioni
-            const searchInput = document.getElementById('booking-search');
-            searchInput.addEventListener('input', function() {
-                const searchTerm = this.value.toLowerCase();
-                
-                bookingCards.forEach(card => {
-                    const cardText = card.textContent.toLowerCase();
-                    const isVisible = cardText.includes(searchTerm);
-                    
-                    // Considera anche il filtro attivo
-                    const activeFilter = document.querySelector('.filter-tab.active').dataset.status;
-                    const matchesFilter = activeFilter === 'all' || card.classList.contains(activeFilter);
-                    
-                    card.style.display = (isVisible && matchesFilter) ? 'block' : 'none';
-                });
-                
-                updateNoBookingsMessage();
-            });
-            
-            // Aggiorna messaggio "nessuna prenotazione"
-            function updateNoBookingsMessage() {
-                const visibleCards = document.querySelectorAll('.booking-card[style="display: block"], .booking-card:not([style])');
-                const noBookingsMsg = document.querySelector('.no-bookings-message');
-                
-                if(visibleCards.length === 0) {
-                    noBookingsMsg.style.display = 'flex';
-                } else {
-                    noBookingsMsg.style.display = 'none';
-                }
-            }
-            
-            // Gestione annullamento prenotazione
-            document.querySelectorAll('.cancel-booking').forEach(btn => {
-                btn.addEventListener('click', function() {
-                    const bookingId = this.closest('.booking-card').dataset.bookingId;
-                    if(confirm(`Sei sicuro di voler annullare la prenotazione ${bookingId}?`)) {
-                        // Qui andrebbe la chiamata API per annullare
-                        this.closest('.booking-card').style.display = 'none';
-                        updateNoBookingsMessage();
-                        alert(`Prenotazione ${bookingId} annullata con successo`);
-                    }
-                });
-            });
-            
-            // Inizializza la vista
-            updateNoBookingsMessage();
-        });
-    </script>

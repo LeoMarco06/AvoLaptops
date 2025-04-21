@@ -6,7 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
 
     <!-- Title of the browser tab -->
-    <title>Noleggio Portatili | IIS Amedeo Avogadro</title>
+    <title>Avo Laptops | Prenota ora</title>
 
     <!-- Link to the styles sheet -->
     <link rel="stylesheet" href="../css/styles.css">
@@ -23,7 +23,8 @@
     <!-- Script that manages the theme mode, animations, navbar... -->
     <script src="../js/page_setup.js" defer></script>
 
-    <script src="../js/book.js"></script>
+    <!-- Script that manages the booking UX... -->
+    <script src="../js/book.js" defer></script>
 </head>
 
 <?php
@@ -88,27 +89,51 @@ $laptops_json = json_encode($laptops);
                 <div class="lockers-container">
                     <h3 class="heading-3">Seleziona dall'armadietto</h3>
                     <div class="lockers-grid">
+
                         <!-- Locker Example -->
                         <div class="locker-card">
                             <div class="locker-header">
-                                <h4 class="heading-4">Armadietto A1</h4>
-                                <span class="locker-status">4/6 disponibili</span>
+                                <h4 class="heading-4">Armadietto B1</h4>
+                                <span class="locker-status">1/3 disponibili</span>
                             </div>
                             <div class="locker-laptops">
-                                <!-- Laptop Example -->
-                                <div class="laptop-item available" data-laptop-id="A1-001">
+                                <!-- Available Laptop -->
+                                <div class="laptop-item available" data-laptop-id="B1-001">
                                     <div class="laptop-info">
                                         <i class="fas fa-laptop"></i>
-                                        <span>A1-001 (Modello 1)</span>
+                                        <span>B1-001 (Modello 1)</span>
                                     </div>
                                     <button class="btn-icon select-laptop">
                                         <i class="fas fa-plus"></i>
                                     </button>
                                 </div>
+
+                                <!-- Maintenance Laptop -->
+                                <div class="laptop-item maintenance" data-laptop-id="B1-002">
+                                    <div class="laptop-info">
+                                        <i class="fas fa-laptop"></i>
+                                        <span>B1-002 (Modello 2)</span>
+                                    </div>
+                                    <span class="status-badge">
+                                        <i class="fas fa-tools"></i> Manutenzione
+                                    </span>
+                                </div>
+
+                                <!-- Unavailable Laptop -->
+                                <div class="laptop-item unavailable" data-laptop-id="B1-003">
+                                    <div class="laptop-info">
+                                        <i class="fas fa-laptop"></i>
+                                        <span>B1-003 (Modello 3)</span>
+                                    </div>
+                                    <span class="status-badge">
+                                        <i class="fas fa-times"></i> Non disponibile
+                                    </span>
+                                </div>
                             </div>
                         </div>
                     </div>
                 </div>
+            </div>
             </div>
         </section>
     </main>
@@ -118,112 +143,3 @@ $laptops_json = json_encode($laptops);
 </body>
 
 </html>
-
-<script>
-    function createLaptop(laptop) {
-        const div = document.createElement('div');
-        div.dataset.laptopId = laptop.id;
-
-        const info = `
-        <div class="laptop-info">
-            <i class="fas fa-laptop"></i>
-            <span>${laptop.name} (${laptop.model})</span>
-        </div>
-    `;
-
-        if (laptop.status == "1") {
-            div.classList.add('laptop-item', "available");
-            div.innerHTML = info + `
-            <button class="btn-icon select-laptop">
-                <i class="fas fa-plus"></i>
-            </button>
-        `;
-        } else if (laptop.status == "-1") {
-            div.classList.add('laptop-item', "maintenance");
-            div.innerHTML = info + `
-            <span class="status-badge"><i class="fas fa-tools"></i> Maintenance</span>
-        `;
-        } else if (laptop.status == "0") {
-            div.classList.add('laptop-item', "unavailable");
-            div.innerHTML = info + `
-            <span class="status-badge"><i class="fas fa-times"></i> Unavailable</span>
-        `;
-        }
-
-        return div;
-    }
-
-    function createLocker(locker) {
-        const card = document.createElement('div');
-        card.classList.add('locker-card');
-
-        const header = `
-        <div class="locker-header">
-            <h4 class="heading-4">${locker.name}</h4>
-            <span class="locker-status">${locker.available}/${locker.total} available</span>
-        </div>
-    `;
-
-        const laptopContainer = document.createElement('div');
-        laptopContainer.classList.add('locker-laptops');
-
-        locker.laptops.forEach(laptop => {
-            const laptopElement = createLaptop(laptop);
-            laptopContainer.appendChild(laptopElement);
-        });
-
-        card.innerHTML = header;
-        card.appendChild(laptopContainer);
-
-        return card;
-    }
-
-    function loadAllLockers(data) {
-        const container = document.querySelector('.lockers-grid');
-        container.innerHTML = ''; // clear existing content
-
-        data.forEach(locker => {
-            const card = createLocker(locker);
-            container.appendChild(card);
-        });
-    }
-
-    // Group laptops by locker
-    function groupByLocker(data) {
-        const lockerMap = {};
-
-        data.forEach(item => {
-            const lockerId = item.lap_locker;
-
-            if (!lockerMap[lockerId]) {
-                lockerMap[lockerId] = {
-                    name: `Locker ${lockerId}`,
-                    total: 0,
-                    available: 0,
-                    laptops: []
-                };
-            }
-
-            const laptop = {
-                id: item.lap_id,
-                name: item.lap_name,
-                model: item.lap_model,
-                status: item.lap_status // change this logic if needed
-            };
-
-            lockerMap[lockerId].laptops.push(laptop);
-            lockerMap[lockerId].total++;
-            if (item.lap_status == "1") {
-                lockerMap[lockerId].available++;
-            }
-        });
-
-        return Object.values(lockerMap);
-    }
-
-    const lockersData = <?php echo $laptops_json; ?>;
-
-    const groupedLockers = groupByLocker(lockersData);
-    loadAllLockers(groupedLockers);
-
-</script>

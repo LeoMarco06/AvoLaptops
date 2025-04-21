@@ -10,7 +10,7 @@ session_start();
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
 
     <!-- Title of the browser tab -->
-    <title>Login</title>
+    <title>Avo Laptops | Login</title>
 
     <!-- Link to the styles sheet -->
     <link rel="stylesheet" href="../css/styles.css">
@@ -95,7 +95,7 @@ session_start();
 
 </body>
 
-<?php
+<?php 
 include './include/connection.php';
 
 $conn = connectToDatabase();

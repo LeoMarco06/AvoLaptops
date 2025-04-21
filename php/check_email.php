@@ -8,7 +8,7 @@ if (!empty($email) && filter_var($email, FILTER_VALIDATE_EMAIL) && preg_match('/
     
     $conn = connectToDatabase();
 
-    $sql = "SELECT * FROM users WHERE email = ?";
+    $sql = "SELECT * FROM users WHERE u_email = ?";
 
     $stmt = $conn->prepare($sql);
 
