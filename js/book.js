@@ -43,6 +43,7 @@ document.addEventListener("DOMContentLoaded", function () {
                             <button class="btn-icon remove-laptop">
                                 <i class="fas fa-times"></i>
                             </button>
+                            <input type="hidden" name="laptop_id[]" value="${laptopId}">
                         `;
 
         selectedList.appendChild(listItem);
@@ -91,28 +92,6 @@ document.addEventListener("DOMContentLoaded", function () {
     });
 
     updateSummary();
-  });
-
-  // Confirm booking
-  confirmBtn.addEventListener("click", function () {
-    if (selectedLaptops.length > 0) {
-      const bookingDate = document.getElementById("booking-date").value;
-      const returnDate = document.getElementById("return-date").value;
-
-      if (!bookingDate || !returnDate) {
-        alert("Seleziona le date di prenotazione e restituzione");
-        return;
-      }
-
-      // ======== SERVER BOOKING LOGIC ======== //
-
-      alert(
-        `Prenotazione confermata per ${selectedLaptops.length} portatile/i!\nDal ${bookingDate} al ${returnDate}`
-      );
-
-      // Reset dopo la conferma
-      clearBtn.click();
-    }
   });
 
   // Aggiorna il riepilogo
