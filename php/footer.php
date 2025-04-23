@@ -2,8 +2,8 @@
     <div class="main-container">
         <div class="footer-grid">
             <div class="footer-column">
-                <h3 class="heading-3">Noleggio Portatili</h3>
-                <p>Servizio di noleggio dispositivi per studenti e docenti dell'Istituto Amedeo Avogadro di Torino</p>
+                <h3 class="heading-3">Avo Laptops</h3>
+                <p>Servizio di noleggio dispositivi per docenti dell'Istituto Amedeo Avogadro di Torino</p>
             </div>
             <div class="footer-column">
                 <h3 class="heading-3">Link utili</h3>

@@ -14,6 +14,9 @@
     <!-- Link to the booking styles sheet -->
     <link rel="stylesheet" href="../css/prenota.css">
 
+    <!-- Link to the custom styles sheet -->
+    <link rel="stylesheet" href="../css/custom_inputs.css">
+
     <!-- Link to the responsive styles sheet -->
     <link rel="stylesheet" href="../css/responsive.css">
 
@@ -22,6 +25,12 @@
 
     <!-- Script that manages the theme mode, animations, navbar... -->
     <script src="../js/page_setup.js" defer></script>
+
+    <!-- Script that handle the custom date picker -->
+    <script src="../js/date_picker.js" defer></script>
+
+    <!-- Script that handle the custom time picker -->
+    <script src="../js/time_picker.js" defer></script>
 
     <!-- Script that manages the booking UX... -->
     <script src="../js/book.js" defer></script>
@@ -46,6 +55,13 @@ if ($result && $result->num_rows > 0) {
 }
 
 $laptops_json = json_encode($laptops);
+
+
+if($_SERVER["REQUEST_METHOD"] == "POST") {
+    echo var_dump($_REQUEST["date"]);
+    echo var_dump($_REQUEST["start-time"]);
+    echo var_dump($_REQUEST["end-time"]);
+}
 ?>
 
 <body>
@@ -57,17 +73,68 @@ $laptops_json = json_encode($laptops);
                 <h2 class="section-header">Prenotazione Portatili</h2>
 
                 <!-- Filters -->
-                <div class="booking-filters">
+                <form class="booking-filters" action="prenota.php" method="POST">
                     <div class="filter-group">
-                        <label for="booking-date">Data prenotazione:</label>
-                        <input type="date" id="booking-date" class="form-control">
+                        <div class="box">
+                            <div class="text-icon">
+                                <i class="fa-solid fa-calendar"></i>
+                                <label for="start-date">Data inizio</label>
+                            </div>
+                            <div class="date-picker-container">
+                                <input type="text" class="date-picker-input" id="start-date" name="date"
+                                    placeholder="Seleziona data" readonly>
+                                <div class="date-picker" id="start-date-picker">
+                                    <div class="date-picker-header">
+                                        <button class="prev-year">&lt;&lt;</button>
+                                        <button class="prev-month">&lt;</button>
+                                        <h2 class="current-date">
+                                            <span class="month-year">
+                                                <span class="current-month"></span>
+                                                <span class="current-year"></span>
+                                            </span>
+                                        </h2>
+                                        <button class="next-month">&gt;</button>
+                                        <button class="next-year">&gt;&gt;</button>
+                                    </div>
+                                    <div class="date-picker-weekdays"></div>
+                                    <div class="date-picker-days"></div>
+                                    <div class="date-picker-footer">
+                                        <button class="today-btn">Oggi</button>
+                                        <button class="clear-btn">Cancella</button>
+                                    </div>
+                                </div>
+                            </div>
+
+                        </div>
+
+                        <div class="box right">
+                            <div class="text-icon">
+                                <i class="fa-solid fa-clock"></i>
+                                <label for="start-time">Ora inizio</label>
+                            </div>
+                            <div class="time-picker-container">
+                                <input type="text" id="start-time" class="time-picker-input"
+                                    placeholder="Seleziona orario" name="start-time" readonly>
+                                <div class="time-picker-dropdown" id="start-time-picker-dropdown"></div>
+                            </div>
+                        </div>
+                        <div class="box right">
+                            <div class="text-icon">
+                                <i class="fa-solid fa-clock"></i>
+                                <label for="end-time">Ora fine</label>
+
+                            </div>
+                            <div class="time-picker-container">
+                                <input type="text" id="end-time" class="time-picker-input"
+                                    placeholder="Seleziona orario" name="end-time" readonly>
+                                <div class="time-picker-dropdown" id="end-time-picker-dropdown"></div>
+                            </div>
+                        </div>
                     </div>
-                    <div class="filter-group">
-                        <label for="return-date">Data restituzione:</label>
-                        <input type="date" id="return-date" class="form-control">
-                    </div>
-                    <button class="btn btn-primary">Applica filtri</button>
-                </div>
+
+                    <button class="btn btn-primary filter-btn" style="gap: 10px;" type="submit"><i
+                            class="fa-solid fa-magnifying-glass"></i>Cerca</button>
+                </form>
 
                 <!-- Booking summary -->
                 <div class="booking-summary">
@@ -90,13 +157,61 @@ $laptops_json = json_encode($laptops);
                     <h3 class="heading-3">Seleziona dall'armadietto</h3>
                     <div class="lockers-grid">
 
-                        <!-- Locker Example -->
+                        <!-- Locker Example A -->
+                        <div class="locker-card">
+                            <div class="locker-header">
+                                <h4 class="heading-4">Armadietto A1</h4>
+                                <span class="locker-status">1/3 disponibili</span>
+                                <button class="btn-icon toggle-locker" aria-expanded="false">
+                                    <i class="fas fa-chevron-down"></i>
+                                </button>
+                            </div>
+                            <div class="locker-laptops" style="display: none;">
+                                <!-- Available Laptop -->
+                                <div class="laptop-item available" data-laptop-id="A1-001">
+                                    <div class="laptop-info">
+                                        <i class="fas fa-laptop"></i>
+                                        <span>A1-001 (Modello 1)</span>
+                                    </div>
+                                    <button class="btn-icon select-laptop">
+                                        <i class="fas fa-plus"></i>
+                                    </button>
+                                </div>
+
+                                <!-- Maintenance Laptop -->
+                                <div class="laptop-item maintenance" data-laptop-id="A1-002">
+                                    <div class="laptop-info">
+                                        <i class="fas fa-laptop"></i>
+                                        <span>A1-002 (Modello 2)</span>
+                                    </div>
+                                    <span class="status-badge">
+                                        <i class="fas fa-tools"></i> Manutenzione
+                                    </span>
+                                </div>
+
+                                <!-- Unavailable Laptop -->
+                                <div class="laptop-item unavailable" data-laptop-id="A1-003">
+                                    <div class="laptop-info">
+                                        <i class="fas fa-laptop"></i>
+                                        <span>A1-003 (Modello 3)</span>
+                                    </div>
+                                    <span class="status-badge">
+                                        <i class="fas fa-times"></i> Non disponibile
+                                    </span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Locker Example B -->
                         <div class="locker-card">
                             <div class="locker-header">
                                 <h4 class="heading-4">Armadietto B1</h4>
                                 <span class="locker-status">1/3 disponibili</span>
+                                <button class="btn-icon toggle-locker" aria-expanded="false">
+                                    <i class="fas fa-chevron-down"></i>
+                                </button>
                             </div>
-                            <div class="locker-laptops">
+                            <div class="locker-laptops" style="display: none;">
                                 <!-- Available Laptop -->
                                 <div class="laptop-item available" data-laptop-id="B1-001">
                                     <div class="laptop-info">
@@ -131,8 +246,11 @@ $laptops_json = json_encode($laptops);
                                 </div>
                             </div>
                         </div>
+
                     </div>
                 </div>
+
+
             </div>
             </div>
         </section>

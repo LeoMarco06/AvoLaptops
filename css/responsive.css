@@ -79,17 +79,109 @@
     min-width: 48px;
   }
 
-  .booking-filters {
-    flex-direction: column;
-    align-items: stretch;
-  }
-
   .summary-actions {
     flex-direction: column;
   }
 
   .lockers-grid {
     grid-template-columns: 1fr;
+  }
+  
+  .bookings-filters {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .filter-btn {
+    width: 100%;
+  }
+
+  .filter-group {
+    width: 100%;
+  }
+
+  .box.right {
+    width: 100px;
+  }
+
+  .time-picker-input {
+    width: 100%;
+  }
+
+  .filter-tabs {
+    justify-content: center;
+  }
+
+  .search-box {
+    max-width: 100%;
+  }
+
+  .booking-header {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: var(--spacing-sm);
+  }
+
+  .booking-actions {
+    justify-content: center;
+  }
+
+  .booking-filters {
+    flex-direction: column;
+    gap: var(--spacing-md);
+    align-items: stretch;
+  }
+
+  .filter-group {
+    width: 100%;
+    flex-direction: column;
+    gap: var(--spacing-sm);
+  }
+
+  .box {
+    width: 100%;
+    flex-direction: row;
+    row-gap: var(--spacing-sm);
+    justify-content: flex-start;
+  }
+
+  .box.right {
+    border-left: none;
+    padding-left: 0;
+    text-align: left;
+    width: 100%;
+  }
+
+  .text-icon {
+    width: 30%;
+    text-align: left;
+  }
+
+  .time-picker-container {
+    width: 70%;
+  }
+
+  .date-picker-container {
+    width: 70%;
+  }
+
+  .date-picker-input {
+    width: 100%;
+  }
+
+  .time-picker-input {
+    width: 100%;
+  }
+
+  .date-picker{
+    width: 100%;
+    top: 100%;
+    left: auto;
+  }
+
+  .filter-btn {
+    width: 100%;
+    justify-content: center;
   }
 }
 
@@ -118,12 +210,33 @@
 
   .auth-container {
     padding: var(--spacing-lg);
-    min-width:auto;
+    min-width: auto;
     width: 95%;
   }
 
   .auth-header {
     margin-bottom: var(--spacing-lg);
+  }
+
+  .booking-details {
+    grid-template-columns: 1fr;
+  }
+
+  .booking-actions button {
+    flex: 1;
+  }
+
+  .booking-filters {
+    gap: var(--spacing-sm);
+  }
+
+  .filter-group {
+    padding: var(--spacing-sm);
+  }
+
+  .filter-btn {
+    font-size: var(--font-size-sm);
+    padding: var(--spacing-xs);
   }
 }
 

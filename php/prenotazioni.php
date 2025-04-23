@@ -194,7 +194,7 @@
                         </div>
                     </div>
 
-                    <!-- Messaggio se non ci sono prenotazioni -->
+                    <!-- If there aren't bookings -->
                     <div class="no-bookings-message">
                         <i class="fas fa-calendar-times"></i>
                         <p>Nessuna prenotazione trovata</p>

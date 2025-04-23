@@ -12,13 +12,11 @@
                 <li><a href="prenotazioni.php">Le mie prenotazioni</a></li>
             </ul>
         </nav>
+        
         <div class="user-actions">
             <!-- Use the user's name and last name if the user is logged -->
-            <?php if(isset($_SESSION["id"]) && !empty($_SESSION["id"])): ?>
-            <div class="user-info">
-                    <span class="user-name"><?php echo htmlspecialchars($_SESSION['user_name']); ?></span>
-                    <button class="btn btn-outline" onclick="window.location.replace('logout.php')">Logout</button>
-                </div>
+            <?php if (isset($_SESSION["id"]) && !empty($_SESSION["id"])): ?>
+                <button class="btn btn-outline" onclick="window.location.replace('logout.php')">Logout</button>
             <?php else: ?>
                 <button class="btn btn-outline" onclick="window.location.replace('login.php#login')">Accedi</button>
             <?php endif; ?>

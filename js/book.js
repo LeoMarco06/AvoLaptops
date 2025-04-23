@@ -19,6 +19,31 @@ document.addEventListener("DOMContentLoaded", function () {
     lockerStatus.textContent = `${availableLaptops}/${totalLaptops} disponibili`;
   });
 
+  // Select all toggle buttons
+  const toggleButtons = document.querySelectorAll(".toggle-locker");
+
+  toggleButtons.forEach((button) => {
+    button.addEventListener("click", () => {
+      // Get the associated locker-laptops div
+      const lockerCard = button.closest(".locker-card");
+      const lockerLaptops = lockerCard.querySelector(".locker-laptops");
+      const lockerHeader = lockerCard.querySelector(".locker-header");
+
+      // Toggle the display of the locker content
+      const isExpanded = button.getAttribute("aria-expanded") === "true";
+      button.setAttribute("aria-expanded", !isExpanded);
+      lockerLaptops.style.display = isExpanded ? "none" : "grid";
+
+      // Toggle styles on locker-header
+      lockerHeader.classList.toggle("expanded", !isExpanded);
+
+      // Change the icon
+      const icon = button.querySelector("i");
+      icon.classList.toggle("fa-chevron-down", isExpanded);
+      icon.classList.toggle("fa-chevron-up", !isExpanded);
+    });
+  });
+
   // Manage laptop selection
   const selectedLaptops = [];
   const selectedList = document.getElementById("selected-laptops");
@@ -128,8 +153,16 @@ document.addEventListener("DOMContentLoaded", function () {
     }
   }
 
-  // Imposta la data minima (oggi) per i campi data
-  const today = new Date().toISOString().split("T")[0];
-  document.getElementById("booking-date").min = today;
-  document.getElementById("return-date").min = today;
+  /* ============== FILTERS =============*/
+
+  // Initialize the date picker for the start date
+  const startDatePicker = document.getElementById("start-date-picker");
+  const startDateInput = document.getElementById("start-date");
+
+  // Initialize the custom date picker
+  initDatePicker("start-date", "start-date-picker");
+
+  // Set up listeners for the date picker
+  setupDatePickerListeners(startDatePicker);
+
 });
