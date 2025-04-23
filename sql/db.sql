@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost
--- Creato il: Apr 19, 2025 alle 13:06
+-- Creato il: Apr 23, 2025 alle 15:07
 -- Versione del server: 10.4.32-MariaDB
 -- Versione PHP: 8.1.25
 
@@ -44,11 +44,11 @@ CREATE TABLE `laptops` (
 INSERT INTO `laptops` (`lap_id`, `lap_model`, `lap_locker`, `lap_name`, `lap_status`) VALUES
 (1, 1, 1, 'PC-01', 1),
 (2, 1, 1, 'PC-02', 1),
-(3, 1, 1, 'PC-03', 1),
+(3, 1, 1, 'PC-03', 0),
 (4, 1, 1, 'PC-04', 1),
 (5, 1, 1, 'PC-05', -1),
 (6, 1, 1, 'PC-06', 1),
-(7, 1, 1, 'PC-07', 1),
+(7, 1, 1, 'PC-07', 0),
 (8, 1, 1, 'PC-08', 0),
 (9, 1, 1, 'PC-09', 1),
 (10, 1, 1, 'PC-10', 1),
@@ -77,6 +77,17 @@ INSERT INTO `laptops` (`lap_id`, `lap_model`, `lap_locker`, `lap_name`, `lap_sta
 (33, 2, 2, 'PC-3', 1),
 (34, 2, 2, 'PC-4', 0),
 (35, 2, 2, 'PC-5', 1);
+
+--
+-- Trigger `laptops`
+--
+DELIMITER $$
+CREATE TRIGGER `log_laptops_maintenance` AFTER UPDATE ON `laptops` FOR EACH ROW BEGIN
+	INSERT INTO log_maintenance (log_lap_id, log_date, log_time, log_status)
+    	VALUES (NEW.lap_id, CURRENT_DATE(), CURRENT_TIME(), NEW.lap_status);
+END
+$$
+DELIMITER ;
 
 -- --------------------------------------------------------
 
@@ -123,6 +134,27 @@ INSERT INTO `lockers` (`lock_id`, `lock_floor`, `lock_class`, `lock_capacity`, `
 (1, 1, 'Aula Informatica', 30, 'Prof. Rossi'),
 (2, 2, 'Biblioteca', 30, 'Prof.ssa Verdi'),
 (3, 3, 'Laboratorio', 30, 'Prof. Bianchi');
+
+-- --------------------------------------------------------
+
+--
+-- Struttura della tabella `log_maintenance`
+--
+
+CREATE TABLE `log_maintenance` (
+  `log_id` int(11) NOT NULL,
+  `log_lap_id` int(11) NOT NULL,
+  `log_date` date NOT NULL,
+  `log_time` time NOT NULL,
+  `log_status` int(11) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dump dei dati per la tabella `log_maintenance`
+--
+
+INSERT INTO `log_maintenance` (`log_id`, `log_lap_id`, `log_date`, `log_time`, `log_status`) VALUES
+(1, 7, '2025-04-23', '11:36:44', 0);
 
 -- --------------------------------------------------------
 
@@ -191,9 +223,10 @@ CREATE TABLE `users` (
 --
 
 INSERT INTO `users` (`u_id`, `u_name`, `u_surname`, `u_email`, `u_cf`, `u_password`, `u_role`) VALUES
-(37, 'Mario', 'Rossi', 'mario.rossi@itisavogadro.it', 'MROSSI12345678', 'password1', 1),
-(38, 'Anna', 'Verdi', 'anna.verdi@itisavogadro.it', 'AVERDI12345678', 'password2', 2),
-(39, 'Luigi', 'Bianchi', 'luigi.bianchi@itisavogadro.it', 'LBIANCHI12345678', 'password3', 3);
+(37, 'Mario', 'Rossi', 'mario.rossi@itisavogadro.it', 'MROSSI12345678', '$2y$10$bUTASuIFIeiq8/xSq7ppM.brt9.J/8dB1s.SjeAVJW4g4ulFqx7N6', 1),
+(38, 'Anna', 'Verdi', 'anna.verdi@itisavogadro.it', 'AVERDI12345678', '$2y$10$bUTASuIFIeiq8/xSq7ppM.brt9.J/8dB1s.SjeAVJW4g4ulFqx7N6', 2),
+(39, 'Luigi', 'Bianchi', 'luigi.bianchi@itisavogadro.it', 'LBIANCHI12345678', '$2y$10$bUTASuIFIeiq8/xSq7ppM.brt9.J/8dB1s.SjeAVJW4g4ulFqx7N6', 3),
+(40, 'Anna', 'Verdi', 'anna.verdi@itisavogadro.it', 'AVERDI12345678', '$2y$10$bUTASuIFIeiq8/xSq7ppM.brt9.J/8dB1s.SjeAVJW4g4ulFqx7N6', 2);
 
 --
 -- Indici per le tabelle scaricate
@@ -219,6 +252,13 @@ ALTER TABLE `laptops_reservations`
 --
 ALTER TABLE `lockers`
   ADD PRIMARY KEY (`lock_id`);
+
+--
+-- Indici per le tabelle `log_maintenance`
+--
+ALTER TABLE `log_maintenance`
+  ADD PRIMARY KEY (`log_id`),
+  ADD KEY `log_lap_id` (`log_lap_id`);
 
 --
 -- Indici per le tabelle `models`
@@ -256,6 +296,12 @@ ALTER TABLE `lockers`
   MODIFY `lock_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 
 --
+-- AUTO_INCREMENT per la tabella `log_maintenance`
+--
+ALTER TABLE `log_maintenance`
+  MODIFY `log_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+
+--
 -- AUTO_INCREMENT per la tabella `models`
 --
 ALTER TABLE `models`
@@ -271,7 +317,7 @@ ALTER TABLE `reservations`
 -- AUTO_INCREMENT per la tabella `users`
 --
 ALTER TABLE `users`
-  MODIFY `u_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=40;
+  MODIFY `u_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=41;
 
 --
 -- Limiti per le tabelle scaricate
@@ -290,6 +336,12 @@ ALTER TABLE `laptops`
 ALTER TABLE `laptops_reservations`
   ADD CONSTRAINT `laptops_reservations_ibfk_1` FOREIGN KEY (`lap_id`) REFERENCES `laptops` (`lap_id`),
   ADD CONSTRAINT `laptops_reservations_ibfk_2` FOREIGN KEY (`res_id`) REFERENCES `reservations` (`res_id`);
+
+--
+-- Limiti per la tabella `log_maintenance`
+--
+ALTER TABLE `log_maintenance`
+  ADD CONSTRAINT `log_maintenance_ibfk_1` FOREIGN KEY (`log_lap_id`) REFERENCES `laptops` (`lap_id`);
 
 --
 -- Limiti per la tabella `reservations`
