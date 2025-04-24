@@ -45,14 +45,13 @@ $end_time = "15:00:00";
 $sql = "SELECT 
             l.lap_id, 
             l.lap_name, 
-            l.lap_status,
             l.lap_locker, 
             m.mod_name AS lap_model,
             CASE 
                 WHEN r.res_id IS NOT NULL AND r.res_day = '" . $day . "' 
                      AND ('" . $start_time . "' < r.res_end_time AND '" . $end_time . "' > r.res_start_time)
                 THEN 0 
-                ELSE l.lap_status 
+                ELSE IF(l.lap_status=-1, -1, 1) 
             END AS updated_status
         FROM laptops l
         LEFT JOIN laptops_reservations lr 
@@ -60,7 +59,8 @@ $sql = "SELECT
         LEFT JOIN reservations r 
             ON r.res_id = lr.res_id
         LEFT JOIN models m 
-            ON m.mod_id = l.lap_model";
+            ON m.mod_id = l.lap_model;";
+
 
 $result = $conn->query($sql);
 
