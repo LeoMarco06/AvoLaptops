@@ -73,7 +73,7 @@ if($_SERVER["REQUEST_METHOD"] == "POST") {
                 <h2 class="section-header">Prenotazione Portatili</h2>
 
                 <!-- Filters -->
-                <form class="booking-filters" action="prenota.php" method="POST">
+                <div class="booking-filters">
                     <div class="filter-group">
                         <div class="box">
                             <div class="text-icon">
@@ -132,9 +132,9 @@ if($_SERVER["REQUEST_METHOD"] == "POST") {
                         </div>
                     </div>
 
-                    <button class="btn btn-primary filter-btn" style="gap: 10px;" type="submit"><i
+                    <button id="filter-btn" class="btn btn-primary filter-btn" style="gap: 10px;"><i
                             class="fa-solid fa-magnifying-glass"></i>Cerca</button>
-                </form>
+                </div>
 
                 <!-- Booking summary -->
                 <div class="booking-summary">
@@ -155,7 +155,7 @@ if($_SERVER["REQUEST_METHOD"] == "POST") {
                 <!-- Lockers list -->
                 <div class="lockers-container">
                     <h3 class="heading-3">Seleziona dall'armadietto</h3>
-                    <div class="lockers-grid">
+                    <div class="lockers-grid" id="lockers_container">
 
                         <!-- Locker Example A -->
                         <div class="locker-card">

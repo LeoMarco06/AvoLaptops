@@ -23,9 +23,9 @@ function parseCustomDate(dateStr) {
 
   const [day, monthAbbr, year] = dateStr.split(" ");
   const monthNames = ["Gen", "Feb", "Mar", "Apr", "Mag", "Giu", "Lug", "Ago", "Set", "Ott", "Nov", "Dic"];
-  const monthIndex = monthNames.indexOf(monthAbbr);
+  const monthIndex = monthNames.indexOf(monthAbbr)+1;
 
-  return new Date(year, monthIndex, day);
+  return year + "-" + monthIndex + "-" + day;
 }
 
 /**
