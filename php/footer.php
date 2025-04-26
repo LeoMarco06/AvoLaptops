@@ -30,9 +30,8 @@
         <div class="footer-bottom">
             <p>&copy; 2025 IIS Amedeo Avogadro di Torino. Tutti i diritti riservati.</p>
             <div class="social-links">
-                <a href="#"><i class="fab fa-facebook"></i></a>
-                <a href="#"><i class="fab fa-instagram"></i></a>
-                <a href="#"><i class="fab fa-twitter"></i></a>
+                <a target="_blank" href="https://www.facebook.com/p/Istituto-Avogadro-Torino-100063754143556/?locale=it_IT"><i class="fab fa-facebook"></i></a>
+                <a target="_blank" href="https://www.youtube.com/c/Avovideotorino/videos"><i class="fab fa-youtube"></i></a>
             </div>
         </div>
     </div>

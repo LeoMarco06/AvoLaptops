@@ -27,7 +27,7 @@
     <script src="../js/manage_reservations.js" defer></script>
 </head>
 
-<body>
+<body id="home">
     <?php include_once 'header_navbar.php'; ?>
 
     <main>

@@ -84,6 +84,7 @@
 
 .booking-card {
     background-color: var(--color-card);
+    border: 2px solid var(--color-border);
     border-radius: var(--border-radius-md);
     padding: var(--spacing-lg);
     box-shadow: var(--shadow-sm);

@@ -1,4 +1,12 @@
 document.addEventListener("DOMContentLoaded", function () {
+  const lockers = {};
+  const selectedLaptops = [];
+  const locker_container = document.getElementById("lockers_container");
+  const confirmBtn = document.getElementById("confirm-booking");
+  const startDatePicker = document.getElementById("start-date-picker");
+  const clearBtn = document.getElementById("clear-selection");
+  const selectedList = document.getElementById("selected-laptops");
+
   const lockerCards = document.querySelectorAll(".locker-card");
 
   lockerCards.forEach((lockerCard) => {
@@ -15,17 +23,12 @@ document.addEventListener("DOMContentLoaded", function () {
 
   toggleButtonFunction();
 
-  const selectedLaptops = [];
-  const confirmBtn = document.getElementById("confirm-booking");
-
-  laptopListener(selectedLaptops);
-
   // Handle booking confirmation
   confirmBtn.addEventListener("click", function () {
-    if (selectedLaptops.length > 0) {
-      const bookingDate = document.getElementById("booking-date").value;
-      const returnDate = document.getElementById("return-date").value;
+    const bookingDate = document.getElementById("booking-date").value;
+    const returnDate = document.getElementById("return-date").value;
 
+    if (selectedLaptops.length > 0) {
       if (!bookingDate || !returnDate) {
         alert("Please select booking and return dates.");
         return;
@@ -53,7 +56,6 @@ document.addEventListener("DOMContentLoaded", function () {
   }
 
   // Initialize date picker and set up filters
-  const startDatePicker = document.getElementById("start-date-picker");
   initDatePicker("start-date", "start-date-picker");
   setupDatePickerListeners(startDatePicker);
 
@@ -66,8 +68,6 @@ document.addEventListener("DOMContentLoaded", function () {
       alert("Please fill in all fields to apply the filter.");
       return;
     }
-
-    const locker_container = document.getElementById("lockers_container");
 
     // Perform AJAX request to filter laptops
     var xmlhttp = new XMLHttpRequest();
@@ -157,8 +157,9 @@ document.addEventListener("DOMContentLoaded", function () {
   function createLocker(lockerId, laptops, selectedLaptops) {
     const lockerCard = document.createElement("div");
     lockerCard.className = "locker-card";
-    let availableLaptops = laptops.filter((laptop) => laptop.status === 0)
-      .length;
+    let availableLaptops = laptops.filter(
+      (laptop) => laptop.status === 0
+    ).length;
 
     lockerCard.innerHTML = `
       <div class="locker-header">
@@ -208,8 +209,6 @@ document.addEventListener("DOMContentLoaded", function () {
 
   // Manage laptop selection
   function laptopListener(selectedLaptops) {
-    const selectedList = document.getElementById("selected-laptops");
-
     document.querySelectorAll(".select-laptop").forEach((btn) => {
       btn.addEventListener("click", function () {
         const laptopItem = this.closest(".laptop-item");
@@ -270,9 +269,6 @@ document.addEventListener("DOMContentLoaded", function () {
 
   // Clear all selected laptops
   function clearSelectionListener() {
-    const clearBtn = document.getElementById("clear-selection");
-    const selectedList = document.getElementById("selected-laptops");
-
     clearBtn.addEventListener("click", function () {
       selectedLaptops.length = 0;
       selectedList.innerHTML = "";
@@ -285,4 +281,36 @@ document.addEventListener("DOMContentLoaded", function () {
       updateSummary();
     });
   }
+
+  // Loading of the laptops at the beginning
+  const response = JSON.parse(
+    document.getElementById("laptops-data").textContent
+  );
+  selectedLaptops.length = 0;
+
+  response.forEach((laptop) => {
+    if (!lockers[laptop.lap_locker]) {
+      lockers[laptop.lap_locker] = [];
+    }
+    lockers[laptop.lap_locker].push({
+      id: laptop.lap_id,
+      name: laptop.lap_name,
+      model: laptop.lap_model,
+      status: laptop.lap_status,
+    });
+  });
+
+  Object.keys(lockers).forEach((lockerId) => {
+    const lockerCard = createLocker(
+      lockerId,
+      lockers[lockerId],
+      selectedLaptops
+    );
+    locker_container.appendChild(lockerCard);
+  });
+
+  toggleButtonFunction();
+  laptopListener(selectedLaptops);
+  document.getElementById("selected-laptops").innerHTML = "";
+  updateSummary();
 });

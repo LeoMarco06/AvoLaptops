@@ -22,6 +22,18 @@
   .features-grid {
     grid-template-columns: repeat(2, 1fr);
   }
+
+  .laptop-search-container{
+    gap: var(--spacing-sm);
+  }
+
+  .laptop-search-container .search-laptop-input{
+    width: 75%;
+  }
+
+  .popup-container {
+    width: 90%;
+  }
 }
 
 @media (max-width: 768px) {
