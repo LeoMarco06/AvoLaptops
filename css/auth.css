@@ -155,7 +155,6 @@ select {
   background-color: var(--color-bg-secondary);
   color: var(--color-text-light);
   font-size: var(--font-size-sm);
-  font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
 }
 
 .popup-buttons {

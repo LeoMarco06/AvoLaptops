@@ -1,0 +1,18 @@
+.statistics-container {
+    display:grid;
+    grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
+    gap: 7px;
+}
+
+.statistic-item{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    background-color: var(--color-statistics);
+    border: 1px solid var(--color-border);
+    box-shadow: var(--shadow-md);
+    color: var(--color-statistics-text);
+    text-align: center;
+    border-radius: var(--border-radius-md);
+}
