@@ -6,7 +6,7 @@ $_SESSION["u_role"] = 0; // Temporary session variable for testing
 $currentDir = basename(dirname($_SERVER['SCRIPT_FILENAME']));
 
 // Modify path based on the current directory and user role
-$path = (isset($_SESSION["u_role"]) && $_SESSION["u_role"] === 0 && $currentDir === "admin_pages") 
+$path = (isset($_SESSION["u_role"]) && $_SESSION["u_role"] === 0 && $currentDir != "php") 
     ? "../" 
     : "./";
 ?>
@@ -23,6 +23,7 @@ $path = (isset($_SESSION["u_role"]) && $_SESSION["u_role"] === 0 && $currentDir 
                 <li><a href="<?php echo $path?>homepage.php#home">Home</a></li>
                 <li><a href="<?php echo $path?>prenota.php#home">Prenota</a></li>
                 <li><a href="<?php echo $path?>prenotazioni.php#home">Prenotazioni</a></li>
+                <li><a href="<?php echo $path?>statistics/statistics.php#home">Statistiche</a></li>
                 <?php if (isset($_SESSION["u_role"]) && $_SESSION["u_role"] == 0): ?>
                     <li><a href="<?php echo $path?>admin_services.php#home">Admin</a></li>
                 <?php endif; ?>

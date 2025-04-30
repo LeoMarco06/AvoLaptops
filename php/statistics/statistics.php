@@ -9,23 +9,23 @@
     <title>Avo Laptops | Statistiche</title>
 
     <!-- Link to the styles sheet -->
-    <link rel="stylesheet" href="../css/styles.css">
+    <link rel="stylesheet" href="../../css/styles.css">
 
     <!-- Link to the responsive styles sheet -->
-    <link rel="stylesheet" href="../css/responsive.css">
-    
+    <link rel="stylesheet" href="../../css/responsive.css">
+
     <!-- Link to the statistics styles sheet -->
-    <link rel="stylesheet" href="../css/statistics.css">
+    <link rel="stylesheet" href="../../css/statistics.css">
 
     <!-- Icons -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 
     <!-- Script that manages the theme mode, animations, navbar... -->
-    <script src="../js/page_setup.js" defer></script>
+    <script src="../../js/page_setup.js" defer></script>
 </head>
 
 <body id="home">
-    <?php include_once 'header_navbar.php'; ?>
+    <?php include_once '../header_navbar.php'; ?>
 
     <main>
         <section class="main-banner">
@@ -43,27 +43,24 @@
         <section id="servizi" class="features-section">
             <div class="main-container">
                 <div class="statistics-container">
+                    <!--ESEMPIO INFOGRAFICA-->
                     <div class="statistic-item">
-                        <h2 class="header2">PERCENTUALI MASCHI E FEMMINE</h2>
+                        <h2 class="header2">INFOGRAFICA 1</h2>
+                        <!--<div class="statistics-graph"></div>-->
                     </div>
-                    <div class="statistic-item">
-                        <h2 class="header2">PERCENTUALI MASCHI E FEMMINE</h2>
-                    </div>
-                    <div class="statistic-item">
-                        <h2 class="header2">PERCENTUALI MASCHI E FEMMINE</h2>
-                    </div>
-                    <div class="statistic-item">
-                        <h2 class="header2">PERCENTUALI MASCHI E FEMMINE</h2>
-                    </div>
-                    <div class="statistic-item">
-                        <h2 class="header2">PERCENTUALI MASCHI E FEMMINE</h2>
-                    </div>
+
+
+                    <!--ALTRE INFOGRAFICHE-->
+
+                    <?php if(isset($_SESSION["u_role"]) && $_SESSION["u_role"] == 0): ?>
+                        <!--INFOGRAFICHE ADMIN-->
+                    <?php endif ?>
                 </div>
             </div>
         </section>
     </main>
 
-    <?php include_once "footer.php" ?>
+    <?php include_once "../footer.php" ?>
 
 </body>
 
