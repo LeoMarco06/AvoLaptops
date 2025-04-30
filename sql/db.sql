@@ -92,10 +92,10 @@ DELIMITER ;
 -- --------------------------------------------------------
 
 --
--- Struttura della tabella `laptop_rerservation`
+-- Struttura della tabella `laptop_reservation`
 --
 
-CREATE TABLE `laptop_rerservation` (
+CREATE TABLE `laptops_reservations` (
   `lap_id` int(11) NOT NULL,
   `res_id` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
