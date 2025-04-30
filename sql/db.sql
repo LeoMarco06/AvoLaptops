@@ -92,7 +92,7 @@ DELIMITER ;
 -- --------------------------------------------------------
 
 --
--- Struttura della tabella `laptop_reservation`
+-- Struttura della tabella `laptops_reservations`
 --
 
 CREATE TABLE `laptops_reservations` (
@@ -236,9 +236,9 @@ ALTER TABLE `laptops`
   ADD KEY `lap_locker` (`lap_locker`);
 
 --
--- Indici per le tabelle `laptop_rerservation`
+-- Indici per le tabelle `laptops_reservations`
 --
-ALTER TABLE `laptop_rerservation`
+ALTER TABLE `laptops_reservations`
   ADD PRIMARY KEY (`lap_id`,`res_id`),
   ADD KEY `res_id` (`res_id`);
 
@@ -326,11 +326,11 @@ ALTER TABLE `laptops`
   ADD CONSTRAINT `laptops_ibfk_2` FOREIGN KEY (`lap_locker`) REFERENCES `lockers` (`lock_id`);
 
 --
--- Limiti per la tabella `laptop_rerservation`
+-- Limiti per la tabella `laptops_reservations`
 --
-ALTER TABLE `laptop_rerservation`
-  ADD CONSTRAINT `laptop_rerservation_ibfk_1` FOREIGN KEY (`lap_id`) REFERENCES `laptops` (`lap_id`) ON DELETE CASCADE,
-  ADD CONSTRAINT `laptop_rerservation_ibfk_2` FOREIGN KEY (`res_id`) REFERENCES `reservations` (`res_id`);
+ALTER TABLE `laptops_reservations`
+  ADD CONSTRAINT `laptops_reservations_ibfk_1` FOREIGN KEY (`lap_id`) REFERENCES `laptops` (`lap_id`) ON DELETE CASCADE,
+  ADD CONSTRAINT `laptops_reservations_ibfk_2` FOREIGN KEY (`res_id`) REFERENCES `reservations` (`res_id`);
 
 --
 -- Limiti per la tabella `log_maintenance`
