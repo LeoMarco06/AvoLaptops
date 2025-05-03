@@ -1,11 +1,11 @@
 <?php
 $email = htmlspecialchars($_GET['email']);
 
-include "connection.php";
+include "./include/connection.php";
 
 // Connect to the db only if the email is valid
 if (!empty($email) && filter_var($email, FILTER_VALIDATE_EMAIL) && preg_match('/@(?:studenti\.)?itisavogadro\.it$/i', $email)) {
-    
+
     $conn = connectToDatabase();
 
     $sql = "SELECT * FROM users WHERE u_email = ?";

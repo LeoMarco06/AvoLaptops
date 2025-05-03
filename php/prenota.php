@@ -1,8 +1,5 @@
 <!DOCTYPE html>
 <html lang="it" data-theme="light">
-<?php
-session_start();
-?>
 
 <head>
     <meta charset="UTF-8">
@@ -17,6 +14,9 @@ session_start();
     <!-- Link to the booking styles sheet -->
     <link rel="stylesheet" href="../css/prenota.css">
 
+    <!-- Link to the custom styles sheet -->
+    <link rel="stylesheet" href="../css/custom_inputs.css">
+
     <!-- Link to the responsive styles sheet -->
     <link rel="stylesheet" href="../css/responsive.css">
 
@@ -26,147 +26,202 @@ session_start();
     <!-- Script that manages the theme mode, animations, navbar... -->
     <script src="../js/page_setup.js" defer></script>
 
+    <!-- Script that handle the custom date picker -->
+    <script src="../js/date_picker.js" defer></script>
+
+    <!-- Script that handle the custom time picker -->
+    <script src="../js/time_picker.js" defer></script>
+
     <!-- Script that manages the booking UX... -->
     <script src="../js/book.js" defer></script>
 </head>
 
 <?php
 include './include/connection.php';
+
 $conn = connectToDatabase();
 
-$day = "2025-04-23";
-$start_time = "13:00:00";
-$end_time = "15:00:00";
+// Get the current timestamp
+$current_time = time();
+
+// Round down to the nearest 00 or 30 minutes
+$minutes = date('i', $current_time); // Get current minutes
+$rounded_minutes = $minutes < 30 ? '00' : '30'; // Round to 00 or 30
+
+$start_time = date('H', $current_time) . ':' . $rounded_minutes; // Combine hours and rounded minutes
+
+// Set end time to 30 minutes later
+$end_time = date('H:i', strtotime($start_time . ' +30 minutes')); // Add 30 minutes to start time
+
+
+// Get today's date
+$day = $_GET['day'] ?? date('Y-m-d');
+
+// Final fallback for start_time and end_time
+$start_time = $_GET['start_time'] ?? $start_time;
+$end_time = $_GET['end_time'] ?? $end_time;
 
 // query to get all laptops with their status
 // and model name, and check if they are reserved during the specified time
 // and date
 // status 1 = available, 0 = unavailable, -1 = maintenance
-$sql = "SELECT 
-            l.lap_id, 
-            l.lap_name, 
-            l.lap_locker, 
-            m.mod_name AS lap_model,
+$stmt = $conn->prepare("SELECT 
+    l.lap_id, 
+    l.lap_name, 
+    l.lap_locker,
+    lck.lock_class, 
+    m.mod_name AS lap_model,
+    CASE 
+        WHEN MAX(
             CASE 
-                WHEN r.res_id IS NOT NULL AND r.res_day = '" . $day . "' 
-                     AND ('" . $start_time . "' < r.res_end_time AND '" . $end_time . "' > r.res_start_time)
-                THEN 0 
-                ELSE IF(l.lap_status=-1, -1, 1) 
-            END AS updated_status
-        FROM laptops l
-        LEFT JOIN laptops_reservations lr 
-            ON lr.lap_id = l.lap_id
-        LEFT JOIN reservations r 
-            ON r.res_id = lr.res_id
-        LEFT JOIN models m 
-            ON m.mod_id = l.lap_model;";
+                WHEN r.res_day = ? 
+                     AND ? < r.res_end_time AND ? > r.res_start_time 
+                THEN 1 
+                ELSE 0 
+            END
+        ) = 1 THEN 0 
+        WHEN l.lap_status = -1 THEN -1 
+        ELSE 1 
+    END AS lap_status
+FROM laptops l
+LEFT JOIN laptops_reservations lr 
+    ON lr.lap_id = l.lap_id
+LEFT JOIN reservations r 
+    ON r.res_id = lr.res_id
+LEFT JOIN models m 
+    ON m.mod_id = l.lap_model
+INNER JOIN lockers lck 
+    ON lck.lock_id = l.lap_locker
+GROUP BY l.lap_id;
+");
 
 
-$result = $conn->query($sql);
+$stmt->bind_param("sss", $day, $start_time, $end_time);
+
+// Execute the statement
+$stmt->execute();
+
+// Get the result
+$result = $stmt->get_result();
 
 $laptops = [];
 
-if ($result && $result->num_rows > 0) {
-    while ($row = $result->fetch_assoc()) {
-        $laptops[] = $row;
-    }
+// Fetch results (as an example)
+while ($row = $result->fetch_assoc()) {
+    $laptops[] = $row;
 }
+
 
 $laptops_json = json_encode($laptops);
 ?>
 
-<body>
+
+<body id="home">
     <?php include_once 'header_navbar.php'; ?>
 
     <main>
         <section id="prenotazione" class="booking-section">
             <div class="main-container">
                 <h2 class="section-header">Prenotazione Portatili</h2>
-                <form action="./manda_prenotazione.php" method="POST">
-                    <div>
-                        <!-- Filters -->
-                        <div class="booking-filters">
-                            <div class="filter-group">
-                                <label for="booking-date">Data prenotazione:</label>
-                                <input type="date" name="data-prenotazione" id="booking-date" class="form-control">
-                            </div>
-                            <div class="filter-group">
-                                <label for="return-date">Data restituzione:</label>
-                                <input type="date" name="data-restituzione" id="return-date" class="form-control">
-                            </div>
-                            <button class="btn btn-primary">Applica filtri</button>
-                        </div>
 
-                        <!-- Booking summary -->
-                        <div class="booking-summary">
-                            <h3 class="heading-3">Il tuo carrello</h3>
-                            <div class="summary-content">
-                                <p>Nessun portatile selezionato</p>
-
-                                <ul id="selected-laptops" class="selected-items-list">
-                                    <!-- Selected laptops will be inserted here -->
-                                </ul>
-                                <div class="summary-actions">
-                                    <button id="clear-selection" class="btn btn-outline btn-small" type="button">Annulla
-                                        selezione</button>
-
-                                    <button id="confirm-booking" class="btn btn-primary btn-small" type="submit"
-                                        disabled>Conferma prenotazione</button>
+                <!-- Filters -->
+                <form id="booking-form" class="booking-form" method="GET" action="">
+                    <div class="booking-filters">
+                        <div class="filter-group">
+                            <div class="box">
+                                <div class="text-icon">
+                                    <i class="fa-solid fa-calendar"></i>
+                                    <label for="start-date">Data inizio</label>
+                                </div>
+                                <div class="date-picker-container">
+                                    <input type="text" class="date-picker-input" id="start-date"
+                                        placeholder="Seleziona data" readonly>
+                                    <input type="hidden" id="day-hid" name="day">
+                                    <div class="date-picker" id="start-date-picker">
+                                        <div class="date-picker-header">
+                                            <button class="prev-year">&lt;&lt;</button>
+                                            <button class="prev-month">&lt;</button>
+                                            <h2 class="current-date">
+                                                <span class="month-year">
+                                                    <span class="current-month"></span>
+                                                    <span class="current-year"></span>
+                                                </span>
+                                            </h2>
+                                            <button class="next-month">&gt;</button>
+                                            <button class="next-year">&gt;&gt;</button>
+                                        </div>
+                                        <div class="date-picker-weekdays"></div>
+                                        <div class="date-picker-days"></div>
+                                        <div class="date-picker-footer">
+                                            <button class="today-btn">Oggi</button>
+                                            <button class="clear-btn">Cancella</button>
+                                        </div>
+                                    </div>
                                 </div>
 
+                            </div>
+
+                            <div class="box right">
+                                <div class="text-icon">
+                                    <i class="fa-solid fa-clock"></i>
+                                    <label for="start-time">Ora inizio</label>
+                                </div>
+                                <div class="time-picker-container">
+                                    <input type="text" id="start-time" class="time-picker-input"
+                                        placeholder="Seleziona orario" name="start_time" readonly>
+                                    <div class="time-picker-dropdown" id="start-time-picker-dropdown"></div>
+                                </div>
+                            </div>
+                            <div class="box right">
+                                <div class="text-icon">
+                                    <i class="fa-solid fa-clock"></i>
+                                    <label for="end-time">Ora fine</label>
+
+                                </div>
+                                <div class="time-picker-container">
+                                    <input type="text" id="end-time" class="time-picker-input"
+                                        placeholder="Seleziona orario" name="end_time" readonly>
+                                    <div class="time-picker-dropdown" id="end-time-picker-dropdown"></div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <button id="filter-btn" class="btn btn-primary filter-btn" style="gap: 10px;"><i
+                                class="fa-solid fa-magnifying-glass"></i>Cerca</button>
+                    </div>
+                </form>
+
+                <!-- Booking summary -->
+                <form id="booking-summary-form" class="booking-summary-form" method="POST"
+                    action="./manda_prenotazione.php">
+                    <input type="hidden" name="day" id="hidden-day">
+                    <input type="hidden" name="start_time" id="hidden-start-time">
+                    <input type="hidden" name="end_time" id="hidden-end-time">
+                    <div class="booking-summary">
+                        <h3 class="heading-3">Il tuo carrello</h3>
+                        <div class="summary-content">
+                            <p>Nessun portatile selezionato</p>
+                            <ul id="selected-laptops" class="selected-items-list">
+                                <!-- Selected laptops will be inserted here -->
+                            </ul>
+                            <div class="summary-actions">
+                                <button id="clear-selection" class="btn btn-outline btn-small" type="button">Annulla
+                                    selezione</button>
+                                <button id="confirm-booking" class="btn btn-primary btn-small" type="submit"
+                                    disabled>Conferma
+                                    prenotazione</button>
                             </div>
                         </div>
                     </div>
                 </form>
+
                 <!-- Lockers list -->
                 <div class="lockers-container">
                     <h3 class="heading-3">Seleziona dall'armadietto</h3>
-                    <div class="lockers-grid">
-
-                        <!-- Locker Example -->
-                        <div class="locker-card">
-                            <div class="locker-header">
-                                <h4 class="heading-4">Armadietto B1</h4>
-                                <span class="locker-status">1/3 disponibili</span>
-                            </div>
-                            <div class="locker-laptops">
-                                <!-- Available Laptop -->
-                                <div class="laptop-item available" data-laptop-id="B1-001">
-                                    <div class="laptop-info">
-                                        <i class="fas fa-laptop"></i>
-                                        <span>B1-001 (Modello 1)</span>
-                                    </div>
-                                    <button class="btn-icon select-laptop">
-                                        <i class="fas fa-plus"></i>
-                                    </button>
-                                </div>
-
-                                <!-- Maintenance Laptop -->
-                                <div class="laptop-item maintenance" data-laptop-id="B1-002">
-                                    <div class="laptop-info">
-                                        <i class="fas fa-laptop"></i>
-                                        <span>B1-002 (Modello 2)</span>
-                                    </div>
-                                    <span class="status-badge">
-                                        <i class="fas fa-tools"></i> Manutenzione
-                                    </span>
-                                </div>
-
-                                <!-- Unavailable Laptop -->
-                                <div class="laptop-item unavailable" data-laptop-id="B1-003">
-                                    <div class="laptop-info">
-                                        <i class="fas fa-laptop"></i>
-                                        <span>B1-003 (Modello 3)</span>
-                                    </div>
-                                    <span class="status-badge">
-                                        <i class="fas fa-times"></i> Non disponibile
-                                    </span>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
+                    <div class="lockers-grid" id="lockers_container"></div>
                 </div>
-            </div>
+
+
             </div>
         </section>
     </main>
@@ -176,103 +231,24 @@ $laptops_json = json_encode($laptops);
 </body>
 
 </html>
+<div id="laptops-data" style="display: none;">
+    <?php echo $laptops_json; ?>
+</div>
 
 <script>
-    function createLaptop(laptop) {
-        const div = document.createElement('div');
-        div.dataset.laptopId = laptop.id;
+    // Format the date as "DD MMM YYYY"
+    function formatDate(date) {
+        if (!date) return "";
 
-        const info = `
-        <div class="laptop-info">
-            <i class="fas fa-laptop"></i>
-            <span>${laptop.name} (${laptop.model})</span>
-        </div>
-    `;
+        const day = date.getDate();
+        const monthNames = ["Gen", "Feb", "Mar", "Apr", "Mag", "Giu", "Lug", "Ago", "Set", "Ott", "Nov", "Dic"];
+        const month = monthNames[date.getMonth()];
+        const year = date.getFullYear();
 
-        if (laptop.status == "1") {
-            div.classList.add('laptop-item', "available");
-            div.innerHTML = info + `
-            <button class="btn-icon select-laptop">
-                <i class="fas fa-plus"></i>
-            </button>
-        `;
-
-        } else if (laptop.status == "-1") {
-            div.classList.add('laptop-item', "maintenance");
-            div.innerHTML = info + `
-            <span class="status-badge"><i class="fas fa-tools"></i> Maintenance</span>
-        `;
-        } else if (laptop.status == "0") {
-            div.classList.add('laptop-item', "unavailable");
-            div.innerHTML = info + `
-            <span class="status-badge"><i class="fas fa-times"></i> Unavailable</span>
-        `;
-        }
-        return div;
+        return `${day} ${month} ${year}`;
     }
 
-
-    function createLocker(locker) {
-        const card = document.createElement('div');
-
-        card.classList.add('locker-card');
-
-        const header = `
-        <div class="locker-header">
-            <h4 class="heading-4">${locker.name}</h4>
-            <span class="locker-status">${locker.available}/${locker.total} available</span>
-        </div>
-    `;
-
-        const laptopContainer = document.createElement('div');
-        laptopContainer.classList.add('locker-laptops');
-        locker.laptops.forEach(laptop => {
-            const laptopElement = createLaptop(laptop);
-            laptopContainer.appendChild(laptopElement);
-        });
-        card.innerHTML = header;
-        card.appendChild(laptopContainer);
-        return card;
-    }
-    function loadAllLockers(data) {
-        const container = document.querySelector('.lockers-grid');
-        container.innerHTML = ''; // clear existing content
-        data.forEach(locker => {
-            const card = createLocker(locker);
-            container.appendChild(card);
-        });
-    }
-    // Group laptops by locker
-    function groupByLocker(data) {
-        const lockerMap = {};
-        data.forEach(item => {
-            const lockerId = item.lap_locker;
-            if (!lockerMap[lockerId]) {
-                lockerMap[lockerId] = {
-                    name: `Locker ${lockerId}`,
-                    total: 0,
-                    available: 0,
-                    laptops: []
-                };
-            }
-            const laptop = {
-                id: item.lap_id,
-                name: item.lap_name,
-                model: item.lap_model,
-                status: item.updated_status // change this logic if needed
-            };
-            lockerMap[lockerId].laptops.push(laptop);
-            lockerMap[lockerId].total++;
-            if (item.updated_status == "1") { // updated condition to check updated_status
-                lockerMap[lockerId].available++;
-            }
-        });
-        return Object.values(lockerMap);
-    }
-
-    const lockersData = <?php echo $laptops_json; ?>;
-
-    const groupedLockers = groupByLocker(lockersData);
-
-    loadAllLockers(groupedLockers);
+    document.getElementById("start-date").value = formatDate(new Date("<?php echo $day; ?>"));
+    document.getElementById("start-time").value = "<?php echo $start_time; ?>";
+    document.getElementById("end-time").value = "<?php echo $end_time; ?>";
 </script>

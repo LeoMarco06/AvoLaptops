@@ -1,3 +1,19 @@
+<?php
+
+// Start a session if not already started
+if (session_status() === PHP_SESSION_NONE) {
+    session_start();
+}
+
+// Get the current directory name
+$currentDir = basename(dirname($_SERVER['SCRIPT_FILENAME']));
+
+// Modify path based on the current directory and user role
+$path = (isset($_SESSION["u_role"]) && $_SESSION["u_role"] === 1 && $currentDir === "admin_pages")
+    ? "../"
+    : "./";
+?>
+
 <!-- Header section with navbar inside -->
 <header class="main-header">
     <div class="main-container">
@@ -7,19 +23,23 @@
         </div>
         <nav class="main-nav">
             <ul>
-                <li><a href="homepage.php#home">Home</a></li>
-                <li><a href="prenota.php">Prenota</a></li>
-                <li><a href="prenotazioni.php">Le mie prenotazioni</a></li>
+                <li><a href="<?php echo $path ?>homepage.php#home">Home</a></li>
+                <li><a href="<?php echo $path ?>prenota.php#home">Prenota</a></li>
+                <li><a href="<?php echo $path ?>prenotazioni.php#home">Prenotazioni</a></li>
+                <?php if (isset($_SESSION["u_role"]) && $_SESSION["u_role"] == 1): ?>
+                    <li><a href="<?php echo $path ?>admin_services.php#home">Admin</a></li>
+                <?php endif; ?>
             </ul>
         </nav>
+
         <div class="user-actions">
             <!-- Use the user's name and last name if the user is logged -->
-            <?php if(isset($_SESSION["id"]) && !empty($_SESSION["id"])): ?>
-            <div class="user-info">
-                    <button class="btn btn-outline" onclick="window.location.replace('logout.php')">Logout</button>
-                </div>
+            <?php if (isset($_SESSION["id"]) && !empty($_SESSION["id"])): ?>
+                <button class="btn btn-outline"
+                    onclick="window.location.replace('<?php echo $path ?>logout.php')">Logout</button>
             <?php else: ?>
-                <button class="btn btn-outline" onclick="window.location.replace('login.php#login')">Accedi</button>
+                <button class="btn btn-outline"
+                    onclick="window.location.replace('<?php echo $path ?>login.php#login')">Accedi</button>
             <?php endif; ?>
             <button id="theme-toggle" class="btn-icon">
                 <i class="fas fa-moon"></i>

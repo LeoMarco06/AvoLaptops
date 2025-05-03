@@ -27,7 +27,11 @@
     <script src="../js/manage_reservations.js" defer></script>
 </head>
 
-<body>
+<?php
+include './include/check_login.php';
+?>
+
+<body id="home">
     <?php include_once 'header_navbar.php'; ?>
 
     <main>
@@ -194,7 +198,7 @@
                         </div>
                     </div>
 
-                    <!-- Messaggio se non ci sono prenotazioni -->
+                    <!-- If there aren't bookings -->
                     <div class="no-bookings-message">
                         <i class="fas fa-calendar-times"></i>
                         <p>Nessuna prenotazione trovata</p>
@@ -209,3 +213,181 @@
 </body>
 
 </html>
+
+<?php
+include "./functions.php";
+
+
+$conn = connectToDatabase();
+
+// Fetch all reservations for the logged-in user
+$reservations_result = $conn->query("
+    SELECT res_id, res_start_time, res_end_time, res_day, res_flag 
+    FROM reservations 
+    -- WHERE res_user = " . $_SESSION['id'] . " 
+    ORDER BY res_day DESC, res_start_time DESC
+");
+
+// Initialize an array to store reservations with laptops
+$reservations = array();
+
+if ($reservations_result) {
+    // Loop through each reservation
+    while ($reservation = $reservations_result->fetch_assoc()) {
+        $res_id = $reservation['res_id'];
+
+        // Fetch laptops associated with this reservation
+        $laptops_result = $conn->query("
+            SELECT l_r.lap_id, m.mod_name, l.lap_name, loc.lock_class 
+            FROM laptops_reservations l_r
+            INNER JOIN laptops l ON l.lap_id = l_r.lap_id
+            INNER JOIN models m ON m.mod_id = l.lap_model 
+            INNER JOIN lockers loc ON l.lap_locker = loc.lock_id
+            WHERE l_r.res_id = " . $res_id
+        );
+
+        // Initialize an array to store laptop IDs and models
+        $laptops = array();
+
+        if ($laptops_result) {
+            while ($laptop = $laptops_result->fetch_assoc()) {
+                $laptops[] = $laptop;
+            }
+        }
+
+        // Add laptops to the reservation
+        $reservation['laptops'] = $laptops;
+
+        // Add reservation to the main array
+        $reservations[] = $reservation;
+    }
+}
+
+// Convert the reservations array to JSON
+$json_reservations = json_encode($reservations);
+
+// Print the JSON
+//echo $json_reservations;
+
+// Close the connection
+$conn->close();
+
+?>
+
+<script defer>
+    document.addEventListener('DOMContentLoaded', () => {
+        const bookingsList = document.querySelector('.bookings-list');
+        const now = new Date();
+
+        function determineStatus(start, end, flag) {
+            const startDate = new Date(start);
+            const endDate = new Date(end);
+
+            if (now < startDate) return 'pending';
+            if (now >= startDate && now <= endDate && flag == 1) return 'active';
+            if (now > endDate && flag == 1) return 'completed';
+            if (now > endDate && flag == 0) return 'missed'; // 👈 prenotazione mai attivata
+            return 'pending';
+        }
+
+
+        function getStatusText(status) {
+            switch (status) {
+                case 'pending': return 'In attesa di accettazione';
+                case 'active': return 'In corso';
+                case 'completed': return 'Terminata';
+                case 'missed': return 'Prenotazione non attivata';
+                case 'sconosciuto': return 'Stato sconosciuto';
+                default: return 'Stato non definito';
+            }
+        }
+
+        function getStatusIcon(status) {
+            switch (status) {
+                case 'pending': return '<i class="fas fa-hourglass-half"></i>';
+                case 'active': return '<i class="fas fa-laptop"></i>';
+                case 'completed': return '<i class="fas fa-check-circle"></i>';
+                case 'missed': return '<i class="fas fa-ban"></i>';
+                case 'sconosciuto': return '<i class="fas fa-question-circle"></i>';
+                default: return '<i class="fas fa-question-circle"></i>';
+            }
+        }
+
+
+        // Caricamento dei dati passati da PHP
+        const reservations = <?= $json_reservations ?>;
+
+        bookingsList.innerHTML = '';
+
+        if (reservations.length === 0) {
+            bookingsList.innerHTML = `
+            <div class="no-bookings-message">
+                <i class="fas fa-calendar-times"></i>
+                <p>Nessuna prenotazione trovata</p>
+            </div>`;
+        } else {
+            reservations.forEach(res => {
+                const startDatetime = `${res.res_day}T${res.res_start_time}`;
+                const endDatetime = `${res.res_day}T${res.res_end_time}`;
+                const status = determineStatus(startDatetime, endDatetime, res.res_flag);
+
+
+                const laptopListHTML = res.laptops.map(laptop => `<li>${laptop.lap_name} (${laptop.lock_class})</li>`).join('');
+
+                bookingsList.innerHTML += `
+                <div class="booking-card ${status}" data-booking-id="PR-${res.res_id}">
+                    <div class="booking-header">
+                        <h3 class="booking-id">PR-${res.res_id}</h3>
+                        <span class="booking-status ${status}">
+                            ${getStatusIcon(status)} ${getStatusText(status)}
+                        </span>
+                    </div>
+
+                    <div class="booking-details">
+                        <div class="detail-group">
+                            <h4 class="detail-label">Portatili prenotati:</h4>
+                            <ul class="laptops-list">${laptopListHTML}</ul>
+                        </div>
+
+                        <div class="detail-group">
+                            <h4 class="detail-label">Periodo:</h4>
+                            <p>Dal ${res.res_day} ${res.res_start_time} <br>al ${res.res_day} ${res.res_end_time}</p>
+                        </div>
+
+                        <div class="detail-group">
+                            <h4 class="detail-label">Data prenotazione:</h4>
+                            <p>${res.res_day}</p>
+                        </div>
+                    </div>
+
+                    <div class="booking-actions">
+                        <button class="btn btn-outline btn-small">
+                            <i class="fas fa-info-circle"></i> Dettagli
+                        </button>
+                        ${status === 'active'
+                        ? `<button class="btn btn-outline btn-small extend-booking">
+            <i class="fas fa-calendar-plus"></i> Estendi
+        </button>`
+                        : status === 'completed'
+                            ? `<button class="btn btn-outline btn-small repeat-booking">
+            <i class="fas fa-redo"></i> Ripeti prenotazione
+        </button>
+       <button class="btn btn-outline btn-small">
+            <i class="fas fa-file-pdf"></i> Ricevuta
+        </button>`
+                            : status === 'missed'
+                                ? `<button class="btn btn-outline btn-small repeat-booking">
+            <i class="fas fa-redo"></i> Ripeti prenotazione
+        </button>`
+                                : `<button class="btn btn-outline btn-small cancel-booking">
+            <i class="fas fa-times"></i> Annulla
+        </button>`
+                    }
+
+                    </div>
+                </div>
+            `;
+            });
+        }
+    });
+</script>

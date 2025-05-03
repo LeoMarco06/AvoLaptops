@@ -21,14 +21,14 @@
     <script src="../js/page_setup.js" defer></script>
 </head>
 
-<body>
+<body id="home">
     <?php include_once 'header_navbar.php'; ?>
 
     <main>
-        <section id="home" class="main-banner">
+        <section class="main-banner">
             <div class="main-container">
                 <div class="banner-content">
-                    <h1 class="heading-1">Noleggio Portatili Scolastici</h1>
+                    <h1 class="heading-1">Avo Laptops</h1>
                     <p>Prenota il tuo dispositivo per le lezioni, progetti e studio in tutta semplicità</p>
                     <div class="banner-actions">
                         <button class="btn btn-primary" onclick="window.location.replace('prenota.php')">Prenota ora</button>

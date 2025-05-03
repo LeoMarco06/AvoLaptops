@@ -1,17 +1,16 @@
 document.addEventListener('DOMContentLoaded', function() {
-    // Filtro per stato prenotazione
     const filterTabs = document.querySelectorAll('.filter-tab');
     const bookingCards = document.querySelectorAll('.booking-card');
     
     filterTabs.forEach(tab => {
         tab.addEventListener('click', function() {
-            // Aggiorna tab attivo
+            // Update active tab
             filterTabs.forEach(t => t.classList.remove('active'));
             this.classList.add('active');
             
             const status = this.dataset.status;
             
-            // Filtra le prenotazioni
+            // Filter booking cards based on status
             bookingCards.forEach(card => {
                 if(status === 'all' || card.classList.contains(status)) {
                     card.style.display = 'block';
@@ -20,12 +19,11 @@ document.addEventListener('DOMContentLoaded', function() {
                 }
             });
             
-            // Mostra/nascondi messaggio "nessuna prenotazione"
             updateNoBookingsMessage();
         });
     });
     
-    // Ricerca prenotazioni
+    // Research reservations
     const searchInput = document.getElementById('booking-search');
     searchInput.addEventListener('input', function() {
         const searchTerm = this.value.toLowerCase();
@@ -34,7 +32,6 @@ document.addEventListener('DOMContentLoaded', function() {
             const cardText = card.textContent.toLowerCase();
             const isVisible = cardText.includes(searchTerm);
             
-            // Considera anche il filtro attivo
             const activeFilter = document.querySelector('.filter-tab.active').dataset.status;
             const matchesFilter = activeFilter === 'all' || card.classList.contains(activeFilter);
             
@@ -44,7 +41,7 @@ document.addEventListener('DOMContentLoaded', function() {
         updateNoBookingsMessage();
     });
     
-    // Aggiorna messaggio "nessuna prenotazione"
+    // Update message "nessuna prenotazione"
     function updateNoBookingsMessage() {
         const visibleCards = document.querySelectorAll('.booking-card[style="display: block"], .booking-card:not([style])');
         const noBookingsMsg = document.querySelector('.no-bookings-message');
@@ -56,19 +53,12 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     }
     
-    // Gestione annullamento prenotazione
+    // Manage booking actions
     document.querySelectorAll('.cancel-booking').forEach(btn => {
         btn.addEventListener('click', function() {
-            const bookingId = this.closest('.booking-card').dataset.bookingId;
-            if(confirm(`Sei sicuro di voler annullare la prenotazione ${bookingId}?`)) {
-                // Qui andrebbe la chiamata API per annullare
-                this.closest('.booking-card').style.display = 'none';
-                updateNoBookingsMessage();
-                alert(`Prenotazione ${bookingId} annullata con successo`);
-            }
+            // ======== SUBMIT AJAX REQUEST TO CANCEL BOOKING WITH PHP ======== //
         });
     });
     
-    // Inizializza la vista
     updateNoBookingsMessage();
 });

@@ -84,6 +84,7 @@
 
 .booking-card {
     background-color: var(--color-card);
+    border: 2px solid var(--color-border);
     border-radius: var(--border-radius-md);
     padding: var(--spacing-lg);
     box-shadow: var(--shadow-sm);
@@ -149,6 +150,8 @@
 
 .laptops-list {
     list-style: none;
+    max-height: 150px;
+    overflow-y: auto;
 }
 
 .laptops-list li {
@@ -165,9 +168,13 @@
 
 .booking-actions {
     display: flex;
-    gap: var(--spacing-md);
     justify-content: flex-end;
     flex-wrap: wrap;
+    gap: var(--spacing-md);
+}
+
+.booking-actions button {
+    gap: var(--spacing-sm);
 }
 
 .no-bookings-message {
@@ -184,40 +191,4 @@
     font-size: var(--font-size-xxl);
     margin-bottom: var(--spacing-md);
     color: var(--color-primary-light);
-}
-
-/* Responsive adjustments */
-@media (max-width: 768px) {
-    .bookings-filters {
-        flex-direction: column;
-        align-items: stretch;
-    }
-    
-    .filter-tabs {
-        justify-content: center;
-    }
-    
-    .search-box {
-        max-width: 100%;
-    }
-    
-    .booking-header {
-        flex-direction: column;
-        align-items: flex-start;
-        gap: var(--spacing-sm);
-    }
-    
-    .booking-actions {
-        justify-content: center;
-    }
-}
-
-@media (max-width: 576px) {
-    .booking-details {
-        grid-template-columns: 1fr;
-    }
-    
-    .booking-actions button {
-        flex: 1;
-    }
 }
