@@ -3,6 +3,8 @@
   ================= DATE PICKER ================== 
   ================================================
 */
+
+/* ===== Date Picker Container ===== */
 .date-picker-container {
   position: relative;
   width: 100%;
@@ -19,6 +21,7 @@
   color: var(--color-text);
 }
 
+/* ===== Date Picker Dropdown ===== */
 .date-picker {
   background-color: var(--color-card);
   border-radius: var(--border-radius-md);
@@ -39,13 +42,13 @@
     opacity: 0;
     transform: translateY(-10px);
   }
-
   to {
     opacity: 1;
     transform: translateY(0);
   }
 }
 
+/* ===== Date Picker Header ===== */
 .date-picker-header {
   display: flex;
   justify-content: space-between;
@@ -80,6 +83,7 @@
   color: var(--color-text);
 }
 
+/* ===== Date Picker Weekdays ===== */
 .date-picker-weekdays {
   display: grid;
   grid-template-columns: repeat(7, 1fr);
@@ -90,6 +94,7 @@
   font-size: var(--font-size-sm);
 }
 
+/* ===== Date Picker Days ===== */
 .date-picker-days {
   display: grid;
   grid-template-columns: repeat(7, 1fr);
@@ -128,6 +133,7 @@
   font-weight: var(--font-weight-medium);
 }
 
+/* ===== Date Picker Footer ===== */
 .date-picker-footer {
   display: flex;
   justify-content: space-between;
@@ -159,6 +165,8 @@
   ================= TIME PICKER ================== 
   ================================================
 */
+
+/* ===== Time Picker Container ===== */
 .time-picker-container {
   position: relative;
   width: 150px;
@@ -175,6 +183,7 @@
   font-size: var(--font-size-sm);
 }
 
+/* ===== Time Picker Dropdown ===== */
 .time-picker-dropdown {
   display: none;
   position: absolute;

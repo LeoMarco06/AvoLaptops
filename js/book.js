@@ -1,4 +1,5 @@
 document.addEventListener("DOMContentLoaded", function () {
+  // Initialize variables and DOM elements
   const lockers = {};
   const selectedLaptops = [];
   const locker_container = document.getElementById("lockers_container");
@@ -7,8 +8,8 @@ document.addEventListener("DOMContentLoaded", function () {
   const clearBtn = document.getElementById("clear-selection");
   const selectedList = document.getElementById("selected-laptops");
 
+  // Update locker statuses
   const lockerCards = document.querySelectorAll(".locker-card");
-
   lockerCards.forEach((lockerCard) => {
     const laptopsContainer = lockerCard.querySelector(".locker-laptops");
     const totalLaptops = laptopsContainer.children.length;
@@ -16,7 +17,6 @@ document.addEventListener("DOMContentLoaded", function () {
       ".laptop-item.available"
     ).length;
 
-    // Update the locker status with available/total laptops
     const lockerStatus = lockerCard.querySelector(".locker-status");
     lockerStatus.textContent = `${availableLaptops}/${totalLaptops} available`;
   });
@@ -59,6 +59,7 @@ document.addEventListener("DOMContentLoaded", function () {
   initDatePicker("start-date", "start-date-picker");
   setupDatePickerListeners(startDatePicker);
 
+  // Apply filters to laptops
   document.getElementById("filter-btn").addEventListener("click", function () {
     const selectedDate = document.getElementById("start-date").value;
     const selectedStartTime = document.getElementById("start-time").value;
@@ -69,8 +70,7 @@ document.addEventListener("DOMContentLoaded", function () {
       return;
     }
 
-    // Perform AJAX request to filter laptops
-    var xmlhttp = new XMLHttpRequest();
+    const xmlhttp = new XMLHttpRequest();
     xmlhttp.onreadystatechange = function () {
       if (this.readyState == 4 && this.status == 200) {
         locker_container.innerHTML = "";
@@ -125,7 +125,7 @@ document.addEventListener("DOMContentLoaded", function () {
   function createLaptop(laptop) {
     const laptopItem = document.createElement("div");
     const possibleStatuses = ["maintenance", "available", "unavailable"];
-    const statusNames = ["Maintenance", "Available", "Unavailable"];
+    const statusNames = ["Manutenzione", "Disponibile", "Non disponibile"];
     const statusClass = possibleStatuses[laptop.status + 1];
     const statusLabel = statusNames[laptop.status + 1];
 
@@ -282,7 +282,7 @@ document.addEventListener("DOMContentLoaded", function () {
     });
   }
 
-  // Loading of the laptops at the beginning
+  // Load laptops on page initialization
   const response = JSON.parse(
     document.getElementById("laptops-data").textContent
   );
@@ -313,4 +313,6 @@ document.addEventListener("DOMContentLoaded", function () {
   laptopListener(selectedLaptops);
   document.getElementById("selected-laptops").innerHTML = "";
   updateSummary();
+
+  document.body.removeChild(document.getElementById("laptops-data"));
 });

@@ -97,5 +97,5 @@ function initBackToTop() {
 // Page loader
 window.addEventListener('load', () => {
   const loader = document.querySelector('.page-loader');
-  setTimeout(() => loader.classList.add('hidden'), 1000);
+  setTimeout(() => loader.classList.add('hidden'), 200);
 });

@@ -1,11 +1,11 @@
 /*
   ================================================
-  ================ LAPTOP LIST ===================
+  ================ LOCKER LIST ===================
   ================================================
 */
 
-/* ===== Laptops Container ===== */
-.laptops-container {
+/* ===== Lockers Container ===== */
+.lockers-container {
   width: 100%;
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
@@ -18,50 +18,41 @@
   max-height: 700px;
 }
 
-/* ===== Laptop Item ===== */
-.laptop-item {
-  background-color: var(--color-bg-primary);
+/* ===== Locker Card ===== */
+.locker-card {
+  display: flex;
+  flex-direction: column;
+  background-color: var(--color-card);
   border: 2px solid var(--color-border);
   border-radius: var(--border-radius-sm);
   box-shadow: var(--shadow-lg);
-  padding: 15px;
+  padding: var(--spacing-md);
   transition: transform 0.3s, box-shadow 0.3s;
+  justify-content: center;
 }
 
-.laptop-item:hover {
+.locker-card:hover {
   transform: translateY(-5px);
 }
 
-/* ===== Laptop Item States ===== */
-.laptop-item.available {
-  background-color: rgba(76, 201, 240, 0.1);
-  border-left: 3px solid var(--color-success);
+.locker-card button {
+  width: 100%;
 }
 
-.laptop-item.unavailable {
-  background-color: rgba(239, 35, 60, 0.1);
-  border-left: 3px solid var(--color-error);
-}
-
-.laptop-item.maintenance {
-  background-color: rgba(248, 150, 30, 0.1);
-  border-left: 3px solid var(--color-warning);
-}
-
-/* ===== Laptop Info ===== */
-.laptop-info {
+/* ===== Locker Info ===== */
+.locker-info {
   display: flex;
   flex-direction: column;
   gap: 10px;
   margin-bottom: 15px;
 }
 
-.laptop-info i {
+.locker-info i {
   font-size: 1.5rem;
   color: var(--color-primary);
 }
 
-.laptop-info span {
+.locker-info span {
   font-weight: bold;
   color: var(--color-text-dark);
 }
@@ -103,15 +94,15 @@
   ================================================
 */
 
-/* ===== Laptop Header ===== */
-.laptop-header {
+/* ===== Locker Header ===== */
+.locker-header {
   display: flex;
   align-items: center;
   gap: 10px;
 }
 
-/* ===== Laptop Search Bar ===== */
-.laptop-search-bar {
+/* ===== Locker Search Bar ===== */
+.locker-search-bar {
   width: 100%;
   display: flex;
   align-items: center;
@@ -125,8 +116,8 @@
   font-size: var(--font-size-sm);
 }
 
-/* ===== Laptop Search Container ===== */
-.laptop-search-container {
+/* ===== Locker Search Container ===== */
+.locker-search-container {
   display: flex;
   flex-direction: row;
   align-items: center;
@@ -134,24 +125,24 @@
   width: 100%;
 }
 
-.laptop-search-container button {
+.locker-search-container button {
   font-size: var(--font-size-sm);
 }
 
-/* ===== Add Laptop Button ===== */
-.add-laptop-button:hover {
+/* ===== Add Locker Button ===== */
+.add-locker-button:hover {
   opacity: 0.8;
 }
 
-/* ===== Search Laptop Input ===== */
-.search-laptop-input {
+/* ===== Search Locker Input ===== */
+.search-locker-input {
   display: flex;
   position: relative;
   width: 60%;
   align-items: center;
 }
 
-.search-laptop-input i {
+.search-locker-input i {
   position: absolute;
   left: var(--spacing-md);
 }

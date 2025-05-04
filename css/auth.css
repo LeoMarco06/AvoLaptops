@@ -1,4 +1,4 @@
-/* ===== AUTHENTICATION STYLES ===== */
+/* ===== AUTHENTICATION SECTION ===== */
 .auth-section {
   padding: var(--spacing-xxl) 0;
   min-height: 70vh;
@@ -6,6 +6,7 @@
   align-items: center;
 }
 
+/* ===== AUTHENTICATION CONTAINER ===== */
 .auth-container {
   min-width: 450px;
   width: 60%;
@@ -16,6 +17,7 @@
   box-shadow: var(--shadow-md);
 }
 
+/* ===== AUTHENTICATION HEADER ===== */
 .auth-header > p {
   font-size: var(--font-size-md);
 }
@@ -29,6 +31,7 @@
   margin-bottom: var(--spacing-sm);
 }
 
+/* ===== AUTHENTICATION FORM ===== */
 .auth-form {
   display: flex;
   flex-direction: column;
@@ -47,6 +50,7 @@
   color: var(--color-text);
 }
 
+/* ===== INPUT GROUP ===== */
 .input-group {
   position: relative;
   display: flex;
@@ -57,6 +61,7 @@
   position: absolute;
   left: var(--spacing-md);
   color: var(--color-text-light);
+  z-index: 20;
 }
 
 .input-group input {
@@ -68,6 +73,7 @@
   background-color: var(--color-bg-secondary);
   color: var(--color-text);
   transition: all var(--transition-fast);
+  font-size: var(--font-size-sm);
 }
 
 .input-group input:focus {
@@ -76,6 +82,7 @@
   box-shadow: 0 0 0 2px rgba(67, 97, 238, 0.2);
 }
 
+/* ===== PASSWORD TOGGLE ===== */
 .password-toggle {
   position: absolute;
   right: var(--spacing-md);
@@ -83,12 +90,21 @@
   border: none;
   color: var(--color-text-light);
   cursor: pointer;
+  align-items: center;
+  justify-content: center;
+  padding: 0;
+}
+
+.password-toggle i {
+  left: auto;
 }
 
 .password-toggle:hover {
-  color: var(--color-primary);
+  opacity: 0.8;
+  background-color: transparent;
 }
 
+/* ===== FORM OPTIONS ===== */
 .form-options {
   display: flex;
   justify-content: space-between;
@@ -116,11 +132,13 @@
   text-decoration: underline;
 }
 
+/* ===== BUTTONS ===== */
 .btn-block {
   width: 100%;
   padding: var(--spacing-md);
 }
 
+/* ===== AUTHENTICATION FOOTER ===== */
 .auth-footer {
   text-align: center;
   margin-top: var(--spacing-md);
@@ -135,6 +153,7 @@
   text-decoration: underline;
 }
 
+/* ===== FORM FEEDBACK ===== */
 .verification-feedback {
   margin-top: 5px;
   font-size: 0.9rem;
@@ -146,6 +165,11 @@
   color: var(--color-text-light);
 }
 
+.error {
+  color: var(--color-error);
+}
+
+/* ===== SELECT INPUT ===== */
 select {
   width: 100%;
   padding: var(--spacing-xs) var(--spacing-sm);
@@ -157,6 +181,7 @@ select {
   font-size: var(--font-size-sm);
 }
 
+/* ===== POPUP STYLES ===== */
 .popup-buttons {
   display: flex;
   flex-direction: row;
@@ -194,6 +219,17 @@ select {
   z-index: 10000;
 }
 
+.popup-container .popup-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.popup-container .popup-header i {
+  font-size: var(--font-size-lg);
+}
+
+/* ===== OBSCURE BACKGROUND ===== */
 .obscure-bg {
   display: none;
   width: 100%;
@@ -216,6 +252,29 @@ select {
   animation: open-popup 0.5s;
 }
 
-.popup-buttons button {
-  width: 40%;
+/* ===== DATE PICKER ===== */
+.auth-container .date-picker-input {
+  width: 100%;
+  top: 100%;
+  left: auto;
+  padding: var(--spacing-md) var(--spacing-md) var(--spacing-md)
+    calc(var(--spacing-xl) + var(--spacing-md));
+  border: 1px solid var(--color-border);
+  border-radius: var(--border-radius-md);
+  background-color: var(--color-bg-secondary);
+  color: var(--color-text);
+  transition: all var(--transition-fast);
+  font-size: var(--font-size-sm);
+}
+
+.auth-container .date-picker-container {
+  width: 100%;
+  top: 100%;
+  left: auto;
+}
+
+.date-picker {
+  width: 100%;
+  top: 100%;
+  left: auto;
 }

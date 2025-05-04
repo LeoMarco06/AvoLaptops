@@ -1,11 +1,27 @@
-/* ===== GLOBAL VARIABLES ===== */
-@import url('variables.css');
+/*
+  ================================================
+  ================= GLOBAL VARIABLES =============
+  ================================================
+*/
 
-/* ===== BASE STYLES ===== */
+/* ===== Global Variables ===== */
+@import url("variables.css");
+
+/*
+  ================================================
+  ================= BASE STYLES ==================
+  ================================================
+*/
+
+/* ===== Reset and Base Styles ===== */
 * {
   margin: 0;
   padding: 0;
   box-sizing: border-box;
+}
+
+*:not(i) {
+  font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif !important;
 }
 
 html {
@@ -18,10 +34,9 @@ body {
   color: var(--color-text);
   background-color: var(--color-bg);
   transition: background-color var(--transition-normal);
-  font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif !important;
 }
 
-/* Layout Container */
+/* ===== Layout Container ===== */
 .main-container {
   width: 100%;
   max-width: 1200px;
@@ -29,16 +44,25 @@ body {
   padding: 0 var(--spacing-md);
 }
 
-/* ===== TYPOGRAPHY ===== */
+/*
+  ================================================
+  ================= TYPOGRAPHY ===================
+  ================================================
+*/
+
+/* ===== Headings and Text ===== */
 .heading-1 {
   font-size: var(--font-size-xxxl);
 }
+
 .heading-2 {
   font-size: var(--font-size-xxl);
 }
+
 .heading-3 {
   font-size: var(--font-size-xl);
 }
+
 .heading-4 {
   font-size: var(--font-size-lg);
 }
@@ -68,8 +92,13 @@ a:hover {
   color: var(--color-primary-light);
 }
 
-/* ===== COMPONENTS ===== */
-/* Buttons */
+/*
+  ================================================
+  ================= COMPONENTS ===================
+  ================================================
+*/
+
+/* ===== Buttons ===== */
 .btn {
   display: inline-flex;
   align-items: center;
@@ -129,8 +158,28 @@ a:hover {
   color: white;
 }
 
-/* ===== LAYOUT SECTIONS ===== */
-/* Header */
+.btn-danger {
+  background-color: var(--color-error);
+  color: white;
+  padding: var(--spacing-sm) var(--spacing-md);
+  border-radius: var(--border-radius-md);
+  border: none;
+  cursor: pointer;
+}
+
+.btn-danger:hover {
+  transform: translateY(-2px);
+  box-shadow: var(--shadow-md);
+  opacity: 0.8;
+}
+
+/*
+  ================================================
+  ================ LAYOUT SECTIONS ===============
+  ================================================
+*/
+
+/* ===== Header ===== */
 .main-header {
   position: sticky;
   top: 0;
@@ -147,7 +196,7 @@ a:hover {
   padding: var(--spacing-md);
 }
 
-main > .main-container{
+main > .main-container {
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -193,7 +242,7 @@ main > .main-container{
   cursor: pointer;
 }
 
-/* Main Banner */
+/* ===== Main Banner ===== */
 .main-banner {
   padding: var(--spacing-xxl) 0;
 }
@@ -258,7 +307,7 @@ main > .main-container{
   box-shadow: var(--shadow-lg);
 }
 
-.features-grid.admin-features a.feature-item{
+.features-grid.admin-features a.feature-item {
   text-decoration: none;
   color: var(--color-text);
 }
@@ -282,7 +331,7 @@ main > .main-container{
   font-size: var(--font-size-xl);
 }
 
-/* Products Section */
+/* ===== Products Section ===== */
 .products-section {
   padding: var(--spacing-xxl) 0;
 }
@@ -342,7 +391,7 @@ main > .main-container{
   width: 100%;
   max-width: 100%;
   height: 180px;
-  object-fit:cover;
+  object-fit: cover;
 }
 
 .product-details {
@@ -367,7 +416,13 @@ main > .main-container{
   gap: var(--spacing-sm);
 }
 
-/* Call to Action */
+/*
+  ================================================
+  ================= CALL TO ACTION ===============
+  ================================================
+*/
+
+/* ===== Call to Action Section ===== */
 .cta-section {
   padding: var(--spacing-xxl) 0;
   background-color: var(--color-primary);
@@ -379,7 +434,13 @@ main > .main-container{
   color: white;
 }
 
-/* Footer */
+/*
+  ================================================
+  ================= FOOTER SECTION ===============
+  ================================================
+*/
+
+/* ===== Footer ===== */
 .main-footer {
   background-color: var(--color-bg-secondary);
   padding: var(--spacing-xxl) 0 var(--spacing-md);
@@ -428,8 +489,13 @@ main > .main-container{
   color: white;
 }
 
-/* ===== UTILITY COMPONENTS ===== */
-/* Loader */
+/*
+  ================================================
+  ================= UTILITY COMPONENTS ===========
+  ================================================
+*/
+
+/* ===== Loader ===== */
 .page-loader {
   position: fixed;
   top: 0;
@@ -497,4 +563,14 @@ main > .main-container{
 .back-to-top:hover {
   background-color: var(--color-secondary);
   transform: translateY(-3px);
+}
+
+/* ===== Error Feedback ===== */
+.feedback.error {
+  color: var(--color-error);
+  font-size: 0.9em;
+}
+
+.input-error {
+  border-color: var(--color-error) !important;
 }

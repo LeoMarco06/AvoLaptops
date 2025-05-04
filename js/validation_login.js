@@ -1,17 +1,25 @@
+/*
+  ==============================================================
+  ================= LOGIN VALIDATION SCRIPT ====================
+  ==============================================================
+*/
+
 document.addEventListener("DOMContentLoaded", () => {
+  // Initialize password visibility toggle
   togglePasswordVisibility();
 
+  // Validate form on submission
   document
-  .getElementById("login-form")
-  .addEventListener("submit", function (e) {
-    if (!validateForm()) {
-      e.preventDefault();
-    }
-  });
+    .getElementById("login-form")
+    .addEventListener("submit", function (e) {
+      if (!validateForm()) {
+        e.preventDefault();
+      }
+    });
 });
 
+// Toggle password visibility
 function togglePasswordVisibility() {
-  // Toggle password visibility
   document.querySelectorAll(".password-toggle").forEach((button) => {
     button.addEventListener("click", function () {
       const input = this.parentElement.querySelector("input");
@@ -28,6 +36,7 @@ function togglePasswordVisibility() {
   });
 }
 
+// Validate the entire form
 function validateForm() {
   let isValid = true;
 
@@ -37,6 +46,7 @@ function validateForm() {
   return isValid;
 }
 
+// Validate the email input field
 function validateEmailInput() {
   const emailInput = document.getElementById("email");
   const emailValue = emailInput.value;
@@ -63,12 +73,13 @@ function validateEmailInput() {
     emailIcon.style.color = "#fd5757";
     feedbackEmail.textContent = "Inserisci una email valida.";
     document.getElementById("verificationResult").style.display = "none";
-    error = true
+    error = true;
   }
 
   return error;
 }
 
+// Validate the password input field
 function validatePassword() {
   const passwordInput = document.getElementById("password");
   const passwordValue = passwordInput.value;

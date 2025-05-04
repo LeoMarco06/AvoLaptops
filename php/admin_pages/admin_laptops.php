@@ -25,6 +25,9 @@
 
     <!-- Script that manages the theme mode, animations, navbar... -->
     <script src="../../js/page_setup.js" defer></script>
+    
+    <!-- Script that manages modals -->
+    <script src="../../js/modal_setup.js" defer></script>
 
     <!-- Script that validates the form -->
     <script src="../../js/laptop_page_setup.js" defer></script>

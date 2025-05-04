@@ -1,10 +1,17 @@
-/* ===== RESPONSIVE STYLES ===== */
+/*
+  ================================================
+  ================= RESPONSIVE STYLES ============
+  ================================================
+*/
+
+/* ===== Large Screens (max-width: 1200px) ===== */
 @media (max-width: 1200px) {
   .main-container {
     padding: 0 var(--spacing-lg);
   }
 }
 
+/* ===== Medium Screens (max-width: 992px) ===== */
 @media (max-width: 992px) {
   .main-banner .main-container {
     flex-direction: column;
@@ -23,11 +30,11 @@
     grid-template-columns: repeat(2, 1fr);
   }
 
-  .laptop-search-container{
+  .laptop-search-container {
     gap: var(--spacing-sm);
   }
 
-  .laptop-search-container .search-laptop-input{
+  .laptop-search-container .search-laptop-input {
     width: 75%;
   }
 
@@ -36,6 +43,7 @@
   }
 }
 
+/* ===== Small Screens (max-width: 768px) ===== */
 @media (max-width: 768px) {
   .main-nav {
     position: fixed;
@@ -98,7 +106,7 @@
   .lockers-grid {
     grid-template-columns: 1fr;
   }
-  
+
   .bookings-filters {
     flex-direction: column;
     align-items: stretch;
@@ -170,11 +178,11 @@
   }
 
   .time-picker-container {
-    width: 70%;
+    width: 100%;
   }
 
   .date-picker-container {
-    width: 70%;
+    width: 100%;
   }
 
   .date-picker-input {
@@ -185,10 +193,16 @@
     width: 100%;
   }
 
-  .date-picker{
+  .date-picker {
     width: 100%;
     top: 100%;
     left: auto;
+  }
+
+  .auth-container {
+    padding: var(--spacing-lg);
+    min-width: auto;
+    width: 95%;
   }
 
   .filter-btn {
@@ -197,6 +211,7 @@
   }
 }
 
+/* ===== Extra Small Screens (max-width: 576px) ===== */
 @media (max-width: 576px) {
   .features-grid {
     grid-template-columns: 1fr;
@@ -252,6 +267,7 @@
   }
 }
 
+/* ===== Very Small Screens (max-width: 400px) ===== */
 @media (max-width: 400px) {
   :root {
     --font-size-base: 14px;

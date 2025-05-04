@@ -4,33 +4,50 @@
   ==============================================================
 */
 
-/**
- * Get the index of a month by its full name.
- */
+// Get the index of a month by its full name
 function getMonthIndex(monthName) {
   const months = [
-    "Gennaio", "Febbraio", "Marzo", "Aprile", "Maggio", "Giugno",
-    "Luglio", "Agosto", "Settembre", "Ottobre", "Novembre", "Dicembre"
+    "Gennaio",
+    "Febbraio",
+    "Marzo",
+    "Aprile",
+    "Maggio",
+    "Giugno",
+    "Luglio",
+    "Agosto",
+    "Settembre",
+    "Ottobre",
+    "Novembre",
+    "Dicembre",
   ];
   return months.indexOf(monthName);
 }
 
-/**
- * Parse a custom date string into a JavaScript Date object.
- */
+// Parse a custom date string into a JavaScript Date object
 function parseCustomDate(dateStr) {
   if (!dateStr) return null;
 
   const [day, monthAbbr, year] = dateStr.split(" ");
-  const monthNames = ["Gen", "Feb", "Mar", "Apr", "Mag", "Giu", "Lug", "Ago", "Set", "Ott", "Nov", "Dic"];
-  const monthIndex = monthNames.indexOf(monthAbbr)+1;
+  const monthNames = [
+    "Gen",
+    "Feb",
+    "Mar",
+    "Apr",
+    "Mag",
+    "Giu",
+    "Lug",
+    "Ago",
+    "Set",
+    "Ott",
+    "Nov",
+    "Dic",
+  ];
+  const monthIndex = monthNames.indexOf(monthAbbr) + 1;
 
   return year + "-" + monthIndex + "-" + day;
 }
 
-/**
- * Disable past dates in the date picker.
- */
+// Disable past dates and limit future dates in the picker
 function disablePastDates(picker) {
   const today = new Date();
   today.setHours(0, 0, 0, 0);
@@ -45,7 +62,9 @@ function disablePastDates(picker) {
   const currentMonth = getMonthIndex(currentMonthElement.textContent);
   const currentYear = parseInt(currentYearElement.textContent);
 
-  const days = picker.querySelectorAll(".date-picker-days div:not(.prev-month):not(.next-month)");
+  const days = picker.querySelectorAll(
+    ".date-picker-days div:not(.prev-month):not(.next-month)"
+  );
 
   days.forEach((day) => {
     const dayNumber = parseInt(day.textContent);
@@ -66,9 +85,7 @@ function disablePastDates(picker) {
   });
 }
 
-/**
- * Set up listeners for the date picker navigation buttons.
- */
+// Set up navigation buttons for the date picker
 function setupDatePickerListeners(picker) {
   const headerButtons = picker.querySelectorAll(".date-picker-header button");
 
@@ -78,13 +95,10 @@ function setupDatePickerListeners(picker) {
     });
   });
 
-  // Disable past dates on the initial render
   setTimeout(() => disablePastDates(picker), 100);
 }
 
-/**
- * Initialize the date picker.
- */
+// Initialize the date picker with input and picker elements
 function initDatePicker(inputId, pickerId) {
   const input = document.getElementById(inputId);
   const picker = document.getElementById(pickerId);
@@ -92,13 +106,9 @@ function initDatePicker(inputId, pickerId) {
   let currentDate = new Date();
   let selectedDate = null;
 
-  /* ========= EVENT LISTENERS ======== */
-
-  // Show/hide the date picker
   input.addEventListener("click", function (e) {
     e.stopPropagation();
 
-    // Hide all other pickers
     document.querySelectorAll(".date-picker").forEach((p) => {
       if (p.id !== pickerId) p.style.display = "none";
     });
@@ -110,14 +120,12 @@ function initDatePicker(inputId, pickerId) {
     }
   });
 
-  // Close the picker when clicking outside
   document.addEventListener("click", function (e) {
     if (!picker.contains(e.target) && e.target !== input) {
       picker.style.display = "none";
     }
   });
 
-  // Navigation buttons
   picker.querySelector(".prev-month").addEventListener("click", function () {
     currentDate.setMonth(currentDate.getMonth() - 1);
     renderCalendar();
@@ -138,7 +146,6 @@ function initDatePicker(inputId, pickerId) {
     renderCalendar();
   });
 
-  // Footer buttons
   picker.querySelector(".today-btn").addEventListener("click", function () {
     currentDate = new Date();
     selectDate(new Date());
@@ -150,7 +157,6 @@ function initDatePicker(inputId, pickerId) {
     renderCalendar();
   });
 
-  // Render the calendar
   function renderCalendar() {
     const firstDayOfMonth = new Date(
       currentDate.getFullYear(),
@@ -168,7 +174,6 @@ function initDatePicker(inputId, pickerId) {
     const startingDay = firstDayOfMonth.getDay();
     const adjustedStartingDay = startingDay === 0 ? 6 : startingDay - 1;
 
-    // Update header
     const monthNames = [
       "Gennaio",
       "Febbraio",
@@ -189,18 +194,15 @@ function initDatePicker(inputId, pickerId) {
     picker.querySelector(".current-year").textContent =
       currentDate.getFullYear();
 
-    // Render weekdays
     const weekdays = ["Lun", "Mar", "Mer", "Gio", "Ven", "Sab", "Dom"];
     const weekdaysContainer = picker.querySelector(".date-picker-weekdays");
     weekdaysContainer.innerHTML = weekdays
       .map((day) => `<div>${day}</div>`)
       .join("");
 
-    // Render days of the month
     const daysContainer = picker.querySelector(".date-picker-days");
     daysContainer.innerHTML = "";
 
-    // Days of the previous month
     const prevMonthLastDay = new Date(
       currentDate.getFullYear(),
       currentDate.getMonth(),
@@ -214,14 +216,12 @@ function initDatePicker(inputId, pickerId) {
       daysContainer.appendChild(dayElement);
     }
 
-    // Days of the current month
     const today = new Date();
 
     for (let i = 1; i <= daysInMonth; i++) {
       const dayElement = document.createElement("div");
       dayElement.textContent = i;
 
-      // Check if it's today
       if (
         i === today.getDate() &&
         currentDate.getMonth() === today.getMonth() &&
@@ -230,7 +230,6 @@ function initDatePicker(inputId, pickerId) {
         dayElement.classList.add("today");
       }
 
-      // Check if it's selected
       if (
         selectedDate &&
         i === selectedDate.getDate() &&
@@ -249,7 +248,6 @@ function initDatePicker(inputId, pickerId) {
       daysContainer.appendChild(dayElement);
     }
 
-    // Days of the next month
     const totalDays = adjustedStartingDay + daysInMonth;
     const remainingDays = 7 - (totalDays % 7);
 
@@ -265,7 +263,6 @@ function initDatePicker(inputId, pickerId) {
     disablePastDates(picker);
   }
 
-  // Select a date
   function selectDate(date) {
     selectedDate = date;
     input.value = formatDate(date);
@@ -273,18 +270,34 @@ function initDatePicker(inputId, pickerId) {
     renderCalendar();
   }
 
-  // Format the date as "DD MMM YYYY"
+  window.selectDate = selectDate;
+
   function formatDate(date) {
     if (!date) return "";
 
     const day = date.getDate();
-    const monthNames = ["Gen", "Feb", "Mar", "Apr", "Mag", "Giu", "Lug", "Ago", "Set", "Ott", "Nov", "Dic"];
+    const monthNames = [
+      "Gen",
+      "Feb",
+      "Mar",
+      "Apr",
+      "Mag",
+      "Giu",
+      "Lug",
+      "Ago",
+      "Set",
+      "Ott",
+      "Nov",
+      "Dic",
+    ];
     const month = monthNames[date.getMonth()];
     const year = date.getFullYear();
 
     return `${day} ${month} ${year}`;
   }
 
-  // Initial render
   renderCalendar();
+
+  window.initDatePicker = initDatePicker;
+  window.formatDate = formatDate;
 }

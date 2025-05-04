@@ -1,10 +1,18 @@
+/*
+  ================================================
+  ================= STATISTICS STYLES ============
+  ================================================
+*/
+
+/* ===== Statistics Container ===== */
 .statistics-container {
-    display:grid;
+    display: grid;
     grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
     gap: 7px;
 }
 
-.statistic-item{
+/* ===== Statistic Item ===== */
+.statistic-item {
     display: flex;
     flex-direction: column;
     justify-content: center;
@@ -18,7 +26,8 @@
     padding: var(--spacing-md);
 }
 
-.statistics-item .statistics-graph{
+/* ===== Statistics Graph ===== */
+.statistics-item .statistics-graph {
     width: 100%;
     object-fit: cover;
 }

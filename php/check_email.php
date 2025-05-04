@@ -17,7 +17,7 @@ if (!empty($email) && filter_var($email, FILTER_VALIDATE_EMAIL) && preg_match('/
     $stmt->execute();
 
     if (count($stmt->get_result()->fetch_all()) > 0) {
-        echo "Email already registered...";
+        echo "Email già registrata...";
     }
 
     $conn->close();

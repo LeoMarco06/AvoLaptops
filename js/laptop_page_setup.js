@@ -1,5 +1,11 @@
+/*
+  ==============================================================
+  ================= LAPTOP PAGE SETUP FUNCTIONS ================
+  ==============================================================
+*/
+
 document.addEventListener("DOMContentLoaded", function () {
-  // Research laptops
+  // Filter laptops based on search input
   const searchInput = document.getElementById("search-laptop");
   searchInput.addEventListener("input", function () {
     const searchTerm = this.value.toLowerCase();
@@ -13,7 +19,7 @@ document.addEventListener("DOMContentLoaded", function () {
     console.log("Search term:", searchTerm);
   });
 
-  // Loading of the laptops at the beginning
+  // Load laptops from the initial data
   const response = JSON.parse(
     document.getElementById("laptops-data").textContent
   );
@@ -23,7 +29,7 @@ document.addEventListener("DOMContentLoaded", function () {
     lap_container.appendChild(createLaptopCard(laptop));
   });
 
-  // Loading of the lockers and models for the popup
+  // Populate locker and model dropdowns for the popup
   const lockerSelect = document.getElementById("laptop-locker");
   const modelSelect = document.getElementById("laptop-model");
   const lockerResponse = JSON.parse(
@@ -47,47 +53,47 @@ document.addEventListener("DOMContentLoaded", function () {
     modelSelect.appendChild(option);
   });
 
+  // Create a laptop card element
   function createLaptopCard(laptop) {
     const laptopItem = document.createElement("div");
     const possibleStatuses = ["maintenance", "available", "unavailable"];
-    const statusNames = ["Maintenance", "Available", "Unavailable"];
     const statusClass = possibleStatuses[laptop.lap_status + 1];
 
     laptopItem.className = `laptop-item ${statusClass}`;
     laptopItem.dataset.laptopId = laptop.lap_id;
     laptopItem.innerHTML = `
-                    <div class="laptop-info">
-                        <div class="laptop-header">
-                            <i class="fas fa-laptop"></i>
-                            <span>${laptop.lap_model}</span>
-                        </div>
-                        <p>Armadietto: ${laptop.lock_id}</p>
-                        <p>Numero: ${laptop.lap_name}</p>
-                        <p>RAM: ${laptop.lap_ram} GB</p>
-                        <p>Memoria interna: ${laptop.lap_memory} GB</p>
-                    </div>
-                    <div class="buttons-container" style="display: flex; flex-direction: column; gap: 10px;">
-                        <select name="" id="">
-                            <option value="0" ${
-                              laptop.lap_status === 0 ? `selected` : ""
-                            }>Disponibile</option>
-                            <option value="1" ${
-                              laptop.lap_status === 1 ? `selected` : ""
-                            }>Non disponibile</option>
-                            <option value="-1" ${
-                              laptop.lap_status === -1 ? `selected` : ""
-                            }>Manutenzione</option>
-                        </select>
-                        <button class="btn btn-primary">
-                            Elimina
-                        </button>
-                    </div>
-        `;
+      <div class="laptop-info">
+        <div class="laptop-header">
+          <i class="fas fa-laptop"></i>
+          <span>${laptop.lap_model}</span>
+        </div>
+        <p>Armadietto: ${laptop.lock_id}</p>
+        <p>Numero: ${laptop.lap_name}</p>
+        <p>RAM: ${laptop.lap_ram} GB</p>
+        <p>Memoria interna: ${laptop.lap_memory} GB</p>
+      </div>
+      <div class="buttons-container" style="display: flex; flex-direction: column; gap: 10px;">
+        <select>
+          <option value="0" ${
+            laptop.lap_status === 0 ? `selected` : ""
+          }>Disponibile</option>
+          <option value="1" ${
+            laptop.lap_status === 1 ? `selected` : ""
+          }>Non disponibile</option>
+          <option value="-1" ${
+            laptop.lap_status === -1 ? `selected` : ""
+          }>Manutenzione</option>
+        </select>
+        <button class="btn btn-primary">Elimina</button>
+      </div>
+    `;
+
+    // Handle status change
     laptopItem.querySelector("select").addEventListener("change", (e) => {
       const selectedValue = e.target.value;
       const laptopId = laptopItem.dataset.laptopId;
 
-      var xmlhttp = new XMLHttpRequest();
+      const xmlhttp = new XMLHttpRequest();
       xmlhttp.onreadystatechange = function () {
         if (this.readyState == 4 && this.status == 200) {
           console.log("Laptop status updated:", laptopId, selectedValue);
@@ -96,15 +102,13 @@ document.addEventListener("DOMContentLoaded", function () {
       };
       xmlhttp.open(
         "PUT",
-        "manage_laptops_api.php?lap_id=" +
-          laptopId +
-          "&lap_status=" +
-          selectedValue,
+        `manage_laptops_api.php?lap_id=${laptopId}&lap_status=${selectedValue}`,
         true
       );
       xmlhttp.send();
     });
 
+    // Handle laptop deletion
     laptopItem.querySelector("button").addEventListener("click", () => {
       const laptopId = laptopItem.dataset.laptopId;
       const confirmation = confirm(
@@ -112,7 +116,7 @@ document.addEventListener("DOMContentLoaded", function () {
       );
 
       if (confirmation) {
-        var xmlhttp = new XMLHttpRequest();
+        const xmlhttp = new XMLHttpRequest();
         xmlhttp.onreadystatechange = function () {
           if (this.readyState == 4 && this.status == 200) {
             laptopItem.remove();
@@ -140,6 +144,7 @@ document.addEventListener("DOMContentLoaded", function () {
     return laptopItem;
   }
 
+  // Update the status of a laptop card
   function updateLaptopStatus(laptopId, status) {
     const statusMap = {
       0: "available",
@@ -155,37 +160,12 @@ document.addEventListener("DOMContentLoaded", function () {
       laptopCard.className = `laptop-item ${statusClass}`;
     }
   }
+
+  // Remove data elements from the DOM after parsing
+  document.body.removeChild(document.getElementById("lockers-data"));
+  document.body.removeChild(document.getElementById("models-data"));
+  document.body.removeChild(document.getElementById("laptops-data"));
 });
-
-function openPopup() {
-  const popup = document.getElementById("popup-container");
-  const obscured = document.getElementById("obscure-bg");
-  const inputs = popup.querySelectorAll("input, select");
-
-  inputs.forEach((input) => {
-    input.setAttribute("required", "required");
-    input.removeAttribute("disabled");
-    input.value = "";
-  });
-
-  popup.classList.add("show");
-  obscured.classList.add("show");
-}
-
-function closePopup() {
-  const popup = document.getElementById("popup-container");
-  const obscured = document.getElementById("obscure-bg");
-  const inputs = popup.querySelectorAll("input, select");
-
-  inputs.forEach((input) => {
-    input.removeAttribute("required");
-    input.setAttribute("disabled", "disabled");
-    input.value = "";
-  });
-
-  popup.classList.remove("show");
-  obscured.classList.remove("show");
-}
 
 function validateForm() {
   const form = document.getElementById("laptop-form");
