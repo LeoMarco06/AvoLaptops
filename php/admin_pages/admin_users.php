@@ -66,7 +66,7 @@ $users_json = json_encode($users);
             </div>
             <div class="users-container" id="users-container">
                 <?php foreach ($users as $user): ?>
-                    <div class="user-card"">
+                    <div class="user-card">
                         <h3><?php echo htmlspecialchars($user['u_name'] . ' ' . $user['u_surname']); ?></h3>
                         <p>Email: <?php echo htmlspecialchars($user['u_email']); ?></p>
                         <p>Ruolo: <?php echo $user['u_role'] == 0 ? 'Admin' : 'Utente'; ?></p>
@@ -141,7 +141,7 @@ $users_json = json_encode($users);
                     </div>
                 </div>
                 <div class="popup-buttons">
-                    <button type="button" class="btn btn-primary" id="edit-btn" onclick="editUser()">Modifica</button>
+                    <button type="button" class="btn btn-primary" id="edit-btn">Modifica</button>
                     <button type="submit" class="btn btn-primary" id="save-btn" style="display: none;">Salva</button>
                     <button type="button" class="btn btn-secondary" id="cancel-btn" style="display: none;"
     onclick="toggleEditMode(false); resetFeedbackStyles();">Annulla</button>

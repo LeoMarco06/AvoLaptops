@@ -39,7 +39,8 @@
   }
 
   .popup-container {
-    width: 90%;
+    scale: 0.9;
+    width: 95%;
   }
 }
 

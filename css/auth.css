@@ -211,18 +211,27 @@ select {
   display: none;
   position: fixed;
   width: 800px;
+  max-height: 80vh;
   margin: auto;
   background-color: var(--color-card);
   border-radius: var(--border-radius-lg);
   padding: var(--spacing-xl);
   box-shadow: var(--shadow-md);
   z-index: 10000;
+  overflow-y: auto;
+  align-self: center;
+  justify-content: center;
 }
 
 .popup-container .popup-header {
   display: flex;
   justify-content: space-between;
   align-items: center;
+  margin-bottom: var(--spacing-sm);
+}
+
+#popup-title{
+  margin: 0;
 }
 
 .popup-container .popup-header i {

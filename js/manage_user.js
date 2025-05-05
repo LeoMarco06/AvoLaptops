@@ -18,6 +18,13 @@ document.addEventListener("DOMContentLoaded", function () {
     toggleEditMode(false);
   });
 
+  // Close Popup when clicking the esc button
+  document.addEventListener("keydown", function (event) {
+    if (event.key === "Escape") {
+      closeUserPopup();
+    }
+  });
+
   // Validate form on submission
   document.addEventListener("submit", function (e) {
     if (!validateForm()) {
@@ -324,4 +331,10 @@ function deleteUser(id) {
     location.assign(`admin_users.php?delete=${id}`);
     location.reload();
   }
+}
+
+// Close user popup
+function closeUserPopup() {
+  resetFeedbackStyles();
+  closePopup();
 }
