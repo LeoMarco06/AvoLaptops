@@ -82,6 +82,7 @@ function viewUser(id) {
   toggleEditMode(false);
 }
 
+// Confirm the user
 function confirmUser(id) {
   const confirmation = confirm("Sei sicuro di voler confermare questo utente?");
   if (confirmation) {
@@ -342,10 +343,11 @@ function deleteUser(id) {
     const xmlhttp = new XMLHttpRequest();
     xmlhttp.onreadystatechange = function () {
       if (this.readyState == 4 && this.status == 200) {
+        alert(`Utente ${id} eliminato`);
         location.reload();
       }
     };
-    xmlhttp.open("DELETE", `admin_users.php?u_id=${id}`, true);
+    xmlhttp.open("GET", `delete_user.php?u_id=${id}`, true);
     xmlhttp.send();
   }
 }

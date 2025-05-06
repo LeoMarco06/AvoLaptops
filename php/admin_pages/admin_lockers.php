@@ -6,7 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
 
     <!-- Title of the browser tab -->
-    <title>Avo Laptops | Laptops</title>
+    <title>Avo Laptops | Gestione armadietti</title>
 
     <!-- Link to the styles sheet -->
     <link rel="stylesheet" href="../../css/styles.css">

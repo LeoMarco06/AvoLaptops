@@ -44,13 +44,6 @@ include '../include/connection.php';
 
 $conn = connectToDatabase();
 
-if ($_SERVER["REQUEST_METHOD"] == "DELETE") {
-    $sql = "DELETE FROM users WHERE u_id=?";
-    $stmt = $conn->prepare($sql);
-    $stmt->bind_param("i", $_REQUEST["u_id"]);
-    $stmt->execute();
-}
-
 $sql = "SELECT u_id, u_name, u_surname, u_email, u_role, u_confirmed FROM users";
 $stmt = $conn->prepare($sql);
 $stmt->execute();
