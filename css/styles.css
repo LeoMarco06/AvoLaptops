@@ -173,6 +173,21 @@ a:hover {
   opacity: 0.8;
 }
 
+.btn-warning{
+  background-color: var(--color-warning);
+  color: white;
+  padding: var(--spacing-sm) var(--spacing-md);
+  border-radius: var(--border-radius-md);
+  border: none;
+  cursor: pointer;
+}
+
+.btn-warning:hover {
+  transform: translateY(-2px);
+  box-shadow: var(--shadow-md);
+  opacity: 0.8;
+}
+
 /*
   ================================================
   ================ LAYOUT SECTIONS ===============

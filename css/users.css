@@ -33,6 +33,11 @@
   transform: translateY(-2px);
 }
 
+.user-card.not-verified {
+  border-left: 1px solid var(--color-warning);
+  background-color: rgba(248, 150, 30, 0.1);;
+}
+
 .user-card .buttons {
   display: flex;
   justify-content: space-between;

@@ -82,6 +82,20 @@ function viewUser(id) {
   toggleEditMode(false);
 }
 
+function confirmUser(id) {
+  const confirmation = confirm("Sei sicuro di voler confermare questo utente?");
+  if (confirmation) {
+    const xmlhttp = new XMLHttpRequest();
+    xmlhttp.onreadystatechange = function () {
+      if (this.readyState == 4 && this.status == 200) {
+        location.reload();
+      }
+    };
+    xmlhttp.open("GET", `confirm_user.php?u_id=${id}`, true);
+    xmlhttp.send();
+  }
+}
+
 // Enable or disable edit mode in the popup
 function toggleEditMode(enable) {
   const inputs = document.querySelectorAll(
@@ -207,14 +221,11 @@ function emailVerification() {
 
 // Validate the name input field
 function validateNameInput() {
-  const nameInput = document.getElementById("user-name"); // Updated ID
+  const nameInput = document.getElementById("user-name");
   const nameValue = nameInput.value.trim();
   const feedbackElement = document.getElementById("nameFeedback");
   const nameRegex = /^[A-Za-zÀ-ÖØ-öø-ÿ\s']+$/;
   let error = false;
-
-  console.log(nameValue);
-  console.log(nameRegex.test(nameValue));
 
   if (nameValue === "") {
     error = true;
@@ -328,8 +339,14 @@ function resetFeedbackStyles() {
 function deleteUser(id) {
   const confirmation = confirm("Sei sicuro di voler eliminare questo utente?");
   if (confirmation) {
-    location.assign(`admin_users.php?delete=${id}`);
-    location.reload();
+    const xmlhttp = new XMLHttpRequest();
+    xmlhttp.onreadystatechange = function () {
+      if (this.readyState == 4 && this.status == 200) {
+        location.reload();
+      }
+    };
+    xmlhttp.open("DELETE", `admin_users.php?u_id=${id}`, true);
+    xmlhttp.send();
   }
 }
 

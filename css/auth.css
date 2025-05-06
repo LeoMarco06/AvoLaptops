@@ -82,6 +82,29 @@
   box-shadow: 0 0 0 2px rgba(67, 97, 238, 0.2);
 }
 
+.name-group {
+  display: flex;
+  gap: 0;
+}
+
+.name-group .form-group {
+  width: 50%;
+}
+
+.name-group .form-group.left input {
+  border-radius: var(--border-radius-md) 0 0 var(--border-radius-md);
+}
+
+.name-group .form-group.right input {
+  border-radius: 0 var(--border-radius-md) var(--border-radius-md) 0;
+}
+
+.name-group .form-group label {
+  font-size: var(--font-size-md);
+  font-weight: var(--font-weight-medium);
+  color: var(--color-text);
+}
+
 /* ===== PASSWORD TOGGLE ===== */
 .password-toggle {
   position: absolute;
@@ -230,7 +253,7 @@ select {
   margin-bottom: var(--spacing-sm);
 }
 
-#popup-title{
+#popup-title {
   margin: 0;
 }
 
