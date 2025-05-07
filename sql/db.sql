@@ -2,10 +2,10 @@
 -- version 5.2.1
 -- https://www.phpmyadmin.net/
 --
--- Host: localhost
--- Creato il: Apr 28, 2025 alle 11:23
+-- Host: 127.0.0.1
+-- Creato il: Mag 07, 2025 alle 11:46
 -- Versione del server: 10.4.32-MariaDB
--- Versione PHP: 8.1.25
+-- Versione PHP: 8.2.12
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 START TRANSACTION;
@@ -35,7 +35,7 @@ CREATE TABLE `laptops` (
   `lap_locker` int(11) DEFAULT NULL,
   `lap_name` varchar(40) DEFAULT NULL,
   `lap_status` int(11) DEFAULT NULL
-) ;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
 -- Dump dei dati per la tabella `laptops`
@@ -99,6 +99,33 @@ CREATE TABLE `laptops_reservations` (
   `lap_id` int(11) NOT NULL,
   `res_id` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dump dei dati per la tabella `laptops_reservations`
+--
+
+INSERT INTO `laptops_reservations` (`lap_id`, `res_id`) VALUES
+(1, 1),
+(2, 2),
+(3, 3),
+(4, 3),
+(4, 4),
+(5, 5),
+(6, 6),
+(7, 1),
+(8, 2),
+(9, 3),
+(10, 4),
+(11, 5),
+(12, 6),
+(13, 1),
+(14, 2),
+(15, 3),
+(16, 4),
+(17, 5),
+(18, 6),
+(19, 1),
+(20, 2);
 
 -- --------------------------------------------------------
 
@@ -282,7 +309,7 @@ ALTER TABLE `users`
 -- AUTO_INCREMENT per la tabella `laptops`
 --
 ALTER TABLE `laptops`
-  MODIFY `lap_id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `lap_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=36;
 
 --
 -- AUTO_INCREMENT per la tabella `lockers`
@@ -325,25 +352,24 @@ ALTER TABLE `laptops`
   ADD CONSTRAINT `laptops_ibfk_1` FOREIGN KEY (`lap_model`) REFERENCES `models` (`mod_id`),
   ADD CONSTRAINT `laptops_ibfk_2` FOREIGN KEY (`lap_locker`) REFERENCES `lockers` (`lock_id`);
 
---
--- Limiti per la tabella `laptops_reservations`
---
+
+ALTER TABLE `reservations`
+  ADD CONSTRAINT `reservations_ibfk_1` FOREIGN KEY (`res_user`) 
+  REFERENCES `users` (`u_id`) ON DELETE CASCADE;
+
 ALTER TABLE `laptops_reservations`
-  ADD CONSTRAINT `laptops_reservations_ibfk_1` FOREIGN KEY (`lap_id`) REFERENCES `laptops` (`lap_id`) ON DELETE CASCADE,
-  ADD CONSTRAINT `laptops_reservations_ibfk_2` FOREIGN KEY (`res_id`) REFERENCES `reservations` (`res_id`);
+  ADD CONSTRAINT `laptops_reservations_ibfk_1` FOREIGN KEY (`lap_id`) 
+  REFERENCES `laptops` (`lap_id`) ON DELETE CASCADE,
+  ADD CONSTRAINT `laptops_reservations_ibfk_2` FOREIGN KEY (`res_id`) 
+  REFERENCES `reservations` (`res_id`) ON DELETE CASCADE;
 
 --
 -- Limiti per la tabella `log_maintenance`
 --
 ALTER TABLE `log_maintenance`
-  ADD CONSTRAINT `log_maintenance_ibfk_1` FOREIGN KEY (`log_lap_id`) REFERENCES `laptops` (`lap_id`);
+  ADD CONSTRAINT `log_maintenance_ibfk_1` FOREIGN KEY (`log_lap_id`) REFERENCES `laptops` (`lap_id`) ON DELETE CASCADE;
 
---
--- Limiti per la tabella `reservations`
---
-ALTER TABLE `reservations`
-  ADD CONSTRAINT `reservations_ibfk_1` FOREIGN KEY (`res_user`) REFERENCES `users` (`u_id`);
-COMMIT;
+
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
