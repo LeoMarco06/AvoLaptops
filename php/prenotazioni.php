@@ -12,7 +12,7 @@
     <link rel="stylesheet" href="../css/styles.css">
 
     <!-- Link to the booking styles sheet -->
-    <link rel="stylesheet" href="../css/prenotazioni.css">
+    <link rel="stylesheet" href="../css/reservations.css">
 
     <!-- Link to the responsive styles sheet -->
     <link rel="stylesheet" href="../css/responsive.css">
@@ -62,140 +62,65 @@
 
                 <!-- Booking list -->
                 <div class="bookings-list">
-                    <!-- Prenotazione 1 - In attesa -->
-                    <div class="booking-card pending" data-booking-id="PR-2023-001">
-                        <div class="booking-header">
-                            <h3 class="booking-id">PR-2023-001</h3>
-                            <span class="booking-status pending">
-                                <i class="fas fa-hourglass-half"></i> In attesa di accettazione
-                            </span>
-                        </div>
+                    <?php if (isset($reservations) && !empty($reservations)): ?>
+                        <!-- Fa la query a inizio pagina per ottenere $reservations, dopodichè  -->
+                        <?php foreach ($reservations as $reservation): ?>
+                            <div class="booking-card" data-booking-id="PR-2023-001">
+                                <div class="booking-header">
+                                    <h3 class="booking-id">PR-2023-001</h3>
+                                    <?php if ($reservations["flag"] == 0): ?>
+                                        <span class="booking-status pending">
+                                            <i class="fas fa-hourglass-half"></i> In attesa di accettazione
+                                        </span>
+                                    <?php elseif ($reservations["flag"] == 1): ?>
+                                        <span class="booking-status active">
+                                            <i class="fas fa-laptop"></i> In corso
+                                        </span>
+                                    <?php else: ?>
+                                        <span class="booking-status completed">
+                                            <i class="fas fa-check-circle"></i> Terminata
+                                        </span>
+                                    <?php endif ?>
+                                </div>
 
-                        <div class="booking-details">
-                            <div class="detail-group">
-                                <h4 class="detail-label">Portatili prenotati:</h4>
-                                <ul class="laptops-list">
-                                    <li>A1-001 (Modello 1)</li>
-                                    <li>A1-005 (Modello 1)</li>
-                                    <li>A1-001 (Modello 1)</li>
-                                    <li>A1-005 (Modello 1)</li>
-                                    <li>A1-001 (Modello 1)</li>
-                                    <li>A1-005 (Modello 1)</li>
-                                    <li>A1-001 (Modello 1)</li>
-                                    <li>A1-005 (Modello 1)</li>
-                                    <li>A1-001 (Modello 1)</li>
-                                    <li>A1-005 (Modello 1)</li>
-                                </ul>
+                                <div class="booking-details">
+                                    <div class="detail-group">
+                                        <h4 class="detail-label">Portatili prenotati:</h4>
+                                        <ul class="laptops-list">
+                                            <li>A1-001 (Modello 1)</li>
+                                            <li>A1-005 (Modello 1)</li>
+                                        </ul>
+                                    </div>
+
+                                    <div class="detail-group">
+                                        <h4 class="detail-label">Periodo:</h4>
+                                        <p>Dal 15/01/2025 al 22/01/2025</p>
+                                    </div>
+
+                                    <div class="detail-group">
+                                        <h4 class="detail-label">Data prenotazione:</h4>
+                                        <p>10/01/2025</p>
+                                    </div>
+                                    <div class="detail-group">
+                                        <h4 class="detail-label">Utente:</h4>
+                                        <p>Cognome e nome utente</p>
+                                    </div>
+                                </div>
+
+                                <div class="booking-actions">
+                                    <button class="btn btn-outline btn-small">
+                                        <i class="fas fa-info-circle"></i> Dettagli
+                                    </button>
+                                    <button class="btn btn-outline btn-small cancel-booking">
+                                        <i class="fas fa-times"></i> Annulla
+                                    </button>
+                                </div>
                             </div>
-
-                            <div class="detail-group">
-                                <h4 class="detail-label">Periodo:</h4>
-                                <p>Dal 15/01/2025 al 22/01/2025</p>
-                            </div>
-
-                            <div class="detail-group">
-                                <h4 class="detail-label">Data prenotazione:</h4>
-                                <p>10/01/2025</p>
-                            </div>
-                        </div>
-
-                        <div class="booking-actions">
-                            <button class="btn btn-outline btn-small">
-                                <i class="fas fa-info-circle"></i> Dettagli
-                            </button>
-                            <button class="btn btn-outline btn-small cancel-booking">
-                                <i class="fas fa-times"></i> Annulla
-                            </button>
-                        </div>
-                    </div>
-
-                    <!-- Prenotazione 2 - In corso -->
-                    <div class="booking-card active" data-booking-id="PR-2023-002">
-                        <div class="booking-header">
-                            <h3 class="booking-id">PR-2023-002</h3>
-                            <span class="booking-status active">
-                                <i class="fas fa-laptop"></i> In corso
-                            </span>
-                        </div>
-
-                        <div class="booking-details">
-                            <div class="detail-group">
-                                <h4 class="detail-label">Portatili prenotati:</h4>
-                                <ul class="laptops-list">
-                                    <li>A2-001 (Modello 1)</li>
-                                </ul>
-                            </div>
-
-                            <div class="detail-group">
-                                <h4 class="detail-label">Periodo:</h4>
-                                <p>Dal 05/01/2025 al 12/01/2025</p>
-                            </div>
-
-                            <div class="detail-group">
-                                <h4 class="detail-label">Data prenotazione:</h4>
-                                <p>28/12/2024</p>
-                            </div>
-                        </div>
-
-                        <div class="booking-actions">
-                            <button class="btn btn-outline btn-small">
-                                <i class="fas fa-info-circle"></i> Dettagli
-                            </button>
-                            <button class="btn btn-outline btn-small extend-booking">
-                                <i class="fas fa-calendar-plus"></i> Estendi
-                            </button>
-                        </div>
-                    </div>
-
-                    <!-- Prenotazione 3 - Terminata -->
-                    <div class="booking-card completed" data-booking-id="PR-2023-003">
-                        <div class="booking-header">
-                            <h3 class="booking-id">PR-2023-003</h3>
-                            <span class="booking-status completed">
-                                <i class="fas fa-check-circle"></i> Terminata
-                            </span>
-                        </div>
-
-                        <div class="booking-details">
-                            <div class="detail-group">
-                                <h4 class="detail-label">Portatili prenotati:</h4>
-                                <ul class="laptops-list">
-                                    <li>A1-006 (Modello 2)</li>
-                                </ul>
-                            </div>
-
-                            <div class="detail-group">
-                                <h4 class="detail-label">Periodo:</h4>
-                                <p>Dal 10/12/2024 al 17/12/2024</p>
-                            </div>
-
-                            <div class="detail-group">
-                                <h4 class="detail-label">Data prenotazione:</h4>
-                                <p>05/12/2024</p>
-                            </div>
-
-                            <div class="detail-group">
-                                <h4 class="detail-label">Stato restituzione:</h4>
-                                <p><i class="fas fa-check" style="color: var(--color-success);"></i> Restituito il
-                                    17/12/2024</p>
-                            </div>
-                        </div>
-
-                        <div class="booking-actions">
-                            <button class="btn btn-outline btn-small">
-                                <i class="fas fa-info-circle"></i> Dettagli
-                            </button>
-                            <button class="btn btn-outline btn-small repeat-booking">
-                                <i class="fas fa-redo"></i> Ripeti prenotazione
-                            </button>
-                            <button class="btn btn-outline btn-small">
-                                <i class="fas fa-file-pdf"></i> Ricevuta
-                            </button>
-                        </div>
-                    </div>
+                        <?php endforeach ?>
+                    <?php endif ?>
 
                     <!-- If there aren't bookings -->
-                    <div class="no-bookings-message">
+                    <div class="no-bookings-message" <?php isset($reservations) && !empty($reservations) ? "" : "style=\"display:block;\"" ?>>
                         <i class="fas fa-calendar-times"></i>
                         <p>Nessuna prenotazione trovata</p>
                     </div>
