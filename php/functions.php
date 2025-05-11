@@ -10,7 +10,8 @@ date_default_timezone_set('Europe/Rome');
  * @param mixed $data
  * @return string[]
  */
-function checkRegisterInput($data) {
+function checkRegisterInput($data)
+{
     $errors = [];
 
     // Email validation
@@ -68,7 +69,8 @@ function checkRegisterInput($data) {
  * @param mixed $data
  * @return string[]
  */
-function checkLoginInput($data) {
+function checkLoginInput($data)
+{
     $errors = [];
 
     // Email validation
@@ -122,4 +124,44 @@ function redirect($location)
 function alert($message)
 {
     echo '<script>alert("' . htmlspecialchars($message) . '")</script>';
+}
+
+
+/**
+ * Method that checks if the user is logged in.
+ * @return void
+ */
+function checkLogin($url)
+{
+    if (!isset($_SESSION['id'])) {
+        redirect($url);
+        exit;
+    } else if (!isset($_SESSION['id']) && !isset($_COOKIE['login_token'])) {
+
+        echo "<script>alert('Devi essere loggato per accedere a questa pagina.');</script>";
+
+        $conn = connectToDatabase();
+        $token = $_COOKIE['login_token'];
+
+        $stmt = $conn->prepare("SELECT * FROM users WHERE u_token = ?");
+        $stmt->bind_param("s", $token);
+        $stmt->execute();
+        $result = $stmt->get_result();
+
+        if ($result && $user = $result->fetch_assoc()) {
+            // Token valido, ricrea la sessione
+            $_SESSION['id'] = $user['u_id'];
+            $_SESSION['email'] = $user['u_email'];
+        }
+    }
+}
+
+/**
+ * Method that generates a secure token.
+ * @param int $length
+ * @return string
+ */
+function generateSecureToken($length = 64)
+{
+    return bin2hex(random_bytes($length / 2));
 }

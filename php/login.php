@@ -1,10 +1,6 @@
 <!DOCTYPE html>
 <html lang="it" data-theme="light">
 
-<?php
-session_start();
-?>
-
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
@@ -43,7 +39,7 @@ session_start();
                         <p>Inserisci le tue credenziali scolastiche per accedere al servizio</p>
                     </div>
 
-                    <form id="login-form" class="auth-form" action="" method="post">
+                    <form id="login-form" class="auth-form" action="./login.php" method="POST">
                         <div class="form-group">
                             <label for="email">Email scolastica</label>
                             <div class="input-group">
@@ -95,16 +91,14 @@ session_start();
 
 </body>
 
-<?php 
-include './include/connection.php';
+<?php
+include './functions.php';
 
 $conn = connectToDatabase();
 
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $email = $_POST['email'];
     $password = $_POST['password'];//htmlspecialchars($_POST['password']);
-
-
     // Query to check if the user exists
     $sql = "SELECT * FROM users WHERE u_email = ?";
     $stmt = $conn->prepare($sql);
@@ -113,14 +107,40 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $stmt->execute();
     $result = $stmt->get_result();
 
+    echo "<script>alert('Email: " . $email . "');</script>";
+    echo "<script>alert('Password: " . $password . "');</script>";
+
     if ($result->num_rows > 0) {
         while ($row = $result->fetch_assoc()) {
             if (password_verify($password, $row['u_password'])) {
-                // Password is correct, set session variables
                 $_SESSION['id'] = $row['u_id'];
                 $_SESSION['email'] = $row['u_email'];
-                // Redirect to the home page or dashboard
-                echo "<script>alert('Login effettuato con successo.');</script>";
+                $_SESSION['u_role'] = $row['u_role'];
+
+                echo "<script>alert('Accesso effettuato con successo.');</script>";
+
+                if (isset($_POST['remember'])) {
+                    $token = generateSecureToken();
+
+                    // Salva il token nel DB
+                    $update = $conn->prepare("UPDATE users SET u_token = ? WHERE u_id = ?");
+                    $update->bind_param("si", $token, $row['u_id']);
+                    $update->execute();
+
+                    // Imposta il cookie (scade tra 30 giorni)
+                    //setcookie("login_token", $token, time() + (86400 * 30), "/", "", true, true);
+                    echo '<script>
+                        const token = "' . $token . '";
+                        const expiryDate = new Date();
+                        expiryDate.setDate(expiryDate.getDate() + 30); // Set expiration for 30 days
+                        document.cookie = `login_token=${token}; expires=${expiryDate.toUTCString()}; path=/; Secure`;
+                    </script>';
+
+                    echo "<script>alert('Cookie impostato correttamente: " . $_COOKIE['login_token'] . "');</script>";
+
+                }
+
+                echo "<script>window.location.href = './prenota.php';</script>";
             } else {
                 echo "<script>alert('Password errata.');</script>";
             }
