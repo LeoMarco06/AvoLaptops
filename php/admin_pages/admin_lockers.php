@@ -34,7 +34,9 @@
 </head>
 
 <?php
-include '../include/connection.php';
+$check = false;
+$path = "../";
+include_once '../page/header_navbar.php';
 $conn = connectToDatabase();
 
 $sql = "SELECT * FROM lockers";
@@ -46,7 +48,6 @@ $lockers_json = json_encode($lockers);
 ?>
 
 <body>
-    <?php include_once '../header_navbar.php'; ?>
 
     <main>
         <div class="obscure-bg" id="obscure-bg" onclick="closePopup();"></div>
@@ -75,16 +76,15 @@ $lockers_json = json_encode($lockers);
                         <label for="locker-class">Classe</label>
                         <div class="input-group">
                             <i class="fa-solid fa-box" id="locker-icon"></i>
-                            <input type="text" name="lock_class" id="locker-class"
-                                placeholder="Classe dell'armadietto" required>
+                            <input type="text" name="lock_class" id="locker-class" placeholder="Classe dell'armadietto"
+                                required>
                         </div>
                     </div>
                     <div class="form-group">
                         <label for="locker-floor">Piano</label>
                         <div class="input-group">
                             <i class="fa-solid fa-building" id="locker-icon"></i>
-                            <select name="lock_floor" id="locker-floor" placeholder="Piano dell'armadietto"
-                                required>
+                            <select name="lock_floor" id="locker-floor" placeholder="Piano dell'armadietto" required>
                                 <option value="" disabled selected hidden>Piano dell'armadietto</option>
                                 <option value="0">Piano terra</option>
                                 <option value="1">Piano 1</option>
@@ -118,7 +118,7 @@ $lockers_json = json_encode($lockers);
         </div>
     </main>
 
-    <?php include_once "../footer.php"; ?>
+    <?php include_once "../page/footer.php"; ?>
 </body>
 
 <div id="lockers-data" style="display: none;">

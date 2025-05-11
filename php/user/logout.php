@@ -1,7 +1,7 @@
 <?php
-session_start();
-
-include './include/connection.php';
+$check = true;
+$path = "../";
+include_once '../page/header_navbar.php';
 
 $conn = connectToDatabase();
 
@@ -11,7 +11,7 @@ setcookie("login_token", "", time() - 3600, "/", "", false, true);
 session_unset();
 session_destroy();
 
-header("Location: ../index.php");
+header("Location: ../homepage.php");
 
 exit;
 ?>

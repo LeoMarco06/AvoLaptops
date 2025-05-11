@@ -1,0 +1,155 @@
+/* Overlay del popup */
+.qr-popup-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.5);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 999;
+  overflow-y: auto;
+}
+
+/* Contenuto del popup */
+.qr-popup-content {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-md);
+  margin: auto;
+  width: 90%;
+  max-width: 600px;
+  min-width: 260px;
+  background: var(--color-card);
+  box-shadow: var(--shadow-lg);
+  padding: var(--spacing-md);
+  border-radius: var(--border-radius-lg);
+  position: relative;
+  text-align: center;
+  max-height: 90vh;
+  overflow: auto;
+  top: 50%;
+  transform: translateY(-50%);
+}
+
+/* Titolo */
+.qr-popup-content h3 {
+  font-size: var(--font-size-lg);
+  margin: 0;
+}
+
+/* Header popup */
+.popup-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: var(--spacing-sm) var(--spacing-md);
+}
+
+/* Bottone chiusura */
+.qr-close-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0 var(--spacing-sm);
+  border-radius: var(--border-radius-md);
+  font-weight: var(--font-weight-medium);
+  cursor: pointer;
+  transition: all var(--transition-fast);
+  border: 2px solid transparent;
+  font-size: var(--font-size-xl);
+  background-color: var(--color-error);
+  color: white;
+}
+
+#open-qr-popup {
+  gap: var(--spacing-md);
+}
+
+/* Contenitore del lettore */
+#qr-reader {
+  width: 100%;
+  max-width: 100%;
+  height: auto;
+  aspect-ratio: 4 / 3;
+  position: relative;
+  overflow: hidden;
+  border-radius: var(--border-radius-md);
+}
+
+/* Video responsive */
+#qr-reader video {
+  width: 100% !important;
+  height: auto !important;
+  max-width: 100%;
+  display: block;
+  border-radius: var(--border-radius-md);
+}
+
+/* Canvas responsive */
+#qr-reader canvas {
+  max-width: 100% !important;
+  height: auto !important;
+  display: block;
+}
+
+/* Overlay scuro interno */
+#qr-reader #qr-shaded-region {
+    inset: 0 !important;
+    border-width: 10% 10% !important; /* Ridotto per aumentare area visibile */
+    border-style: solid;
+    border-color: rgba(0, 0, 0, 0.48);
+    box-sizing: border-box;
+    position: absolute;
+  }
+
+/* Risultato e immagine QR */
+#qr-screen {
+  margin-top: var(--spacing-sm);
+  display: none;
+}
+
+#qr-screen img {
+  width: 100%;
+  max-width: 100%;
+  border-radius: var(--border-radius-md);
+}
+
+#qr-result {
+  margin-top: var(--spacing-sm);
+  font-size: var(--font-size-sm);
+  color: var(--color-text);
+}
+
+/* Media query per schermi piccoli */
+@media (max-width: 480px) {
+  .qr-popup-content {
+    width: 95%;
+    padding: var(--spacing-sm);
+    font-size: 0.95rem;
+  }
+
+  .qr-popup-content h3 {
+    font-size: var(--font-size-md);
+  }
+  
+
+  .qr-close-btn {
+    font-size: var(--font-size-lg);
+    padding: 0 var(--spacing-xs);
+  }
+
+  #qr-reader #qr-shaded-region {
+    border-width: 15% 15% !important;
+  }
+
+  #qr-reader{
+    aspect-ratio: 16/9;
+  }
+
+  #qr-result {
+    font-size: 0.9rem;
+  }
+}

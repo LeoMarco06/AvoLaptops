@@ -6,7 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
 
     <!-- Title of the browser tab -->
-    <title>Avo Laptops | Gestione prenotazioni</title>
+    <title>Avo Laptops | Prenotazioni</title>
 
     <!-- Link to the styles sheet -->
     <link rel="stylesheet" href="../../css/styles.css">
@@ -29,9 +29,15 @@
 
 <body id="home">
     <?php
-    $check = false;
+    $check = true;
     $path = "../";
     include_once '../page/header_navbar.php';
+
+    $status = array(
+        1 => 'pending',
+        0 => 'active',
+        -1 => 'completed'
+    );
 
 
     $conn = connectToDatabase();
@@ -41,6 +47,7 @@
     SELECT r.res_id, r.res_start_time, r.res_end_time, r.res_day, r.res_flag, u.u_name, u.u_surname
     FROM reservations r
     INNER JOIN users u ON u.u_id = r.res_user 
+    WHERE u.u_id = " . $_SESSION['id'] . "
     ORDER BY res_day DESC, res_start_time DESC
 ");
 
@@ -81,16 +88,33 @@
 
     // Close the connection
     $conn->close();
-    ?>
 
+    //echo "<pre>" . print_r($reservations, true) . "</pre>";
+    ?>
 
     <main>
         <section id="prenotazioni" class="my-bookings-section">
             <div class="main-container">
-                <h2 class="section-header">Prenotazioni</h2>
+                <h2 class="section-header">Le Mie Prenotazioni</h2>
 
+                <!-- Booking filters -->
                 <div class="bookings-filters">
-                    <div class="search-box admin">
+                    <div class="filter-tabs">
+                        <button class="filter-tab active" data-status="all">
+                            <i class="fas fa-list"></i> Tutte
+                        </button>
+                        <button class="filter-tab" data-status="pending">
+                            <i class="fas fa-hourglass-half"></i> In attesa
+                        </button>
+                        <button class="filter-tab" data-status="active">
+                            <i class="fas fa-laptop"></i> In corso
+                        </button>
+                        <button class="filter-tab" data-status="completed">
+                            <i class="fas fa-check-circle"></i> Terminate
+                        </button>
+                    </div>
+
+                    <div class="search-box">
                         <div class="input-group">
                             <i class="fas fa-search"></i>
                             <input type="text" id="booking-search" placeholder="Cerca per ID o modello...">
@@ -98,18 +122,30 @@
                     </div>
                 </div>
 
-
                 <!-- Booking list -->
                 <div class="bookings-list">
-
                     <?php if (isset($reservations) && !empty($reservations)): ?>
-                        <!-- Fa la query a inizio pagina per ottenere $reservations -->
+                        <!-- Fa la query a inizio pagina per ottenere $reservations, dopodichè  -->
                         <?php foreach ($reservations as $reservation): ?>
-                            <div class="booking-card" data-booking-id="PR-2023-001">
+                            <div class="booking-card <?php echo $status[$reservation["res_flag"]] ?>"
+                                data-booking-id="PR-2023-001">
                                 <div class="booking-header">
                                     <h3 class="booking-id">
-                                        <?php echo "PR-" . $reservation["res_day"] . "-" . $reservation["res_id"] ?>
+                                        <?php echo "PR-" . $reservation["res_day"] . "_" . $reservation["res_id"] ?>
                                     </h3>
+                                    <?php if ($reservation["res_flag"] == 0): ?>
+                                        <span class="booking-status pending">
+                                            <i class="fas fa-hourglass-half"></i> In attesa di accettazione
+                                        </span>
+                                    <?php elseif ($reservation["res_flag"] == 1): ?>
+                                        <span class="booking-status active">
+                                            <i class="fas fa-laptop"></i> In corso
+                                        </span>
+                                    <?php else: ?>
+                                        <span class="booking-status completed">
+                                            <i class="fas fa-check-circle"></i> Terminata
+                                        </span>
+                                    <?php endif ?>
                                 </div>
 
                                 <div class="booking-details">
@@ -141,6 +177,9 @@
                                 <div class="booking-actions">
                                     <button class="btn btn-outline btn-small">
                                         <i class="fas fa-info-circle"></i> Dettagli
+                                    </button>
+                                    <button class="btn btn-outline btn-small cancel-booking">
+                                        <i class="fas fa-times"></i> Annulla
                                     </button>
                                 </div>
                             </div>

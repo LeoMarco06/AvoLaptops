@@ -40,11 +40,13 @@
 </head>
 
 <?php
-include '../include/connection.php';
+$check = false;
+$path = "../";
+include_once '../page/header_navbar.php';
 
 $conn = connectToDatabase();
 
-$sql = "SELECT u_id, u_name, u_surname, u_email, u_role, u_confirmed FROM users";
+$sql = "SELECT u_id, u_name, u_surname, u_email, u_role, u_authorized FROM users";
 $stmt = $conn->prepare($sql);
 $stmt->execute();
 $users = $stmt->get_result()->fetch_all(MYSQLI_ASSOC);
@@ -54,7 +56,6 @@ $users_json = json_encode($users);
 ?>
 
 <body>
-    <?php include_once '../header_navbar.php'; ?>
 
     <main>
         <div class="obscure-bg" id="obscure-bg" onclick="closeUserPopup();"></div>
@@ -67,14 +68,14 @@ $users_json = json_encode($users);
             </div>
             <div class="users-container" id="users-container">
                 <?php foreach ($users as $user): ?>
-                    <div class="user-card <?php echo $user['u_confirmed'] == 0 ? 'not-verified' : ''; ?>">
+                    <div class="user-card <?php echo $user['u_authorized'] == 0 ? 'not-verified' : ''; ?>">
                         <h3><?php echo htmlspecialchars($user['u_name'] . ' ' . $user['u_surname']); ?></h3>
                         <p>Email: <?php echo htmlspecialchars($user['u_email']); ?></p>
-                        <p>Ruolo: <?php echo $user['u_role'] == 0 ? 'Admin' : 'Utente'; ?></p>
+                        <p>Ruolo: <?php echo $user['u_role'] == 1 ? 'Admin' : 'Utente'; ?></p>
                         <div class=" buttons">
                             <button class="btn btn-primary"
                                 onclick="viewUser(<?php echo $user['u_id']; ?>)">Visualizza</button>
-                            <?php if ($user['u_confirmed'] == 1): ?>
+                            <?php if ($user['u_authorized'] == 1): ?>
                                 <button class="btn btn-danger"
                                     onclick="deleteUser(<?php echo $user['u_id']; ?>)">Elimina</button>
                             <?php else: ?>
@@ -168,7 +169,7 @@ $users_json = json_encode($users);
         </div>
     </main>
 
-    <?php include_once "../footer.php"; ?>
+    <?php include_once "../page/footer.php"; ?>
 </body>
 
 <div id="users-data" style="display: none;">

@@ -31,3 +31,15 @@
     width: 100%;
     object-fit: cover;
 }
+
+.form-year{
+    margin-top: var(--spacing-md);
+    width: 100%;
+    display: flex;
+    gap: var(--spacing-md);
+}
+
+.form-year select{
+    width: 20%;
+    min-width: 250px;
+}

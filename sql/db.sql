@@ -2,10 +2,10 @@
 -- version 5.2.1
 -- https://www.phpmyadmin.net/
 --
--- Host: 127.0.0.1
--- Creato il: Mag 07, 2025 alle 11:46
+-- Host: localhost
+-- Creato il: Mag 07, 2025 alle 14:59
 -- Versione del server: 10.4.32-MariaDB
--- Versione PHP: 8.2.12
+-- Versione PHP: 8.1.25
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 START TRANSACTION;
@@ -20,8 +20,6 @@ SET time_zone = "+00:00";
 --
 -- Database: `avo_laptops_db`
 --
-CREATE DATABASE IF NOT EXISTS `avo_laptops_db` DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci;
-USE `avo_laptops_db`;
 
 -- --------------------------------------------------------
 
@@ -92,40 +90,13 @@ DELIMITER ;
 -- --------------------------------------------------------
 
 --
--- Struttura della tabella `laptops_reservations`
+-- Struttura della tabella `laptop_reservation`
 --
 
-CREATE TABLE `laptops_reservations` (
+CREATE TABLE `laptop_reservation` (
   `lap_id` int(11) NOT NULL,
   `res_id` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
-
---
--- Dump dei dati per la tabella `laptops_reservations`
---
-
-INSERT INTO `laptops_reservations` (`lap_id`, `res_id`) VALUES
-(1, 1),
-(2, 2),
-(3, 3),
-(4, 3),
-(4, 4),
-(5, 5),
-(6, 6),
-(7, 1),
-(8, 2),
-(9, 3),
-(10, 4),
-(11, 5),
-(12, 6),
-(13, 1),
-(14, 2),
-(15, 3),
-(16, 4),
-(17, 5),
-(18, 6),
-(19, 1),
-(20, 2);
 
 -- --------------------------------------------------------
 
@@ -236,19 +207,20 @@ CREATE TABLE `users` (
   `u_password` varchar(61) DEFAULT NULL,
   `u_role` int(11) DEFAULT NULL,
   `u_authorized` tinyint(1) DEFAULT NULL,
-  `u_token` varchar(65) DEFAULT NULL
+  `u_token` varchar(65) DEFAULT NULL,
+  `u_date_birth` date DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
 -- Dump dei dati per la tabella `users`
 --
 
-INSERT INTO `users` (`u_id`, `u_name`, `u_surname`, `u_email`, `u_cf`, `u_password`, `u_role`, `u_authorized`, `u_token`) VALUES
-(37, 'Mario', 'Rossi', 'mario.rossi@itisavogadro.it', 'MROSSI1234567890', '$2y$10$bUTASuIFIeiq8/xSq7ppM.brt9.J/8dB1s.SjeAVJW4g4ulFqx7N6', 1, 1, NULL),
-(38, 'Anna', 'Verdi', 'anna.verdi@itisavogadro.it', 'AVERDI1234567890', '$2y$10$bUTASuIFIeiq8/xSq7ppM.brt9.J/8dB1s.SjeAVJW4g4ulFqx7N6', 1, 1, NULL),
-(39, 'Luigi', 'Bianchi', 'luigi.bianchi@itisavogadro.it', 'LBIANCHI12345678', '$2y$10$bUTASuIFIeiq8/xSq7ppM.brt9.J/8dB1s.SjeAVJW4g4ulFqx7N6', 1, 1, NULL),
-(40, 'Bianca', 'Verde', 'bianca.verde@itisavogadro.it', 'BVERDE1234567890', '$2y$10$bUTASuIFIeiq8/xSq7ppM.brt9.J/8dB1s.SjeAVJW4g4ulFqx7N6', 10, 1, NULL),
-(41, 'Nome', 'Cognome', 'ncognome@itisavogadro.it', 'NCOGNOME12345678', '$2y$10$bUTASuIFIeiq8/xSq7ppM.brt9.J/8dB1s.SjeAVJW4g4ulFqx7N6', 10, 0, NULL);
+INSERT INTO `users` (`u_id`, `u_name`, `u_surname`, `u_email`, `u_cf`, `u_password`, `u_role`, `u_authorized`, `u_token`, `u_date_birth`) VALUES
+(37, 'Mario', 'Rossi', 'mario.rossi@itisavogadro.it', 'MROSSI1234567890', '$2y$10$bUTASuIFIeiq8/xSq7ppM.brt9.J/8dB1s.SjeAVJW4g4ulFqx7N6', 1, 1, NULL, NULL),
+(38, 'Anna', 'Verdi', 'anna.verdi@itisavogadro.it', 'AVERDI1234567890', '$2y$10$bUTASuIFIeiq8/xSq7ppM.brt9.J/8dB1s.SjeAVJW4g4ulFqx7N6', 1, 1, NULL, NULL),
+(39, 'Luigi', 'Bianchi', 'luigi.bianchi@itisavogadro.it', 'LBIANCHI12345678', '$2y$10$bUTASuIFIeiq8/xSq7ppM.brt9.J/8dB1s.SjeAVJW4g4ulFqx7N6', 1, 1, NULL, NULL),
+(40, 'Bianca', 'Verde', 'bianca.verde@itisavogadro.it', 'BVERDE1234567890', '$2y$10$bUTASuIFIeiq8/xSq7ppM.brt9.J/8dB1s.SjeAVJW4g4ulFqx7N6', 10, 1, NULL, NULL),
+(41, 'Nome', 'Cognome', 'ncognome@itisavogadro.it', 'NCOGNOME12345678', '$2y$10$bUTASuIFIeiq8/xSq7ppM.brt9.J/8dB1s.SjeAVJW4g4ulFqx7N6', 10, 0, NULL, NULL);
 
 --
 -- Indici per le tabelle scaricate
@@ -263,9 +235,9 @@ ALTER TABLE `laptops`
   ADD KEY `lap_locker` (`lap_locker`);
 
 --
--- Indici per le tabelle `laptops_reservations`
+-- Indici per le tabelle `laptop_reservation`
 --
-ALTER TABLE `laptops_reservations`
+ALTER TABLE `laptop_reservation`
   ADD PRIMARY KEY (`lap_id`,`res_id`),
   ADD KEY `res_id` (`res_id`);
 
@@ -352,24 +324,25 @@ ALTER TABLE `laptops`
   ADD CONSTRAINT `laptops_ibfk_1` FOREIGN KEY (`lap_model`) REFERENCES `models` (`mod_id`),
   ADD CONSTRAINT `laptops_ibfk_2` FOREIGN KEY (`lap_locker`) REFERENCES `lockers` (`lock_id`);
 
-
-ALTER TABLE `reservations`
-  ADD CONSTRAINT `reservations_ibfk_1` FOREIGN KEY (`res_user`) 
-  REFERENCES `users` (`u_id`) ON DELETE CASCADE;
-
-ALTER TABLE `laptops_reservations`
-  ADD CONSTRAINT `laptops_reservations_ibfk_1` FOREIGN KEY (`lap_id`) 
-  REFERENCES `laptops` (`lap_id`) ON DELETE CASCADE,
-  ADD CONSTRAINT `laptops_reservations_ibfk_2` FOREIGN KEY (`res_id`) 
-  REFERENCES `reservations` (`res_id`) ON DELETE CASCADE;
+--
+-- Limiti per la tabella `laptop_reservation`
+--
+ALTER TABLE `laptop_reservation`
+  ADD CONSTRAINT `laptop_reservation_ibfk_1` FOREIGN KEY (`lap_id`) REFERENCES `laptops` (`lap_id`) ON DELETE CASCADE,
+  ADD CONSTRAINT `laptop_reservation_ibfk_2` FOREIGN KEY (`res_id`) REFERENCES `reservations` (`res_id`);
 
 --
 -- Limiti per la tabella `log_maintenance`
 --
 ALTER TABLE `log_maintenance`
-  ADD CONSTRAINT `log_maintenance_ibfk_1` FOREIGN KEY (`log_lap_id`) REFERENCES `laptops` (`lap_id`) ON DELETE CASCADE;
+  ADD CONSTRAINT `log_maintenance_ibfk_1` FOREIGN KEY (`log_lap_id`) REFERENCES `laptops` (`lap_id`);
 
-
+--
+-- Limiti per la tabella `reservations`
+--
+ALTER TABLE `reservations`
+  ADD CONSTRAINT `reservations_ibfk_1` FOREIGN KEY (`res_user`) REFERENCES `users` (`u_id`);
+COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;

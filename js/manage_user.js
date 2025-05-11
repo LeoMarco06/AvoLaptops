@@ -76,7 +76,7 @@ function viewUser(id) {
         });
     }
   };
-  xmlhttp.open("GET", `getUser_data.php?u_id=${id}`, true);
+  xmlhttp.open("GET", `./ajax/getUser_data.php?u_id=${id}`, true);
   xmlhttp.send();
 
   toggleEditMode(false);
@@ -92,7 +92,7 @@ function confirmUser(id) {
         location.reload();
       }
     };
-    xmlhttp.open("GET", `confirm_user.php?u_id=${id}`, true);
+    xmlhttp.open("GET", `./ajax/confirm_user.php?u_id=${id}`, true);
     xmlhttp.send();
   }
 }
@@ -347,7 +347,7 @@ function deleteUser(id) {
         location.reload();
       }
     };
-    xmlhttp.open("GET", `delete_user.php?u_id=${id}`, true);
+    xmlhttp.open("GET", `./ajax/delete_user.php?u_id=${id}`, true);
     xmlhttp.send();
   }
 }

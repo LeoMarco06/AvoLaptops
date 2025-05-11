@@ -1,6 +1,10 @@
 <!DOCTYPE html>
 <html lang="it" data-theme="light">
 
+<?php
+session_start();
+?>
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
@@ -9,26 +13,30 @@
     <title>Avo Laptops | Login</title>
 
     <!-- Link to the styles sheet -->
-    <link rel="stylesheet" href="../css/styles.css">
+    <link rel="stylesheet" href="../../css/styles.css">
 
     <!-- Link to the authentication styles sheet -->
-    <link rel="stylesheet" href="../css/auth.css">
+    <link rel="stylesheet" href="../../css/auth.css">
 
     <!-- Link to the responsive styles sheet -->
-    <link rel="stylesheet" href="../css/responsive.css">
+    <link rel="stylesheet" href="../../css/responsive.css">
 
     <!-- Icons -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 
     <!-- Script that manages the theme mode, animations, navbar... -->
-    <script src="../js/page_setup.js" defer></script>
+    <script src="../../js/page_setup.js" defer></script>
 
     <!-- Script that validates the form -->
-    <script src="../js/validation_login.js" defer></script>
+    <script src="../../js/validation_login.js" defer></script>
 </head>
 
 <body>
-    <?php include_once 'header_navbar.php'; ?>
+    <?php
+    $check = false;
+    $path = "../";
+    include_once '../page/header_navbar.php';
+    ?>
 
     <main>
         <section class="auth-section" id="login">
@@ -39,7 +47,7 @@
                         <p>Inserisci le tue credenziali scolastiche per accedere al servizio</p>
                     </div>
 
-                    <form id="login-form" class="auth-form" action="./login.php" method="POST">
+                    <form id="login-form" class="auth-form" action="" method="post">
                         <div class="form-group">
                             <label for="email">Email scolastica</label>
                             <div class="input-group">
@@ -87,12 +95,13 @@
         </section>
     </main>
 
-    <?php include_once "footer.php" ?>
+    <?php include_once "../page/footer.php" ?>
 
 </body>
 
 <?php
-include './functions.php';
+
+include_once '../include/functions/functions.php';
 
 $conn = connectToDatabase();
 
@@ -107,25 +116,35 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $stmt->execute();
     $result = $stmt->get_result();
 
-    echo "<script>alert('Email: " . $email . "');</script>";
-    echo "<script>alert('Password: " . $password . "');</script>";
-
     if ($result->num_rows > 0) {
         while ($row = $result->fetch_assoc()) {
             if (password_verify($password, $row['u_password'])) {
                 $_SESSION['id'] = $row['u_id'];
                 $_SESSION['email'] = $row['u_email'];
-                $_SESSION['u_role'] = $row['u_role'];
+                $_SESSION['role'] = $row['u_role'];
 
                 echo "<script>alert('Accesso effettuato con successo.');</script>";
 
                 if (isset($_POST['remember'])) {
-                    $token = generateSecureToken();
+                    //$token = generateSecureToken();
 
                     // Salva il token nel DB
-                    $update = $conn->prepare("UPDATE users SET u_token = ? WHERE u_id = ?");
+                    /*$update = $conn->prepare("UPDATE users SET u_token = ? WHERE u_id = ?");
                     $update->bind_param("si", $token, $row['u_id']);
-                    $update->execute();
+                    $update->execute();*/
+
+                    $stmt = $conn->prepare("SELECT u_token FROM users WHERE u_id = ?;");
+                    $stmt->bind_param("i", $row['u_id']);
+
+                    // Execute the statement
+                    $stmt->execute();
+
+                    // Get the result
+                    $result = $stmt->get_result();
+
+                    // Fetch the value
+                    $token = $result->fetch_assoc()['u_token'];
+
 
                     // Imposta il cookie (scade tra 30 giorni)
                     //setcookie("login_token", $token, time() + (86400 * 30), "/", "", true, true);
@@ -135,12 +154,9 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                         expiryDate.setDate(expiryDate.getDate() + 30); // Set expiration for 30 days
                         document.cookie = `login_token=${token}; expires=${expiryDate.toUTCString()}; path=/; Secure`;
                     </script>';
-
-                    echo "<script>alert('Cookie impostato correttamente: " . $_COOKIE['login_token'] . "');</script>";
-
                 }
 
-                echo "<script>window.location.href = './prenota.php';</script>";
+                echo "<script>window.location.href = '../reservation/prenota.php';</script>";
             } else {
                 echo "<script>alert('Password errata.');</script>";
             }
