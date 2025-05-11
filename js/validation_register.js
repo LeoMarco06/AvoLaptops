@@ -1,6 +1,15 @@
-document.addEventListener("DOMContentLoaded", () => {
-  togglePasswordVisibility();
+/*
+  ==============================================================
+  ================= REGISTER VALIDATION SCRIPT =================
+  ==============================================================
+*/
 
+document.addEventListener("DOMContentLoaded", () => {
+  // Initialize password visibility toggle and date picker
+  togglePasswordVisibility();
+  initDatePicker("date-birth", "date-birth-picker");
+
+  // Validate form on submission
   document
     .getElementById("register-form")
     .addEventListener("submit", function (e) {
@@ -10,8 +19,8 @@ document.addEventListener("DOMContentLoaded", () => {
     });
 });
 
+// Toggle password visibility
 function togglePasswordVisibility() {
-  // Toggle password visibility
   document.querySelectorAll(".password-toggle").forEach((button) => {
     button.addEventListener("click", function () {
       const input = this.parentElement.querySelector("input");
@@ -28,6 +37,7 @@ function togglePasswordVisibility() {
   });
 }
 
+// Validate the entire form
 function validateForm() {
   let isValid = true;
 
@@ -41,6 +51,7 @@ function validateForm() {
   return isValid;
 }
 
+// Validate the email input field
 function validateEmailInput() {
   const emailInput = document.getElementById("email");
   const emailValue = emailInput.value;
@@ -74,17 +85,16 @@ function validateEmailInput() {
   return error;
 }
 
+// Verify the email using an external API
 function emailVerification() {
   const email = document.getElementById("email").value;
   const apiKey = "9d067e6b3fd7bf4a201f509a991dda916ae10380";
   const verificationResult = document.getElementById("emailFeedback");
   let email_error = false;
 
-  // Show loading state
   verificationResult.textContent = "Verifying email...";
   verificationResult.style.color = "var(--color-text-light)";
 
-  // Hunter.io API endpoint
   const url = `https://api.hunter.io/v2/email-verifier?email=${encodeURIComponent(
     email
   )}&api_key=${apiKey}`;
@@ -131,6 +141,7 @@ function emailVerification() {
   return email_error;
 }
 
+// Validate the name input field
 function validateNameInput() {
   const nameInput = document.getElementById("name");
   const nameValue = nameInput.value.trim();
@@ -141,6 +152,9 @@ function validateNameInput() {
   if (nameValue === "") {
     error = true;
     feedbackElement.textContent = "Il nome è obbligatorio";
+  } else if (nameValue.length < 3) {
+    error = true;
+    feedbackElement.textContent = "Il nome deve contenere almeno 3 caratteri";
   } else if (!nameRegex.test(nameValue)) {
     error = true;
     feedbackElement.textContent = "Il nome può contenere solo lettere e spazi";
@@ -148,7 +162,6 @@ function validateNameInput() {
     feedbackElement.textContent = "";
   }
 
-  // Applica stili in base all'errore
   nameInput.style.borderColor = error
     ? "#fd5757"
     : getComputedStyle(nameInput).getPropertyValue("--color-border");
@@ -158,6 +171,7 @@ function validateNameInput() {
   return error;
 }
 
+// Validate the surname input field
 function validateSurnameInput() {
   const surnameInput = document.getElementById("surname");
   const surnameValue = surnameInput.value.trim();
@@ -168,6 +182,9 @@ function validateSurnameInput() {
   if (surnameValue === "") {
     error = true;
     feedbackElement.textContent = "Il cognome è obbligatorio";
+  } else if (surnameValue.length < 3) {
+    error = true;
+    feedbackElement.textContent = "Il cognome deve contenere almeno 3 caratteri";
   } else if (!surnameRegex.test(surnameValue)) {
     error = true;
     feedbackElement.textContent =
@@ -185,6 +202,7 @@ function validateSurnameInput() {
   return error;
 }
 
+// Validate the tax code input field
 function validateCodFisInput() {
   const codFisInput = document.getElementById("codFis");
   const codFisValue = codFisInput.value.trim().toUpperCase();
@@ -215,6 +233,7 @@ function validateCodFisInput() {
   return error;
 }
 
+// Validate the password input field
 function validatePasswordInput() {
   const passwordInput = document.getElementById("password");
   const passwordValue = passwordInput.value;
@@ -244,6 +263,7 @@ function validatePasswordInput() {
   return error;
 }
 
+// Validate the confirm password input field
 function validateConfirmPasswordInput() {
   const passwordInput = document.getElementById("password");
   const confirmInput = document.getElementById("confirm-password");

@@ -1,41 +1,58 @@
-/* ===== BOOKING STYLES ===== */
+/*
+  ================================================
+  ================= BOOKING STYLES ===============
+  ================================================
+*/
+
+/* ===== Booking Section ===== */
 .booking-section {
   padding: var(--spacing-xxl) 0;
 }
 
+/* ===== Booking Filters ===== */
 .booking-filters {
   display: flex;
   gap: var(--spacing-lg);
   margin-bottom: var(--spacing-xl);
   flex-wrap: wrap;
-  align-items: flex-end;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
 }
 
 .filter-group {
   display: flex;
-  flex-direction: column;
+  position: relative;
+  flex-direction: row;
   gap: var(--spacing-sm);
+  border-radius: var(--border-radius-md);
+  background: var(--color-card);
+  padding: var(--spacing-md);
+  justify-content: space-between;
+  width: 600px;
+  border: 1px solid var(--color-border);
+  box-shadow: var(--shadow-sm);
 }
 
 .filter-group label {
-  font-weight: var(--font-weight-medium);
+  font-weight: bold;
+  font-size: var(--font-size-sm);
 }
 
-.form-control {
-  padding: var(--spacing-sm);
-  border-radius: var(--border-radius-sm);
-  border: 1px solid var(--color-border);
-  background-color: var(--color-card);
-  color: var(--color-text);
-  font-family: inherit;
-  font-size: var(--font-size-md);
+.text-icon{
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-xs);
+  margin-bottom: var(--spacing-xs);
 }
 
+/* ===== Booking Summary ===== */
 .booking-summary {
   background-color: var(--color-card);
   border-radius: var(--border-radius-md);
   padding: var(--spacing-lg);
   margin-bottom: var(--spacing-xl);
+  border: 1px solid var(--color-border);
   box-shadow: var(--shadow-sm);
 }
 
@@ -67,27 +84,36 @@
   justify-content: flex-end;
 }
 
+/*
+  ================================================
+  ================= LOCKERS SECTION ==============
+  ================================================
+*/
+
+/* ===== Lockers Container ===== */
 .lockers-container {
   margin-top: var(--spacing-xl);
 }
 
 .lockers-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(380px, 1fr));
   gap: var(--spacing-lg);
 }
 
+/* ===== Locker Card ===== */
 .locker-card {
   background-color: var(--color-card);
   border-radius: var(--border-radius-md);
   padding: var(--spacing-lg);
+  border: 1px solid var(--color-border);
   box-shadow: var(--shadow-sm);
   transition: transform var(--transition-normal),
     box-shadow var(--transition-normal);
   justify-content: space-around;
 }
 
-.locker-card h4, .locker-card .heading-4 {
+.locker-card h4,
+.locker-card .heading-4 {
   margin: 0 10px 0 0;
 }
 
@@ -96,15 +122,20 @@
   box-shadow: var(--shadow-md);
 }
 
+/* ===== Locker Header ===== */
 .locker-header {
   display: flex;
   justify-content: space-between;
   align-items: center;
+}
+
+.locker-header.expanded {
   margin-bottom: var(--spacing-md);
   padding-bottom: var(--spacing-sm);
   border-bottom: 1px solid var(--color-border);
 }
 
+/* ===== Locker Status ===== */
 .locker-status {
   font-size: var(--font-size-sm);
   background-color: var(--color-bg-secondary);
@@ -112,6 +143,7 @@
   border-radius: var(--border-radius-sm);
 }
 
+/* ===== Locker Laptops ===== */
 .locker-laptops {
   display: flex;
   flex-direction: column;
@@ -120,6 +152,7 @@
   overflow-y: auto;
 }
 
+/* ===== Laptop Item ===== */
 .laptop-item {
   display: flex;
   justify-content: space-between;
@@ -146,6 +179,7 @@
   opacity: 0.7;
 }
 
+/* ===== Laptop Info ===== */
 .laptop-info {
   display: flex;
   align-items: center;
@@ -156,6 +190,7 @@
   color: var(--color-primary);
 }
 
+/* ===== Status Badge ===== */
 .status-badge {
   font-size: var(--font-size-sm);
   padding: 2px var(--spacing-sm);
@@ -165,6 +200,7 @@
   gap: var(--spacing-xs);
 }
 
+/* ===== Laptop Actions ===== */
 .select-laptop {
   background-color: transparent;
   border: none;
@@ -188,4 +224,12 @@
 
 .remove-laptop:hover {
   color: var(--color-accent);
+}
+
+.toggle-locker {
+  background: none;
+  border: none;
+  cursor: pointer;
+  font-size: 1.2rem;
+  color: var(--color-text-light);
 }

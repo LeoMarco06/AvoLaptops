@@ -2,8 +2,8 @@
     <div class="main-container">
         <div class="footer-grid">
             <div class="footer-column">
-                <h3 class="heading-3">Noleggio Portatili</h3>
-                <p>Servizio di noleggio dispositivi per studenti e docenti dell'Istituto Amedeo Avogadro di Torino</p>
+                <h3 class="heading-3">Avo Laptops</h3>
+                <p>Servizio di noleggio dispositivi per docenti dell'Istituto Amedeo Avogadro di Torino</p>
             </div>
             <div class="footer-column">
                 <h3 class="heading-3">Link utili</h3>
@@ -30,9 +30,8 @@
         <div class="footer-bottom">
             <p>&copy; 2025 IIS Amedeo Avogadro di Torino. Tutti i diritti riservati.</p>
             <div class="social-links">
-                <a href="#"><i class="fab fa-facebook"></i></a>
-                <a href="#"><i class="fab fa-instagram"></i></a>
-                <a href="#"><i class="fab fa-twitter"></i></a>
+                <a target="_blank" href="https://www.facebook.com/p/Istituto-Avogadro-Torino-100063754143556/?locale=it_IT"><i class="fab fa-facebook"></i></a>
+                <a target="_blank" href="https://www.youtube.com/c/Avovideotorino/videos"><i class="fab fa-youtube"></i></a>
             </div>
         </div>
     </div>

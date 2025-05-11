@@ -1,4 +1,4 @@
-/* ===== AUTHENTICATION STYLES ===== */
+/* ===== AUTHENTICATION SECTION ===== */
 .auth-section {
   padding: var(--spacing-xxl) 0;
   min-height: 70vh;
@@ -6,6 +6,7 @@
   align-items: center;
 }
 
+/* ===== AUTHENTICATION CONTAINER ===== */
 .auth-container {
   min-width: 450px;
   width: 60%;
@@ -16,7 +17,8 @@
   box-shadow: var(--shadow-md);
 }
 
-.auth-header > p{
+/* ===== AUTHENTICATION HEADER ===== */
+.auth-header > p {
   font-size: var(--font-size-md);
 }
 
@@ -29,6 +31,7 @@
   margin-bottom: var(--spacing-sm);
 }
 
+/* ===== AUTHENTICATION FORM ===== */
 .auth-form {
   display: flex;
   flex-direction: column;
@@ -47,6 +50,7 @@
   color: var(--color-text);
 }
 
+/* ===== INPUT GROUP ===== */
 .input-group {
   position: relative;
   display: flex;
@@ -57,6 +61,7 @@
   position: absolute;
   left: var(--spacing-md);
   color: var(--color-text-light);
+  z-index: 20;
 }
 
 .input-group input {
@@ -68,6 +73,7 @@
   background-color: var(--color-bg-secondary);
   color: var(--color-text);
   transition: all var(--transition-fast);
+  font-size: var(--font-size-sm);
 }
 
 .input-group input:focus {
@@ -76,6 +82,30 @@
   box-shadow: 0 0 0 2px rgba(67, 97, 238, 0.2);
 }
 
+.name-group {
+  display: flex;
+  gap: 0;
+}
+
+.name-group .form-group {
+  width: 50%;
+}
+
+.name-group .form-group.left input {
+  border-radius: var(--border-radius-md) 0 0 var(--border-radius-md);
+}
+
+.name-group .form-group.right input {
+  border-radius: 0 var(--border-radius-md) var(--border-radius-md) 0;
+}
+
+.name-group .form-group label {
+  font-size: var(--font-size-md);
+  font-weight: var(--font-weight-medium);
+  color: var(--color-text);
+}
+
+/* ===== PASSWORD TOGGLE ===== */
 .password-toggle {
   position: absolute;
   right: var(--spacing-md);
@@ -83,12 +113,21 @@
   border: none;
   color: var(--color-text-light);
   cursor: pointer;
+  align-items: center;
+  justify-content: center;
+  padding: 0;
+}
+
+.password-toggle i {
+  left: auto;
 }
 
 .password-toggle:hover {
-  color: var(--color-primary);
+  opacity: 0.8;
+  background-color: transparent;
 }
 
+/* ===== FORM OPTIONS ===== */
 .form-options {
   display: flex;
   justify-content: space-between;
@@ -116,11 +155,13 @@
   text-decoration: underline;
 }
 
+/* ===== BUTTONS ===== */
 .btn-block {
   width: 100%;
   padding: var(--spacing-md);
 }
 
+/* ===== AUTHENTICATION FOOTER ===== */
 .auth-footer {
   text-align: center;
   margin-top: var(--spacing-md);
@@ -135,13 +176,137 @@
   text-decoration: underline;
 }
 
+/* ===== FORM FEEDBACK ===== */
 .verification-feedback {
   margin-top: 5px;
   font-size: 0.9rem;
   display: none;
 }
 
-.form-group small{
+.form-group small {
   font-size: var(--font-size-sm);
   color: var(--color-text-light);
+}
+
+.error {
+  color: var(--color-error);
+}
+
+/* ===== SELECT INPUT ===== */
+select {
+  width: 100%;
+  padding: var(--spacing-xs) var(--spacing-sm);
+  padding-left: var(--spacing-xxl);
+  border-radius: var(--border-radius-sm);
+  border: 1px solid var(--color-border);
+  background-color: var(--color-bg-secondary);
+  color: var(--color-text-light);
+  font-size: var(--font-size-sm);
+}
+
+/* ===== POPUP STYLES ===== */
+.popup-buttons {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  margin-top: var(--spacing-md);
+}
+
+@keyframes fade-bg {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 0.8;
+  }
+}
+
+@keyframes open-popup {
+  from {
+    transform: translateY(-100%);
+  }
+  to {
+    transform: translateY(0);
+  }
+}
+
+.popup-container {
+  display: none;
+  position: fixed;
+  width: 800px;
+  max-height: 80vh;
+  margin: auto;
+  background-color: var(--color-card);
+  border-radius: var(--border-radius-lg);
+  padding: var(--spacing-xl);
+  box-shadow: var(--shadow-md);
+  z-index: 10000;
+  overflow-y: auto;
+  align-self: center;
+  justify-content: center;
+}
+
+.popup-container .popup-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: var(--spacing-sm);
+}
+
+#popup-title {
+  margin: 0;
+}
+
+.popup-container .popup-header i {
+  font-size: var(--font-size-lg);
+}
+
+/* ===== OBSCURE BACKGROUND ===== */
+.obscure-bg {
+  display: none;
+  width: 100%;
+  height: 100%;
+  position: fixed;
+  top: 0;
+  left: 0;
+  background-color: rgba(0, 0, 0, 0.5);
+  opacity: 0.8;
+  z-index: 9999;
+}
+
+.obscure-bg.show {
+  display: block;
+  animation: fade-bg 0.5s;
+}
+
+.popup-container.show {
+  display: block;
+  animation: open-popup 0.5s;
+}
+
+/* ===== DATE PICKER ===== */
+.auth-container .date-picker-input {
+  width: 100%;
+  top: 100%;
+  left: auto;
+  padding: var(--spacing-md) var(--spacing-md) var(--spacing-md)
+    calc(var(--spacing-xl) + var(--spacing-md));
+  border: 1px solid var(--color-border);
+  border-radius: var(--border-radius-md);
+  background-color: var(--color-bg-secondary);
+  color: var(--color-text);
+  transition: all var(--transition-fast);
+  font-size: var(--font-size-sm);
+}
+
+.auth-container .date-picker-container {
+  width: 100%;
+  top: 100%;
+  left: auto;
+}
+
+.date-picker {
+  width: 100%;
+  top: 100%;
+  left: auto;
 }

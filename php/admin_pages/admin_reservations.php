@@ -6,53 +6,37 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
 
     <!-- Title of the browser tab -->
-    <title>Avo Laptops | Prenotazioni</title>
+    <title>Avo Laptops | Gestione prenotazioni</title>
 
     <!-- Link to the styles sheet -->
-    <link rel="stylesheet" href="../css/styles.css">
+    <link rel="stylesheet" href="../../css/styles.css">
 
     <!-- Link to the booking styles sheet -->
-    <link rel="stylesheet" href="../css/reservations.css">
+    <link rel="stylesheet" href="../../css/reservations.css">
 
     <!-- Link to the responsive styles sheet -->
-    <link rel="stylesheet" href="../css/responsive.css">
+    <link rel="stylesheet" href="../../css/responsive.css">
 
     <!-- Icons -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 
     <!-- Script that manages the theme mode, animations, navbar... -->
-    <script src="../js/page_setup.js" defer></script>
+    <script src="../../js/page_setup.js" defer></script>
 
     <!-- Script that manages the reservations UX... -->
-    <script src="../js/manage_reservations.js" defer></script>
+    <script src="../../js/manage_reservations.js" defer></script>
 </head>
 
 <body id="home">
-    <?php include_once 'header_navbar.php'; ?>
+    <?php include_once '../header_navbar.php'; ?>
 
     <main>
         <section id="prenotazioni" class="my-bookings-section">
             <div class="main-container">
-                <h2 class="section-header">Le Mie Prenotazioni</h2>
+                <h2 class="section-header">Prenotazioni</h2>
 
-                <!-- Booking filters -->
                 <div class="bookings-filters">
-                    <div class="filter-tabs">
-                        <button class="filter-tab active" data-status="all">
-                            <i class="fas fa-list"></i> Tutte
-                        </button>
-                        <button class="filter-tab" data-status="pending">
-                            <i class="fas fa-hourglass-half"></i> In attesa
-                        </button>
-                        <button class="filter-tab" data-status="active">
-                            <i class="fas fa-laptop"></i> In corso
-                        </button>
-                        <button class="filter-tab" data-status="completed">
-                            <i class="fas fa-check-circle"></i> Terminate
-                        </button>
-                    </div>
-
-                    <div class="search-box">
+                    <div class="search-box admin">
                         <div class="input-group">
                             <i class="fas fa-search"></i>
                             <input type="text" id="booking-search" placeholder="Cerca per ID o modello...">
@@ -60,27 +44,19 @@
                     </div>
                 </div>
 
+
                 <!-- Booking list -->
                 <div class="bookings-list">
+
                     <?php if (isset($reservations) && !empty($reservations)): ?>
-                        <!-- Fa la query a inizio pagina per ottenere $reservations, dopodichè  -->
+                        <!-- Fa la query a inizio pagina per ottenere $reservations -->
                         <?php foreach ($reservations as $reservation): ?>
                             <div class="booking-card" data-booking-id="PR-2023-001">
                                 <div class="booking-header">
                                     <h3 class="booking-id">PR-2023-001</h3>
-                                    <?php if ($reservations["flag"] == 0): ?>
-                                        <span class="booking-status pending">
-                                            <i class="fas fa-hourglass-half"></i> In attesa di accettazione
-                                        </span>
-                                    <?php elseif ($reservations["flag"] == 1): ?>
-                                        <span class="booking-status active">
-                                            <i class="fas fa-laptop"></i> In corso
-                                        </span>
-                                    <?php else: ?>
-                                        <span class="booking-status completed">
-                                            <i class="fas fa-check-circle"></i> Terminata
-                                        </span>
-                                    <?php endif ?>
+                                    <button class="btn btn-outline btn-small confirm-button">
+                                        <i class="fa-solid fa-check"></i> Conferma
+                                    </button>
                                 </div>
 
                                 <div class="booking-details">
@@ -118,9 +94,9 @@
                             </div>
                         <?php endforeach ?>
                     <?php endif ?>
-
+                    
                     <!-- If there aren't bookings -->
-                    <div class="no-bookings-message" <?php isset($reservations) && !empty($reservations) ? "" : "style=\"display:block;\"" ?>>
+                    <div class="no-bookings-message" <?php isset($reservations) && !empty($reservations)?"":"style=\"display:block;\"" ?>>
                         <i class="fas fa-calendar-times"></i>
                         <p>Nessuna prenotazione trovata</p>
                     </div>
@@ -129,7 +105,7 @@
         </section>
     </main>
 
-    <?php include_once "footer.php" ?>
+    <?php include_once "../footer.php" ?>
 
 </body>
 

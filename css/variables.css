@@ -1,6 +1,11 @@
-/* ===== GLOBAL VARIABLES ===== */
+/*
+  ================================================
+  ================= GLOBAL VARIABLES =============
+  ================================================
+*/
+
+/* ===== Colors - Light Mode ===== */
 :root {
-  /* Colors - Light Mode */
   --color-primary: #4361ee;
   --color-primary-light: #4895ef;
   --color-secondary: #3f37c9;
@@ -9,13 +14,15 @@
   --color-text-light: #8d99ae;
   --color-bg: #f8f9fa;
   --color-bg-secondary: #e9ecef;
+  --color-statistics: #f0f4f8;
+  --color-statistics-text: #2b2d42;
   --color-card: #ffffff;
   --color-border: #dee2e6;
   --color-success: #4cc9f0;
   --color-warning: #f8961e;
   --color-error: #ef233c;
 
-  /* Spacing */
+  /* ===== Spacing ===== */
   --spacing-unit: 1rem;
   --spacing-xs: calc(var(--spacing-unit) * 0.5);
   --spacing-sm: calc(var(--spacing-unit) * 0.75);
@@ -24,7 +31,7 @@
   --spacing-xl: calc(var(--spacing-unit) * 2);
   --spacing-xxl: calc(var(--spacing-unit) * 3);
 
-  /* Typography */
+  /* ===== Typography ===== */
   --font-size-base: clamp(16px, 1vw + 14px, 18px);
   --font-size-sm: clamp(0.75rem, 0.8vw + 0.7rem, 0.875rem);
   --font-size-md: clamp(0.9rem, 1vw + 0.8rem, 1.1rem);
@@ -38,31 +45,37 @@
   --font-weight-medium: 500;
   --font-weight-bold: 700;
 
-  /* Borders */
+  /* ===== Borders ===== */
   --border-radius-sm: 4px;
   --border-radius-md: 8px;
   --border-radius-lg: 12px;
   --border-radius-xl: 16px;
   --border-radius-round: 50%;
 
-  /* Shadows */
+  /* ===== Shadows ===== */
   --shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.12);
   --shadow-md: 0 4px 6px rgba(0, 0, 0, 0.1);
   --shadow-lg: 0 10px 15px rgba(0, 0, 0, 0.1);
   --shadow-xl: 0 20px 25px rgba(0, 0, 0, 0.1);
   --shadow-inset: inset 0 2px 4px rgba(0, 0, 0, 0.05);
 
-  /* Transitions */
+  /* ===== Transitions ===== */
   --transition-fast: 0.15s ease;
   --transition-normal: 0.3s ease;
   --transition-slow: 0.45s ease;
 }
 
-/* Dark Mode Colors */
+/*
+  ================================================
+  ================= DARK MODE COLORS =============
+  ================================================
+*/
+
 [data-theme="dark"] {
   --color-primary: #4895ef;
   --color-primary-light: #4cc9f0;
   --color-secondary: #4361ee;
+  --color-statistics: #c0c0c0;
   --color-accent: #f72585;
   --color-text: #f8f9fa;
   --color-text-light: #adb5bd;

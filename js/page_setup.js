@@ -81,22 +81,6 @@ function initScrollAnimations() {
     });
     return;
   }
-
-  const observer = new IntersectionObserver((entries) => {
-    entries.forEach(entry => {
-      if (entry.isIntersecting) {
-        entry.target.style.opacity = '1';
-        entry.target.style.transform = 'translateY(0)';
-      }
-    });
-  }, { threshold: 0.1 });
-
-  animatedElements.forEach(el => {
-    el.style.opacity = '0';
-    el.style.transform = 'translateY(20px)';
-    el.style.transition = 'opacity 0.5s ease, transform 0.5s ease';
-    observer.observe(el);
-  });
 }
 
 // Back to top button
@@ -113,5 +97,5 @@ function initBackToTop() {
 // Page loader
 window.addEventListener('load', () => {
   const loader = document.querySelector('.page-loader');
-  setTimeout(() => loader.classList.add('hidden'), 1000);
+  setTimeout(() => loader.classList.add('hidden'), 200);
 });

@@ -1,0 +1,148 @@
+/*
+  ================================================
+  ================ LOCKER LIST ===================
+  ================================================
+*/
+
+/* ===== Lockers Container ===== */
+.lockers-container {
+  width: 100%;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 20px;
+  padding: 20px;
+  background-color: var(--color-bg-secondary);
+  border-radius: var(--border-radius-md);
+  box-shadow: var(--shadow-md);
+  overflow-y: auto;
+  max-height: 700px;
+}
+
+/* ===== Locker Card ===== */
+.locker-card {
+  display: flex;
+  flex-direction: column;
+  background-color: var(--color-card);
+  border: 2px solid var(--color-border);
+  border-radius: var(--border-radius-sm);
+  box-shadow: var(--shadow-lg);
+  padding: var(--spacing-md);
+  transition: transform 0.3s, box-shadow 0.3s;
+  justify-content: center;
+}
+
+.locker-card:hover {
+  transform: translateY(-5px);
+}
+
+.locker-card button {
+  width: 100%;
+}
+
+/* ===== Locker Info ===== */
+.locker-info {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  margin-bottom: 15px;
+}
+
+.locker-info i {
+  font-size: 1.5rem;
+  color: var(--color-primary);
+}
+
+.locker-info span {
+  font-weight: bold;
+  color: var(--color-text-dark);
+}
+
+/*
+  ================================================
+  ============== BUTTONS & ACTIONS ===============
+  ================================================
+*/
+
+/* ===== Buttons Container ===== */
+.buttons-container {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.buttons-container select {
+  padding: 10px;
+  border: 1px solid var(--color-border);
+  border-radius: var(--border-radius-sm);
+  background-color: var(--color-bg-secondary);
+  color: var(--color-text-dark);
+}
+
+.buttons-container button {
+  padding: 10px;
+  border: none;
+  border-radius: var(--border-radius-sm);
+  background-color: var(--color-primary);
+  color: white;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+
+/*
+  ================================================
+  ================= SEARCH BAR ===================
+  ================================================
+*/
+
+/* ===== Locker Header ===== */
+.locker-header {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+/* ===== Locker Search Bar ===== */
+.locker-search-bar {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  padding: var(--spacing-md);
+  padding-left: var(--spacing-xxl);
+  border-radius: var(--border-radius-md);
+  background-color: var(--color-bg-secondary);
+  box-shadow: var(--shadow-sm);
+  border: 1px solid var(--color-border);
+  color: var(--color-text);
+  font-size: var(--font-size-sm);
+}
+
+/* ===== Locker Search Container ===== */
+.locker-search-container {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+}
+
+.locker-search-container button {
+  font-size: var(--font-size-sm);
+}
+
+/* ===== Add Locker Button ===== */
+.add-locker-button:hover {
+  opacity: 0.8;
+}
+
+/* ===== Search Locker Input ===== */
+.search-locker-input {
+  display: flex;
+  position: relative;
+  width: 60%;
+  align-items: center;
+}
+
+.search-locker-input i {
+  position: absolute;
+  left: var(--spacing-md);
+}
