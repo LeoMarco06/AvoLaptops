@@ -7,9 +7,10 @@
 // Check if the email exists in the database
 function checkExists(str) {
   const messageDiv = document.getElementById("emailFeedback");
+  const emailRegex = /[a-z0-9._%+\-]+@(?:studenti\.)?itisavogadro\.it$/;
 
   // Handle empty input
-  if (str == "") {
+  if (str == "" || !emailRegex.test(str)) {
     messageDiv.style.display = "none";
     messageDiv.innerHTML = "";
     return;
@@ -42,6 +43,6 @@ function checkExists(str) {
   };
 
   // Send the request to the server
-  xmlhttp.open("GET", "check_email.php?email=" + str, true);
+  xmlhttp.open("GET", "../include/functions/check_email.php?email=" + str, true);
   xmlhttp.send();
 }

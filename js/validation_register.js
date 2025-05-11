@@ -69,9 +69,14 @@ function validateEmailInput() {
     emailIcon.style.color = colorIcon;
     feedbackElement.style.display = "block";
     feedbackElement.textContent = "";
+
+    // Email verification with hunter API
+    /*
     if (emailVerification()) {
       error = true;
     }
+    */
+
   } else {
     emailInput.style.borderColor = "#fd5757";
     feedbackElement.style.display = "block";
@@ -128,12 +133,14 @@ function emailVerification() {
         verificationResult.textContent = message;
         verificationResult.style.color = color;
       } else {
+        email_error = true;
         verificationResult.textContent = "Error in verification response";
         verificationResult.style.color = "#fd5757";
       }
     })
     .catch((error) => {
       console.error("Error verifying email:", error);
+      email_error = true;
       verificationResult.textContent = "Error verifying email";
       verificationResult.style.color = "#fd5757";
     });
