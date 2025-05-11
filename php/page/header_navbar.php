@@ -23,8 +23,13 @@ include_once $path . "include/session_check_.php";
         <div class="user-actions">
             <!-- Use the user's name and last name if the user is logged -->
             <?php if (isset($_SESSION["id"]) && !empty($_SESSION["id"])): ?>
-                <button class="btn btn-outline"
-                    onclick="window.location.replace('<?php echo $path ?>user/logout.php')">Logout</button>
+                <div class="profile-actions" id="profile-actions">
+                    <select class="btn btn-outline">
+                        <option value="" disabled selected hidden>Account</option>
+                        <option onclick="window.location.assign('<?php echo $path ?>user/account.php')">I tuoi dati</option>
+                        <option onclick="window.location.assign('<?php echo $path ?>user/logout.php')">Logout</option>
+                    </select>
+                </div>
             <?php else: ?>
                 <button class="btn btn-outline"
                     onclick="window.location.replace('<?php echo $path ?>user/login.php')">Accedi</button>

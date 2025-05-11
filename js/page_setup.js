@@ -12,6 +12,8 @@ document.addEventListener('DOMContentLoaded', () => {
   initSmoothScroll();
   initScrollAnimations();
   initBackToTop();
+  const loader = document.querySelector('.page-loader');
+  loader.classList.remove('hidden');
 });
 
 // Mobile menu toggle
@@ -97,5 +99,5 @@ function initBackToTop() {
 // Page loader
 window.addEventListener('load', () => {
   const loader = document.querySelector('.page-loader');
-  setTimeout(() => loader.classList.add('hidden'), 200);
+  loader.classList.add('hidden');
 });

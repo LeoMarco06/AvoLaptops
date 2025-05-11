@@ -51,6 +51,7 @@
     $check = true;
     $path = "../";
     include_once '../page/header_navbar.php';
+    include_once '../include/connection.php';
 
     $conn = connectToDatabase();
 
