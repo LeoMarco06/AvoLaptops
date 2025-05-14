@@ -3,9 +3,9 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost
--- Creato il: Mag 07, 2025 alle 14:59
--- Versione del server: 10.4.32-MariaDB
--- Versione PHP: 8.1.25
+-- Generation Time: May 14, 2025 at 02:17 PM
+-- Server version: 10.4.28-MariaDB
+-- PHP Version: 8.2.4
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 START TRANSACTION;
@@ -20,11 +20,13 @@ SET time_zone = "+00:00";
 --
 -- Database: `avo_laptops_db`
 --
+CREATE DATABASE IF NOT EXISTS `avo_laptops_db` DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci;
+USE `avo_laptops_db`;
 
 -- --------------------------------------------------------
 
 --
--- Struttura della tabella `laptops`
+-- Table structure for table `laptops`
 --
 
 CREATE TABLE `laptops` (
@@ -36,7 +38,7 @@ CREATE TABLE `laptops` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
--- Dump dei dati per la tabella `laptops`
+-- Dumping data for table `laptops`
 --
 
 INSERT INTO `laptops` (`lap_id`, `lap_model`, `lap_locker`, `lap_name`, `lap_status`) VALUES
@@ -77,7 +79,7 @@ INSERT INTO `laptops` (`lap_id`, `lap_model`, `lap_locker`, `lap_name`, `lap_sta
 (35, 2, 2, 'PC-5', 1);
 
 --
--- Trigger `laptops`
+-- Triggers `laptops`
 --
 DELIMITER $$
 CREATE TRIGGER `log_laptops_maintenance` AFTER UPDATE ON `laptops` FOR EACH ROW BEGIN
@@ -90,18 +92,52 @@ DELIMITER ;
 -- --------------------------------------------------------
 
 --
--- Struttura della tabella `laptop_reservation`
+-- Table structure for table `laptops_reservations`
 --
 
-CREATE TABLE `laptop_reservation` (
+CREATE TABLE `laptops_reservations` (
   `lap_id` int(11) NOT NULL,
   `res_id` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
+--
+-- Dumping data for table `laptops_reservations`
+--
+
+INSERT INTO `laptops_reservations` (`lap_id`, `res_id`) VALUES
+(1, 1),
+(1, 7),
+(1, 8),
+(1, 10),
+(2, 2),
+(2, 7),
+(2, 8),
+(2, 10),
+(3, 3),
+(3, 11),
+(4, 3),
+(4, 4),
+(4, 11),
+(5, 5),
+(7, 1),
+(8, 2),
+(9, 3),
+(10, 4),
+(11, 5),
+(13, 1),
+(14, 2),
+(15, 3),
+(16, 4),
+(17, 5),
+(19, 1),
+(20, 2),
+(25, 9),
+(26, 9);
+
 -- --------------------------------------------------------
 
 --
--- Struttura della tabella `lockers`
+-- Table structure for table `lockers`
 --
 
 CREATE TABLE `lockers` (
@@ -113,7 +149,7 @@ CREATE TABLE `lockers` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
--- Dump dei dati per la tabella `lockers`
+-- Dumping data for table `lockers`
 --
 
 INSERT INTO `lockers` (`lock_id`, `lock_floor`, `lock_class`, `lock_capacity`, `lock_incharge`) VALUES
@@ -124,7 +160,7 @@ INSERT INTO `lockers` (`lock_id`, `lock_floor`, `lock_class`, `lock_capacity`, `
 -- --------------------------------------------------------
 
 --
--- Struttura della tabella `log_maintenance`
+-- Table structure for table `log_maintenance`
 --
 
 CREATE TABLE `log_maintenance` (
@@ -136,7 +172,7 @@ CREATE TABLE `log_maintenance` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
--- Dump dei dati per la tabella `log_maintenance`
+-- Dumping data for table `log_maintenance`
 --
 
 INSERT INTO `log_maintenance` (`log_id`, `log_lap_id`, `log_date`, `log_time`, `log_status`) VALUES
@@ -146,7 +182,7 @@ INSERT INTO `log_maintenance` (`log_id`, `log_lap_id`, `log_date`, `log_time`, `
 -- --------------------------------------------------------
 
 --
--- Struttura della tabella `models`
+-- Table structure for table `models`
 --
 
 CREATE TABLE `models` (
@@ -157,7 +193,7 @@ CREATE TABLE `models` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
--- Dump dei dati per la tabella `models`
+-- Dumping data for table `models`
 --
 
 INSERT INTO `models` (`mod_id`, `mod_name`, `mod_RAM`, `mod_memory`) VALUES
@@ -168,7 +204,7 @@ INSERT INTO `models` (`mod_id`, `mod_name`, `mod_RAM`, `mod_memory`) VALUES
 -- --------------------------------------------------------
 
 --
--- Struttura della tabella `reservations`
+-- Table structure for table `reservations`
 --
 
 CREATE TABLE `reservations` (
@@ -181,7 +217,7 @@ CREATE TABLE `reservations` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
--- Dump dei dati per la tabella `reservations`
+-- Dumping data for table `reservations`
 --
 
 INSERT INTO `reservations` (`res_id`, `res_start_time`, `res_end_time`, `res_day`, `res_flag`, `res_user`) VALUES
@@ -190,12 +226,16 @@ INSERT INTO `reservations` (`res_id`, `res_start_time`, `res_end_time`, `res_day
 (3, '13:00:00', '15:00:00', '2025-04-20', 1, 39),
 (4, '11:00:00', '13:00:00', '2025-01-15', 0, 39),
 (5, '11:00:00', '13:00:00', '2025-02-15', 0, 37),
-(6, '08:00:00', '09:00:00', '2024-11-11', 1, 40);
+(7, '14:00:00', '14:30:00', '2025-05-07', 1, 37),
+(8, '15:00:00', '15:30:00', '2025-05-07', 1, 37),
+(9, '16:00:00', '16:30:00', '2025-05-07', 1, 37),
+(10, '13:30:00', '14:00:00', '2025-05-14', 1, 37),
+(11, '13:30:00', '14:00:00', '2025-05-14', 1, 37);
 
 -- --------------------------------------------------------
 
 --
--- Struttura della tabella `users`
+-- Table structure for table `users`
 --
 
 CREATE TABLE `users` (
@@ -207,27 +247,25 @@ CREATE TABLE `users` (
   `u_password` varchar(61) DEFAULT NULL,
   `u_role` int(11) DEFAULT NULL,
   `u_authorized` tinyint(1) DEFAULT NULL,
-  `u_token` varchar(65) DEFAULT NULL,
-  `u_date_birth` date DEFAULT NULL
+  `u_token` varchar(65) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
--- Dump dei dati per la tabella `users`
+-- Dumping data for table `users`
 --
 
-INSERT INTO `users` (`u_id`, `u_name`, `u_surname`, `u_email`, `u_cf`, `u_password`, `u_role`, `u_authorized`, `u_token`, `u_date_birth`) VALUES
-(37, 'Mario', 'Rossi', 'mario.rossi@itisavogadro.it', 'MROSSI1234567890', '$2y$10$bUTASuIFIeiq8/xSq7ppM.brt9.J/8dB1s.SjeAVJW4g4ulFqx7N6', 1, 1, NULL, NULL),
-(38, 'Anna', 'Verdi', 'anna.verdi@itisavogadro.it', 'AVERDI1234567890', '$2y$10$bUTASuIFIeiq8/xSq7ppM.brt9.J/8dB1s.SjeAVJW4g4ulFqx7N6', 1, 1, NULL, NULL),
-(39, 'Luigi', 'Bianchi', 'luigi.bianchi@itisavogadro.it', 'LBIANCHI12345678', '$2y$10$bUTASuIFIeiq8/xSq7ppM.brt9.J/8dB1s.SjeAVJW4g4ulFqx7N6', 1, 1, NULL, NULL),
-(40, 'Bianca', 'Verde', 'bianca.verde@itisavogadro.it', 'BVERDE1234567890', '$2y$10$bUTASuIFIeiq8/xSq7ppM.brt9.J/8dB1s.SjeAVJW4g4ulFqx7N6', 10, 1, NULL, NULL),
-(41, 'Nome', 'Cognome', 'ncognome@itisavogadro.it', 'NCOGNOME12345678', '$2y$10$bUTASuIFIeiq8/xSq7ppM.brt9.J/8dB1s.SjeAVJW4g4ulFqx7N6', 10, 0, NULL, NULL);
+INSERT INTO `users` (`u_id`, `u_name`, `u_surname`, `u_email`, `u_cf`, `u_password`, `u_role`, `u_authorized`, `u_token`) VALUES
+(37, 'Mario', 'Rossi', 'mario.rossi@itisavogadro.it', 'MROSSI1234567890', '$2y$10$bUTASuIFIeiq8/xSq7ppM.brt9.J/8dB1s.SjeAVJW4g4ulFqx7N6', 1, 1, '86a94807a3dbbd516ca5b5df54ef4f4ae5d833535639b50b188bc126d5c335b6'),
+(38, 'Anna', 'Verdi', 'anna.verdi@itisavogadro.it', 'AVERDI1234567890', '$2y$10$bUTASuIFIeiq8/xSq7ppM.brt9.J/8dB1s.SjeAVJW4g4ulFqx7N6', 1, 1, NULL),
+(39, 'Luigi', 'Bianchi', 'luigi.bianchi@itisavogadro.it', 'LBIANCHI12345678', '$2y$10$bUTASuIFIeiq8/xSq7ppM.brt9.J/8dB1s.SjeAVJW4g4ulFqx7N6', 1, 1, NULL),
+(41, 'Nome', 'Cognome', 'ncognome@itisavogadro.it', 'NCOGNOME12345678', '$2y$10$bUTASuIFIeiq8/xSq7ppM.brt9.J/8dB1s.SjeAVJW4g4ulFqx7N6', 10, 1, NULL);
 
 --
--- Indici per le tabelle scaricate
+-- Indexes for dumped tables
 --
 
 --
--- Indici per le tabelle `laptops`
+-- Indexes for table `laptops`
 --
 ALTER TABLE `laptops`
   ADD PRIMARY KEY (`lap_id`),
@@ -235,113 +273,113 @@ ALTER TABLE `laptops`
   ADD KEY `lap_locker` (`lap_locker`);
 
 --
--- Indici per le tabelle `laptop_reservation`
+-- Indexes for table `laptops_reservations`
 --
-ALTER TABLE `laptop_reservation`
+ALTER TABLE `laptops_reservations`
   ADD PRIMARY KEY (`lap_id`,`res_id`),
   ADD KEY `res_id` (`res_id`);
 
 --
--- Indici per le tabelle `lockers`
+-- Indexes for table `lockers`
 --
 ALTER TABLE `lockers`
   ADD PRIMARY KEY (`lock_id`);
 
 --
--- Indici per le tabelle `log_maintenance`
+-- Indexes for table `log_maintenance`
 --
 ALTER TABLE `log_maintenance`
   ADD PRIMARY KEY (`log_id`),
   ADD KEY `log_lap_id` (`log_lap_id`);
 
 --
--- Indici per le tabelle `models`
+-- Indexes for table `models`
 --
 ALTER TABLE `models`
   ADD PRIMARY KEY (`mod_id`);
 
 --
--- Indici per le tabelle `reservations`
+-- Indexes for table `reservations`
 --
 ALTER TABLE `reservations`
   ADD PRIMARY KEY (`res_id`),
   ADD KEY `res_user` (`res_user`);
 
 --
--- Indici per le tabelle `users`
+-- Indexes for table `users`
 --
 ALTER TABLE `users`
   ADD PRIMARY KEY (`u_id`);
 
 --
--- AUTO_INCREMENT per le tabelle scaricate
+-- AUTO_INCREMENT for dumped tables
 --
 
 --
--- AUTO_INCREMENT per la tabella `laptops`
+-- AUTO_INCREMENT for table `laptops`
 --
 ALTER TABLE `laptops`
   MODIFY `lap_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=36;
 
 --
--- AUTO_INCREMENT per la tabella `lockers`
+-- AUTO_INCREMENT for table `lockers`
 --
 ALTER TABLE `lockers`
   MODIFY `lock_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 
 --
--- AUTO_INCREMENT per la tabella `log_maintenance`
+-- AUTO_INCREMENT for table `log_maintenance`
 --
 ALTER TABLE `log_maintenance`
   MODIFY `log_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 
 --
--- AUTO_INCREMENT per la tabella `models`
+-- AUTO_INCREMENT for table `models`
 --
 ALTER TABLE `models`
   MODIFY `mod_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 
 --
--- AUTO_INCREMENT per la tabella `reservations`
+-- AUTO_INCREMENT for table `reservations`
 --
 ALTER TABLE `reservations`
-  MODIFY `res_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
+  MODIFY `res_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=12;
 
 --
--- AUTO_INCREMENT per la tabella `users`
+-- AUTO_INCREMENT for table `users`
 --
 ALTER TABLE `users`
   MODIFY `u_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=42;
 
 --
--- Limiti per le tabelle scaricate
+-- Constraints for dumped tables
 --
 
 --
--- Limiti per la tabella `laptops`
+-- Constraints for table `laptops`
 --
 ALTER TABLE `laptops`
   ADD CONSTRAINT `laptops_ibfk_1` FOREIGN KEY (`lap_model`) REFERENCES `models` (`mod_id`),
   ADD CONSTRAINT `laptops_ibfk_2` FOREIGN KEY (`lap_locker`) REFERENCES `lockers` (`lock_id`);
 
 --
--- Limiti per la tabella `laptop_reservation`
+-- Constraints for table `laptops_reservations`
 --
-ALTER TABLE `laptop_reservation`
-  ADD CONSTRAINT `laptop_reservation_ibfk_1` FOREIGN KEY (`lap_id`) REFERENCES `laptops` (`lap_id`) ON DELETE CASCADE,
-  ADD CONSTRAINT `laptop_reservation_ibfk_2` FOREIGN KEY (`res_id`) REFERENCES `reservations` (`res_id`);
+ALTER TABLE `laptops_reservations`
+  ADD CONSTRAINT `laptops_reservations_ibfk_1` FOREIGN KEY (`lap_id`) REFERENCES `laptops` (`lap_id`) ON DELETE CASCADE,
+  ADD CONSTRAINT `laptops_reservations_ibfk_2` FOREIGN KEY (`res_id`) REFERENCES `reservations` (`res_id`) ON DELETE CASCADE;
 
 --
--- Limiti per la tabella `log_maintenance`
+-- Constraints for table `log_maintenance`
 --
 ALTER TABLE `log_maintenance`
-  ADD CONSTRAINT `log_maintenance_ibfk_1` FOREIGN KEY (`log_lap_id`) REFERENCES `laptops` (`lap_id`);
+  ADD CONSTRAINT `log_maintenance_ibfk_1` FOREIGN KEY (`log_lap_id`) REFERENCES `laptops` (`lap_id`) ON DELETE CASCADE;
 
 --
--- Limiti per la tabella `reservations`
+-- Constraints for table `reservations`
 --
 ALTER TABLE `reservations`
-  ADD CONSTRAINT `reservations_ibfk_1` FOREIGN KEY (`res_user`) REFERENCES `users` (`u_id`);
+  ADD CONSTRAINT `reservations_ibfk_1` FOREIGN KEY (`res_user`) REFERENCES `users` (`u_id`) ON DELETE CASCADE;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
