@@ -92,22 +92,22 @@
                                         placeholder="Seleziona data" readonly>
                                     <div class="date-picker" id="date-birth-picker">
                                         <div class="date-picker-header">
-                                            <button class="prev-year">&lt;&lt;</button>
-                                            <button class="prev-month">&lt;</button>
+                                            <button type="button" class="prev-year">&lt;&lt;</button>
+                                            <button type="button" class="prev-month">&lt;</button>
                                             <h2 class="current-date">
                                                 <span class="month-year">
                                                     <span class="current-month"></span>
                                                     <span class="current-year"></span>
                                                 </span>
                                             </h2>
-                                            <button class="next-month">&gt;</button>
-                                            <button class="next-year">&gt;&gt;</button>
+                                            <button type="button" class="next-month">&gt;</button>
+                                            <button type="button" class="next-year">&gt;&gt;</button>
                                         </div>
                                         <div class="date-picker-weekdays"></div>
                                         <div class="date-picker-days"></div>
                                         <div class="date-picker-footer">
-                                            <button class="today-btn">Oggi</button>
-                                            <button class="clear-btn">Cancella</button>
+                                            <button type="button" class="today-btn">Oggi</button>
+                                            <button type="button" class="clear-btn">Cancella</button>
                                         </div>
                                     </div>
                                 </div>

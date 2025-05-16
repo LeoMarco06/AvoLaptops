@@ -47,15 +47,8 @@ function parseCustomDate(dateStr) {
   return year + "-" + monthIndex + "-" + day;
 }
 
-// Disable past dates and limit future dates in the picker
-function disablePastDates(picker) {
-  const today = new Date();
-  today.setHours(0, 0, 0, 0);
-
-  const max = new Date();
-  max.setDate(max.getDate() + 14);
-  max.setHours(0, 0, 0, 0);
-
+// Disabilita i giorni fuori da un intervallo di date
+function disableDates(picker, minDate = null, maxDate = null) {
   const currentMonthElement = picker.querySelector(".current-month");
   const currentYearElement = picker.querySelector(".current-year");
 
@@ -73,7 +66,11 @@ function disablePastDates(picker) {
     const dayDate = new Date(currentYear, currentMonth, dayNumber);
     dayDate.setHours(0, 0, 0, 0);
 
-    if (dayDate < today || dayDate > max) {
+    let disable = false;
+    if (minDate && dayDate < minDate) disable = true;
+    if (maxDate && dayDate > maxDate) disable = true;
+
+    if (disable) {
       day.classList.add("disabled");
       day.style.pointerEvents = "none";
       day.style.opacity = "0.5";
@@ -85,21 +82,46 @@ function disablePastDates(picker) {
   });
 }
 
+// Disabilita tutte le domeniche
+function disableSundays(picker) {
+  const currentMonthElement = picker.querySelector(".current-month");
+  const currentYearElement = picker.querySelector(".current-year");
+
+  const currentMonth = getMonthIndex(currentMonthElement.textContent);
+  const currentYear = parseInt(currentYearElement.textContent);
+
+  const days = picker.querySelectorAll(
+    ".date-picker-days div:not(.prev-month):not(.next-month)"
+  );
+
+  days.forEach((day) => {
+    const dayNumber = parseInt(day.textContent);
+    if (isNaN(dayNumber)) return;
+
+    const dayDate = new Date(currentYear, currentMonth, dayNumber);
+    if (dayDate.getDay() === 0) { // 0 = Domenica
+      day.classList.add("disabled");
+      day.style.pointerEvents = "none";
+      day.style.opacity = "0.5";
+    }
+  });
+}
+
 // Set up navigation buttons for the date picker
-function setupDatePickerListeners(picker) {
+function setupDatePickerListeners(picker, minDate = null, maxDate = null) {
   const headerButtons = picker.querySelectorAll(".date-picker-header button");
 
   headerButtons.forEach((button) => {
     button.addEventListener("click", () => {
-      setTimeout(() => disablePastDates(picker), 10);
+      setTimeout(() => disableDates(picker, minDate, maxDate), 10);
     });
   });
 
-  setTimeout(() => disablePastDates(picker), 100);
+  setTimeout(() => disableDates(picker, minDate, maxDate), 100);
 }
 
-// Initialize the date picker with input and picker elements
-function initDatePicker(inputId, pickerId) {
+// Modifica initDatePicker per accettare minDate e maxDate
+function initDatePicker(inputId, pickerId, minDate = null, maxDate = null) {
   const input = document.getElementById(inputId);
   const picker = document.getElementById(pickerId);
 
@@ -260,7 +282,15 @@ function initDatePicker(inputId, pickerId) {
       }
     }
 
-    disablePastDates(picker);
+    // Converte minDate e maxDate in oggetti Date se sono stringhe
+    let min = minDate ? new Date(minDate) : null;
+    let max = maxDate ? new Date(maxDate) : null;
+    if (min) min.setHours(0, 0, 0, 0);
+    if (max) max.setHours(0, 0, 0, 0);
+
+    disableDates(picker, min, max);
+    disableSundays(picker);
+    setupDatePickerListeners(picker, min, max);
   }
 
   function selectDate(date) {

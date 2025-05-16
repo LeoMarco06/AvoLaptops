@@ -59,8 +59,23 @@ document.addEventListener("DOMContentLoaded", function () {
   }
 
   // Initialize date picker and set up filters
-  initDatePicker("start-date", "start-date-picker");
-  setupDatePickerListeners(startDatePicker);
+  const today = new Date();
+  const yyyy = today.getFullYear();
+  const mm = String(today.getMonth() + 1).padStart(2, '0');
+  const dd = String(today.getDate()).padStart(2, '0');
+  const formattedToday = `${yyyy}-${mm}-${dd}`;
+
+  // Calcola la data massima (oggi + 14 giorni)
+  const maxDateObj = new Date(today);
+  maxDateObj.setDate(today.getDate() + 14);
+  const maxY = maxDateObj.getFullYear();
+  const maxM = String(maxDateObj.getMonth() + 1).padStart(2, '0');
+  const maxD = String(maxDateObj.getDate()).padStart(2, '0');
+  const formattedMax = `${maxY}-${maxM}-${maxD}`;
+
+  // Passa minDate e maxDate a initDatePicker
+  initDatePicker("start-date", "start-date-picker", formattedToday, formattedMax);
+  setupDatePickerListeners(startDatePicker, new Date(formattedToday), new Date(formattedMax));
 
   document.getElementById("filter-btn").addEventListener("click", function () {
     const selectedDate = document.getElementById("start-date").value;
@@ -116,12 +131,12 @@ document.addEventListener("DOMContentLoaded", function () {
 
     xmlhttp.open(
       "GET",
-      "laptop_filter.php?date=" +
-        selectedDate +
-        "&start_time=" +
-        selectedStartTime +
-        "&end_time=" +
-        selectedEndTime,
+      "../include/functions/laptop_filter.php?date=" +
+      selectedDate +
+      "&start_time=" +
+      selectedStartTime +
+      "&end_time=" +
+      selectedEndTime,
       true
     );
     xmlhttp.send();
@@ -143,15 +158,13 @@ document.addEventListener("DOMContentLoaded", function () {
         <i class="fas fa-laptop"></i>
         <span>${laptop.name} (${laptop.model})</span>
       </div>
-      ${
-        laptop.status === 1
-          ? `<button class="btn-icon select-laptop">
+      ${laptop.status === 1
+        ? `<button class="btn-icon select-laptop">
                <i class="fas fa-plus"></i>
              </button>`
-          : `<span class="status-badge">
-               <i class="fas ${
-                 laptop.status === -1 ? "fa-tools" : "fa-times"
-               }"></i> ${statusLabel}
+        : `<span class="status-badge">
+               <i class="fas ${laptop.status === -1 ? "fa-tools" : "fa-times"
+        }"></i> ${statusLabel}
              </span>`
       }
     `;

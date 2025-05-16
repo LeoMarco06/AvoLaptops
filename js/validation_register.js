@@ -5,9 +5,17 @@
 */
 
 document.addEventListener("DOMContentLoaded", () => {
+  const today = new Date();
+  const yyyy = today.getFullYear();
+  const mm = String(today.getMonth() + 1).padStart(2, '0');
+  const dd = String(today.getDate()).padStart(2, '0');
+  const formattedToday = `${yyyy}-${mm}-${dd}`;
+
+  // Initialize date picker
+  initDatePicker('date-birth', 'date-birth-picker', '1945-01-01', formattedToday);
+
   // Initialize password visibility toggle and date picker
   togglePasswordVisibility();
-  initDatePicker("date-birth", "date-birth-picker");
 
   // Validate form on submission
   document
