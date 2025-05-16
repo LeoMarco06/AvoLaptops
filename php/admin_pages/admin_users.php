@@ -87,9 +87,10 @@ $users_json = json_encode($users);
                 <?php endforeach; ?>
 
                 <!-- No users found message -->
-                <?php if (empty($users_json)): ?>
-
-                <?php endif ?>
+                <div class="no-users-message">
+                    <i class="fa-solid fa-user-slash"></i>
+                    <span>Nessun utente trovato</span>
+                </div>
             </div>
 
             <!-- Popup for editing user -->

@@ -5,17 +5,30 @@
 */
 
 document.addEventListener("DOMContentLoaded", function () {
+  document.addEventListener("keydown", function (event) {
+    if (event.key === "Escape") {
+      closePopup();
+    }
+  });
+
   // Filter laptops based on search input
   const searchInput = document.getElementById("search-laptop");
+  const noLaptopsMsg = document.querySelector(".no-laptops-message");
   searchInput.addEventListener("input", function () {
     const searchTerm = this.value.toLowerCase();
     const laptopCards = document.querySelectorAll(".laptop-item");
 
+    let visibleCount = 0;
     laptopCards.forEach((card) => {
       const cardText = card.textContent.toLowerCase();
       const isVisible = cardText.includes(searchTerm);
       card.style.display = isVisible ? "block" : "none";
+      if (isVisible) visibleCount++;
     });
+
+    if (noLaptopsMsg) {
+      noLaptopsMsg.style.display = visibleCount === 0 ? "flex" : "none";
+    }
     console.log("Search term:", searchTerm);
   });
 
@@ -64,8 +77,12 @@ document.addEventListener("DOMContentLoaded", function () {
     laptopItem.innerHTML = `
       <div class="laptop-info">
         <div class="laptop-header">
+        <div>
           <i class="fas fa-laptop"></i>
-          <span>${laptop.lap_model}</span>
+          <span>${laptop.lap_model}</span></div>
+            <button id="open-qr-popup" class="btn btn-outline btn-small qr-btn" onclick='showQrPopup(${JSON.stringify(laptop)})'>
+              <i class="fa-solid fa-qrcode"></i> <p>QR</p>
+            </button>
         </div>
         <p>Armadietto: ${laptop.lock_id}</p>
         <p>Numero: ${laptop.lap_name}</p>
@@ -74,15 +91,12 @@ document.addEventListener("DOMContentLoaded", function () {
       </div>
       <div class="buttons-container" style="display: flex; flex-direction: column; gap: 10px;">
         <select>
-          <option value="0" ${
-            laptop.lap_status === 0 ? `selected` : ""
-          }>Disponibile</option>
-          <option value="1" ${
-            laptop.lap_status === 1 ? `selected` : ""
-          }>Non disponibile</option>
-          <option value="-1" ${
-            laptop.lap_status === -1 ? `selected` : ""
-          }>Manutenzione</option>
+          <option value="0" ${laptop.lap_status === 0 ? `selected` : ""
+      }>Disponibile</option>
+          <option value="1" ${laptop.lap_status === 1 ? `selected` : ""
+      }>Non disponibile</option>
+          <option value="-1" ${laptop.lap_status === -1 ? `selected` : ""
+      }>Manutenzione</option>
         </select>
         <button class="btn btn-primary">Elimina</button>
       </div>

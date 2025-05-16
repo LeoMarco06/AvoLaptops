@@ -98,7 +98,7 @@
 /* Overlay scuro interno */
 #qr-reader #qr-shaded-region {
     inset: 0 !important;
-    border-width: 10% 10% !important; /* Ridotto per aumentare area visibile */
+    border-width: 10% 10% !important;
     border-style: solid;
     border-color: rgba(0, 0, 0, 0.48);
     box-sizing: border-box;
@@ -121,35 +121,4 @@
   margin-top: var(--spacing-sm);
   font-size: var(--font-size-sm);
   color: var(--color-text);
-}
-
-/* Media query per schermi piccoli */
-@media (max-width: 480px) {
-  .qr-popup-content {
-    width: 95%;
-    padding: var(--spacing-sm);
-    font-size: 0.95rem;
-  }
-
-  .qr-popup-content h3 {
-    font-size: var(--font-size-md);
-  }
-  
-
-  .qr-close-btn {
-    font-size: var(--font-size-lg);
-    padding: 0 var(--spacing-xs);
-  }
-
-  #qr-reader #qr-shaded-region {
-    border-width: 15% 15% !important;
-  }
-
-  #qr-reader{
-    aspect-ratio: 16/9;
-  }
-
-  #qr-result {
-    font-size: 0.9rem;
-  }
 }

@@ -64,7 +64,12 @@ $lockers_json = json_encode($lockers);
                     Aggiungi
                 </button>
             </div>
-            <div class="lockers-container" id="lockers-container"></div>
+            <div class="lockers-container" id="lockers-container">
+                <div class="no-lockers-message" style="display: none;">
+                    <i class="fa-solid fa-box-open"></i>
+                    <span>Nessun armadietto trovato</span>
+                </div>
+            </div>
             <div class="popup-container" id="popup-container">
                 <div class="auth-header">
                     <h2 class="heading-2">Aggiungi un nuovo armadietto</h2>

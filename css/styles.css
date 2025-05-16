@@ -135,9 +135,17 @@ a:hover {
   box-shadow: var(--shadow-md);
 }
 
+.btn-outline:hover i {
+  color: white !important;
+}
+
 .btn-small {
   padding: var(--spacing-xs) var(--spacing-sm);
   font-size: var(--font-size-sm);
+}
+
+.btn-small i {
+  font-size: 1rem !important;
 }
 
 .btn-icon {
@@ -251,6 +259,7 @@ main > .main-container {
 .main-nav a {
   color: var(--color-text);
   font-weight: var(--font-weight-medium);
+  font-size: var(--font-size-sm);
 }
 
 .main-nav a:hover {

@@ -101,16 +101,23 @@ document.addEventListener("DOMContentLoaded", () => {
   });
 
   // Implement live search functionality for lockers
+  const noLockersMsg = document.querySelector(".no-lockers-message");
   document.getElementById("search-locker").addEventListener("input", (e) => {
     const searchTerm = e.target.value.toLowerCase();
     const lockerCards = lockersContainer.querySelectorAll(".locker-card");
 
+    let visibleCount = 0;
     lockerCards.forEach((card) => {
       if (card.textContent.toLowerCase().includes(searchTerm)) {
         card.style.display = "block";
+        visibleCount++;
       } else {
         card.style.display = "none";
       }
     });
+
+    if (noLockersMsg) {
+      noLockersMsg.style.display = visibleCount === 0 ? "flex" : "none";
+    }
   });
 });

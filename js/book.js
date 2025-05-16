@@ -335,4 +335,23 @@ document.addEventListener("DOMContentLoaded", function () {
   laptopListener(selectedLaptops);
   document.getElementById("selected-laptops").innerHTML = "";
   updateSummary();
+
+  function selectLaptopById(lap_id) {
+    const laptopItem = document.querySelector(`.laptop-item[data-laptop-id="${lap_id}"]`);
+    if (!laptopItem) {
+      alert("Laptop non trovato o non disponibile per la selezione.");
+      return;
+    }
+
+    const selectBtn = laptopItem.querySelector(".select-laptop");
+    if (selectBtn && !selectBtn.classList.contains("selected")) {
+      selectBtn.click();
+    } else if (selectBtn && selectBtn.classList.contains("selected")) {
+      alert("Questo laptop è già nel carrello.");
+    } else {
+      alert("Questo laptop non è selezionabile.");
+    }
+  }
+
+  window.selectLaptopById = selectLaptopById;
 });

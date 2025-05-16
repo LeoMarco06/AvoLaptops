@@ -52,8 +52,31 @@ document.addEventListener("DOMContentLoaded", function () {
       const name = card.querySelector("h3").textContent.toLowerCase();
       card.style.display = name.includes(searchTerm) ? "block" : "none";
     });
+
+    updateNoUsersMessage();
   });
+
+  // Aggiorna subito il messaggio all'avvio
+  updateNoUsersMessage();
 });
+
+function updateNoUsersMessage() {
+  const userCards = document.querySelectorAll(".user-card");
+  const visibleCards = Array.from(userCards).filter(
+    (card) => card.style.display !== "none"
+  );
+  const noUsersMsg = document.querySelector(".no-users-message");
+
+  if (!noUsersMsg) return;
+
+  if (visibleCards.length === 0) {
+    document.getElementById("users-container").style.display = "flex";
+    noUsersMsg.style.display = "flex";
+  } else {
+    noUsersMsg.style.display = "none";
+    document.getElementById("users-container").style.display = "grid";
+  }
+}
 
 // Fetch and display user data in the popup
 function viewUser(id) {

@@ -14,11 +14,14 @@
     <!-- Link to the authentication styles sheet -->
     <link rel="stylesheet" href="../../css/auth.css">
 
-    <!-- Link to the responsive styles sheet -->
-    <link rel="stylesheet" href="../../css/responsive.css">
-
     <!-- Link to the booking styles sheet -->
     <link rel="stylesheet" href="../../css/laptop_page.css">
+
+    <!-- Link to the qr img styles sheet -->
+    <link rel="stylesheet" href="../../css/qr_reader.css">
+
+    <!-- Link to the responsive styles sheet -->
+    <link rel="stylesheet" href="../../css/responsive.css">
 
     <!-- Icons -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
@@ -29,8 +32,13 @@
     <!-- Script that manages modals -->
     <script src="../../js/modal_setup.js" defer></script>
 
+    <!-- Script that manages modals -->
+    <script src="../../js/create_laptop_qr.js" defer></script>
+
     <!-- Script that validates the form -->
     <script src="../../js/laptop_page_setup.js" defer></script>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
 </head>
 
 <?php
@@ -85,7 +93,15 @@ $models_json = json_encode($models);
                     Aggiungi
                 </button>
             </div>
-            <div class="laptops-container" id="laptops-container"></div>
+
+            <div class="laptops-container" id="laptops-container">
+                <div class="no-laptops-message" style="display: none;">
+                    <i class="fa-solid fa-laptop-medical"></i>
+                    <span>Nessun laptop trovato</span>
+                </div>
+            </div>
+
+
             <div class="popup-container" id="popup-container">
                 <div class="auth-header">
                     <h2 class="heading-2">Aggiungi un nuovo laptop</h2>
@@ -129,10 +145,24 @@ $models_json = json_encode($models);
                     </div>
                 </form>
             </div>
+
+            <!-- QR Popup -->
+            <div id="qr-popup-admin" class="qr-popup-overlay" style="display:none;">
+                <div class="qr-popup-content">
+                    <div class="popup-header">
+                        <h3 id="popup-qr-title">QR Laptop</h3>
+                        <button id="close-qr-popup-admin" class="qr-close-btn">&times;</button>
+                    </div>
+                    <div id="qr-code">
+                        <div class="qr-container" id="qr-code-admin"></div>
+                    </div>
+                    <pre id="qr-json-admin"></pre>
+                    <button id="print-qr-btn" class="btn btn-primary btn-small">Stampa/Salva PDF</button>
+                </div>
+            </div>
     </main>
 
     <?php include_once "../page/footer.php" ?>
-
 </body>
 
 <div id="laptops-data" style="display: none;">
@@ -146,3 +176,5 @@ $models_json = json_encode($models);
 <div id="models-data" style="display: none;">
     <?php echo $models_json; ?>
 </div>
+
+</html>
