@@ -6,7 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
 
     <!-- Title of the browser tab -->
-    <title>Avo Laptops | Registrati</title>
+    <title>Avo Laptops | Account</title>
 
     <!-- Link to the styles sheet -->
     <link rel="stylesheet" href="../../css/styles.css">
@@ -124,9 +124,13 @@
                             <div id="codFisFeedback" class="feedback-message"></div>
                         </div>
 
-                        <button type="button" class="btn btn-primary btn-block" id="edit-button">Modifica</button>
-                        <button type="button" class="btn btn-danger btn-block" id="cancel-button">Annulla</button>
-                        <button type="submit" class="btn btn-primary btn-block" id="save-button">Salva</button>
+                        <p><a href="editPassword.php">Vuoi modificare la tua password ? Premi qui.</a></p>
+
+                        <div class="buttons_div">
+                            <button type="button" class="btn btn-primary btn-block" id="edit-button">Modifica</button>
+                            <button type="button" class="btn btn-danger btn-block" id="cancel-button">Annulla</button>
+                            <button type="submit" class="btn btn-primary btn-block" id="save-button">Salva</button>
+                        </div>
                     </form>
                 </div>
             </div>
