@@ -123,8 +123,8 @@ $models_json = json_encode($models);
                             </select>
                         </div>
                     </div>
-                    <div class="popup-buttons">
-                        <button class="btn btn-primary" type="button" onclick="closePopup()">Cancella</button>
+                    <div class="buttons_div">
+                        <button class="btn btn-primary" type="button" onclick="closePopup()">Chiudi</button>
                         <button type="submit" class="btn btn-primary" onclick="validateForm()">Aggiungi</button>
                     </div>
                 </form>

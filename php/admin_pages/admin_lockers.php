@@ -109,8 +109,8 @@ $lockers_json = json_encode($lockers);
                                 placeholder="Capacità dell'armadietto" min="0" max="100" required>
                         </div>
                     </div>
-                    <div class="popup-buttons">
-                        <button class="btn btn-primary" type="button" onclick="closePopup()">Cancella</button>
+                    <div class="buttons_div">
+                        <button class="btn btn-danger" type="button" onclick="closePopup()">Chiudi</button>
                         <button type="submit" class="btn btn-primary">Aggiungi</button>
                     </div>
                 </form>

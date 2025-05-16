@@ -109,7 +109,7 @@
   transition: transform var(--transition-normal);
 }
 
-.booking-card:hover {
+.booking-card:not(.booking-card:first-child):hover {
   transform: translateY(-3px);
   box-shadow: var(--shadow-md);
 }

@@ -1,3 +1,10 @@
+// Close Popup when clicking the esc button
+document.addEventListener("keydown", function (event) {
+  if (event.key === "Escape") {
+    closePopup();
+  }
+});
+
 function openPopup() {
   const popup = document.getElementById("popup-container");
   const obscured = document.getElementById("obscure-bg");

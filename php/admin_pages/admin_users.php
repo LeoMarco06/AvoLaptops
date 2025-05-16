@@ -96,7 +96,7 @@ $users_json = json_encode($users);
             <div class="popup-container" id="popup-container">
                 <div class="popup-header">
                     <h2 id="popup-title">Gestione Utente</h2>
-                    <button onclick="closeUserPopup()" class="btn btn-close"><i class="fa-solid fa-xmark"></i></button>
+                    <button onclick="closeUserPopup()" class="btn btn-danger"><i class="fa-solid fa-xmark"></i></button>
                 </div>
                 <form id="user-form" class="auth-form">
                     <div class="form-group">
@@ -111,11 +111,6 @@ $users_json = json_encode($users);
                                 <div id="surnameFeedback" class="feedback"></div>
                             </div>
                         </div>
-                    </div>
-                    <div class="form-group">
-                        <label for="user-email">Email</label>
-                        <input type="email" id="user-email" name="user-email" disabled>
-                        <div id="emailFeedback" class="feedback"></div>
                     </div>
                     <div class="form-group">
                         <label for="user-role">Ruolo</label>
@@ -157,11 +152,11 @@ $users_json = json_encode($users);
                             </div>
                         </div>
                     </div>
-                    <div class="popup-buttons">
+                    <div class="buttons_div">
                         <button type="button" class="btn btn-primary" id="edit-btn">Modifica</button>
                         <button type="submit" class="btn btn-primary" id="save-btn"
                             style="display: none;">Salva</button>
-                        <button type="button" class="btn btn-secondary" id="cancel-btn" style="display: none;"
+                        <button type="button" class="btn btn-danger" id="cancel-btn" style="display: none;"
                             onclick="toggleEditMode(false); resetFeedbackStyles();">Annulla</button>
                     </div>
                 </form>

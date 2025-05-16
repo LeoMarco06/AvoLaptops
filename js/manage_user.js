@@ -5,9 +5,15 @@
 */
 
 document.addEventListener("DOMContentLoaded", function () {
+  const today = new Date();
+  const yyyy = today.getFullYear();
+  const mm = String(today.getMonth() + 1).padStart(2, '0');
+  const dd = String(today.getDate()).padStart(2, '0');
+  const formattedToday = `${yyyy}-${mm}-${dd}`;
+
   // Initialize date picker and remove user data element
   document.body.removeChild(document.getElementById("users-data"));
-  initDatePicker("date-birth", "date-birth-picker");
+  initDatePicker('date-birth', 'date-birth-picker', '1945-01-01', formattedToday);
 
   // Handle edit and cancel button actions
   document.getElementById("edit-btn").addEventListener("click", function () {
@@ -59,7 +65,6 @@ function viewUser(id) {
       const user = JSON.parse(this.responseText)[0];
       document.getElementById("user-name").value = user["u_name"];
       document.getElementById("user-surname").value = user["u_surname"];
-      document.getElementById("user-email").value = user["u_email"];
       document.getElementById("user-codFis").value = user["u_cf"];
       document.getElementById("date-birth").value = formatDate(
         new Date("2001-01-01")
@@ -126,98 +131,11 @@ function toggleEditMode(enable) {
 function validateForm() {
   let isValid = true;
 
-  isValid &= !validateEmailInput();
   isValid &= !validateNameInput();
   isValid &= !validateSurnameInput();
   isValid &= !validateCodFisInput();
 
   return isValid;
-}
-
-// Validate the email input field
-function validateEmailInput() {
-  const emailInput = document.getElementById("user-email");
-  const emailValue = emailInput.value;
-  const feedbackElement = document.getElementById("emailFeedback");
-  const emailRegex = /[a-z0-9._%+\-]+@(?:studenti\.)?itisavogadro\.it$/;
-  let error = false;
-
-  if (emailRegex.test(emailValue)) {
-    if (emailVerification()) {
-      error = true;
-    }
-  } else {
-    feedbackElement.textContent =
-      "Inserisci un indirizzo email valido del dominio itisavogadro";
-    error = true;
-  }
-
-  if (error) {
-    feedbackElement.classList.add("error");
-    emailInput.classList.add("input-error");
-  } else {
-    feedbackElement.textContent = "";
-    feedbackElement.classList.remove("error");
-    emailInput.classList.remove("input-error");
-  }
-
-  return error;
-}
-
-// Verify the email using an external API
-function emailVerification() {
-  const email = document.getElementById("user-email").value;
-  const apiKey = "9d067e6b3fd7bf4a201f509a991dda916ae10380";
-  const verificationResult = document.getElementById("emailFeedback");
-  let email_error = false;
-
-  verificationResult.textContent = "Verifying email...";
-  verificationResult.style.color = "var(--color-text-light)";
-
-  const url = `https://api.hunter.io/v2/email-verifier?email=${encodeURIComponent(
-    email
-  )}&api_key=${apiKey}`;
-
-  fetch(url)
-    .then((response) => {
-      if (!response.ok) {
-        throw new Error("Network response was not ok");
-      }
-      return response.json();
-    })
-    .then((data) => {
-      if (data.data && data.data.status) {
-        const status = data.data.status;
-        let message = "";
-        let color = "";
-
-        switch (status) {
-          case "valid":
-            message = "✓ Email is valid and exists";
-            color = "#4CAF50";
-            email_error = false;
-            break;
-          case "invalid":
-            message = "✗ Email does not exist";
-            color = "#fd5757";
-            email_error = true;
-            break;
-        }
-
-        verificationResult.textContent = message;
-        verificationResult.style.color = color;
-      } else {
-        verificationResult.textContent = "Error in verification response";
-        verificationResult.style.color = "#fd5757";
-      }
-    })
-    .catch((error) => {
-      console.error("Error verifying email:", error);
-      verificationResult.textContent = "Error verifying email";
-      verificationResult.style.color = "#fd5757";
-    });
-
-  return email_error;
 }
 
 // Validate the name input field

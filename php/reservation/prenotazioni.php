@@ -176,11 +176,11 @@
                                 </div>
 
                                 <div class="booking-actions">
-                                    <button class="btn btn-outline btn-small">
-                                        <i class="fas fa-info-circle"></i> Dettagli
+                                    <button class="btn btn-confirm">
+                                        <i class="fa-solid fa-check"></i> Conferma
                                     </button>
-                                    <button class="btn btn-outline btn-small cancel-booking">
-                                        <i class="fas fa-times"></i> Annulla
+                                    <button class="btn btn-danger">
+                                        <i class="fa-solid fa-xmark"></i> Elimina
                                     </button>
                                 </div>
                             </div>

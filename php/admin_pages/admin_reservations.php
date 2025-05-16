@@ -139,8 +139,8 @@
                                 </div>
 
                                 <div class="booking-actions">
-                                    <button class="btn btn-outline btn-small">
-                                        <i class="fas fa-info-circle"></i> Dettagli
+                                    <button class="btn btn-danger">
+                                        <i class="fa-solid fa-xmark"></i> Elimina
                                     </button>
                                 </div>
                             </div>

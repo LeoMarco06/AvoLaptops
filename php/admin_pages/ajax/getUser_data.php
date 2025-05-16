@@ -19,5 +19,10 @@ $user = $stmt->get_result()->fetch_all(MYSQLI_ASSOC);
 
 $conn->close();
 
+// Clean the output buffer before sending the JSON
+if (ob_get_level()) {
+    ob_clean();
+}
+header('Content-Type: application/json');
 echo json_encode($user);
 ?>
