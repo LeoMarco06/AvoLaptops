@@ -183,10 +183,12 @@ document.addEventListener("DOMContentLoaded", function () {
     lockerCard.innerHTML = `
       <div class="locker-header">
         <h4 class="heading-4">Armadietto ${lockerId} - ${lock_class}</h4>
+        <div>
         <span class="locker-status">${availableLaptops}/${laptops.length} disponibili</span>
         <button class="btn-icon toggle-locker" aria-expanded="false">
           <i class="fas fa-chevron-down"></i>
         </button>
+        </div>
       </div>
       <div class="locker-laptops" style="display: none;">
       </div>

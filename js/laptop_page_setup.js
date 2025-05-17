@@ -80,7 +80,7 @@ document.addEventListener("DOMContentLoaded", function () {
         <div>
           <i class="fas fa-laptop"></i>
           <span>${laptop.lap_model}</span></div>
-            <button id="open-qr-popup" class="btn btn-outline btn-small qr-btn" onclick='showQrPopup(${JSON.stringify(laptop)})'>
+            <button type="button" id="open-qr-popup" class="btn btn-outline btn-small qr-btn" onclick='showQrPopup(${JSON.stringify(laptop)})'>
               <i class="fa-solid fa-qrcode"></i> <p>QR</p>
             </button>
         </div>
@@ -98,7 +98,7 @@ document.addEventListener("DOMContentLoaded", function () {
           <option value="-1" ${laptop.lap_status === -1 ? `selected` : ""
       }>Manutenzione</option>
         </select>
-        <button class="btn btn-primary">Elimina</button>
+        <button class="btn btn-danger">Elimina</button>
       </div>
     `;
 
@@ -123,7 +123,7 @@ document.addEventListener("DOMContentLoaded", function () {
     });
 
     // Handle laptop deletion
-    laptopItem.querySelector("button").addEventListener("click", () => {
+    laptopItem.querySelector(".btn-danger").addEventListener("click", () => {
       const laptopId = laptopItem.dataset.laptopId;
       const confirmation = confirm(
         "Sei sicuro di voler eliminare questo laptop?"

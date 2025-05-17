@@ -129,6 +129,12 @@
   align-items: center;
 }
 
+.locker-header > div{
+  display: flex;
+  flex-direction: row;
+  gap: var(--spacing-md);
+}
+
 .locker-header.expanded {
   margin-bottom: var(--spacing-md);
   padding-bottom: var(--spacing-sm);

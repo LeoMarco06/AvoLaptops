@@ -346,6 +346,10 @@ main > .main-container {
   box-shadow: var(--shadow-lg);
 }
 
+.feature-item p{
+  font-size: var(--font-size-sm);
+}
+
 .features-grid.admin-features a.feature-item {
   text-decoration: none;
   color: var(--color-text);

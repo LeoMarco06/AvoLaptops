@@ -11,11 +11,11 @@ include_once $path . "include/session_check_.php";
         <nav class="main-nav">
             <ul>
                 <li><a href="<?php echo $path ?>homepage.php#home">Home</a></li>
-                <li><a href="<?php echo $path ?>reservation/prenota.php">Prenota</a></li>
-                <li><a href="<?php echo $path ?>reservation/prenotazioni.php">Prenotazioni</a></li>
-                <li><a href="<?php echo $path ?>statistics/statistics.php">Statistiche</a></li>
+                <li><a href="<?php echo $path ?>reservation/prenota.php#home">Prenota</a></li>
+                <li><a href="<?php echo $path ?>reservation/prenotazioni.php#home">Prenotazioni</a></li>
+                <li><a href="<?php echo $path ?>statistics/statistics.php#home">Statistiche</a></li>
                 <?php if (isset($_SESSION["role"]) && $_SESSION["role"] == 1): ?>
-                    <li><a href="<?php echo $path ?>admin_services.php">Admin</a></li>
+                    <li><a href="<?php echo $path ?>admin_services.php#home">Admin</a></li>
                 <?php endif; ?>
             </ul>
         </nav>
@@ -26,8 +26,8 @@ include_once $path . "include/session_check_.php";
                 <div class="profile-actions" id="profile-actions">
                     <select class="btn btn-outline">
                         <option value="" disabled selected hidden>Account</option>
-                        <option onclick="window.location.assign('<?php echo $path ?>user/account.php')">I tuoi dati</option>
-                        <option onclick="window.location.assign('<?php echo $path ?>user/logout.php')">Logout</option>
+                        <option onclick="window.location.assign('<?php echo $path ?>user/account.php#home')">I tuoi dati</option>
+                        <option onclick="window.location.assign('<?php echo $path ?>user/logout.php#home')">Logout</option>
                     </select>
                 </div>
             <?php else: ?>

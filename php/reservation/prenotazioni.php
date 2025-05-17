@@ -31,12 +31,12 @@
     <?php
     $check = true;
     $path = "../";
-    
+
     include_once '../page/header_navbar.php';
 
     $status = array(
-        1 => 'pending',
-        0 => 'active',
+        0 => 'pending',
+        1 => 'active',
         -1 => 'completed'
     );
 
@@ -124,7 +124,7 @@
                 </div>
 
                 <!-- Booking list -->
-                <div class="bookings-list">
+                <div class="bookings-list" id="bookings_page">
                     <?php if (isset($reservations) && !empty($reservations)): ?>
                         <!-- Fa la query a inizio pagina per ottenere $reservations, dopodichè  -->
                         <?php foreach ($reservations as $reservation): ?>
@@ -176,9 +176,11 @@
                                 </div>
 
                                 <div class="booking-actions">
-                                    <button class="btn btn-confirm">
-                                        <i class="fa-solid fa-check"></i> Conferma
-                                    </button>
+                                    <?php if ($status[$reservation["res_flag"]] == "pending"): ?>
+                                        <button class="btn btn-confirm">
+                                            <i class="fa-solid fa-check"></i> Conferma
+                                        </button>
+                                    <?php endif ?>
                                     <button class="btn btn-danger">
                                         <i class="fa-solid fa-xmark"></i> Elimina
                                     </button>

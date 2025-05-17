@@ -113,16 +113,6 @@
   color: var(--color-text-dark);
 }
 
-.buttons-container button {
-  padding: 10px;
-  border: none;
-  border-radius: var(--border-radius-sm);
-  background-color: var(--color-primary);
-  color: white;
-  cursor: pointer;
-  transition: background-color 0.3s;
-}
-
 /*
   ================================================
   ================= SEARCH BAR ===================

@@ -32,20 +32,44 @@ document.addEventListener("DOMContentLoaded", function () {
 
   // Handle search input for reservations
   const searchInput = document.getElementById("booking-search");
-  searchInput.addEventListener("input", function () {
-    const searchTerm = this.value.toLowerCase();
+  const bookingsPage = document.getElementById("bookings_page");
 
-    bookingCards.forEach((card) => {
-      const cardTitle = card.querySelector("h3")
-        ? card.querySelector("h3").textContent.toLowerCase()
-        : "";
-      const isVisible = cardTitle.includes(searchTerm);
+  if (bookingsPage) {
+    searchInput.addEventListener("input", function () {
+      const searchTerm = this.value.toLowerCase();
+      const activeTab = document.querySelector(".filter-tab.active");
+      const activeStatus = activeTab ? activeTab.dataset.status : "all";
 
-      card.style.display = isVisible ? "block" : "none";
+      bookingCards.forEach((card) => {
+        const matchesStatus =
+          activeStatus === "all" || card.classList.contains(activeStatus);
+
+        const cardTitle = card.querySelector("h3")
+          ? card.querySelector("h3").textContent.toLowerCase()
+          : "";
+        const isVisible = matchesStatus && cardTitle.includes(searchTerm);
+
+        card.style.display = isVisible ? "block" : "none";
+      });
+
+      updateNoBookingsMessage();
     });
+  } else {
+    searchInput.addEventListener("input", function () {
+      const searchTerm = this.value.toLowerCase();
 
-    updateNoBookingsMessage();
-  });
+      bookingCards.forEach((card) => {
+        const cardTitle = card.querySelector("h3")
+          ? card.querySelector("h3").textContent.toLowerCase()
+          : "";
+        const isVisible = cardTitle.includes(searchTerm);
+
+        card.style.display = isVisible ? "block" : "none";
+      });
+
+      updateNoBookingsMessage();
+    });
+  }
 
   // Update visibility of "no bookings" message
   function updateNoBookingsMessage() {

@@ -101,7 +101,6 @@ $models_json = json_encode($models);
                 </div>
             </div>
 
-
             <div class="popup-container" id="popup-container">
                 <div class="auth-header">
                     <h2 class="heading-2">Aggiungi un nuovo laptop</h2>
