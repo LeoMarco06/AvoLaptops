@@ -53,7 +53,7 @@
                             quando l'admin avrà verificato e accettato il tuo account</p>
                     </div>
 
-                    <form id="register-form" class="auth-form" action="" method="post">
+                    <form id="register-form" class="auth-form" action="./register_handler.php" method="post">
                         <div class="form-group">
                             <label for="email">Email scolastica</label>
                             <div class="input-group">
@@ -88,8 +88,9 @@
                             <div class="input-group">
                                 <i class="fa-solid fa-calendar" id="date-birth-icon"></i>
                                 <div class="date-picker-container">
-                                    <input type="text" class="date-picker-input" id="date-birth" name="date"
+                                    <input type="text" class="date-picker-input" id="date-birth"
                                         placeholder="Seleziona data" readonly>
+                                    <input type="hidden" id="hidden-date-birth" name="date">
                                     <div class="date-picker" id="date-birth-picker">
                                         <div class="date-picker-header">
                                             <button type="button" class="prev-year">&lt;&lt;</button>
@@ -153,10 +154,10 @@
                             <div id="confirmPasswordFeedback" class="feedback-message"></div>
                         </div>
 
-                        <button type="submit" class="btn btn-primary btn-block">Registrati</button>
+                        <button id="registerBtn" type="button" class="btn btn-primary btn-block">Registrati</button>
 
                         <div class="auth-footer">
-                            <p>Hai già un account? <a href="login.php">Accedi</a></p>
+                            <p>Hai già un account? <a href="./login.php">Accedi</a></p>
                         </div>
                     </form>
                 </div>
@@ -169,3 +170,20 @@
 </body>
 
 </html>
+
+
+<script>
+    // Handle booking confirmation
+    document.getElementById("registerBtn").addEventListener("click", function () {
+        // Get values from visible inputs
+        const hid = document.getElementById("hidden-date-birth");
+        const birth = document.getElementById("date-birth").value;
+
+        // Assign them to the hidden fields
+        hid.value = parseCustomDate(birth);
+
+
+        //submit the form
+        document.getElementById("register-form").submit();
+    });
+</script>
