@@ -17,7 +17,8 @@
     flex-direction: column;
     justify-content: center;
     align-items: center;
-    background-color: var(--color-statistics);
+    /*background-color: var(--color-statistics);*/
+    background-color: white;
     border: 1px solid var(--color-border);
     box-shadow: var(--shadow-md);
     color: var(--color-statistics-text);
