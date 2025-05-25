@@ -105,6 +105,13 @@ include_once '../include/functions/functions.php';
 
 $conn = connectToDatabase();
 
+echo '<script>
+    const cookieName = "login_token"; 
+    document.cookie = `${cookieName}=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/; Secure`;
+    console.log("Cookie deleted: " + cookieName);
+</script>';
+
+
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $email = $_POST['email'];
     $password = $_POST['password'];//htmlspecialchars($_POST['password']);

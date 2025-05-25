@@ -78,7 +78,7 @@
     // query to get all laptops with their status
 // and model name, and check if they are reserved during the specified time
 // and date
-// status 1 = available, 0 = unavailable, -1 = maintenance
+// status 1 = available, 0 = unavailable, -1 = maintenance, 2 = reserved within last hour
     $stmt = $conn->prepare("SELECT 
     l.lap_id, 
     l.lap_name, 
@@ -94,6 +94,14 @@
                 ELSE 0 
             END
         ) = 1 THEN 0 
+        WHEN MAX(
+            CASE 
+                WHEN r.res_day = ?
+                     AND TIME_TO_SEC(TIMEDIFF(?, r.res_end_time)) / 60 BETWEEN 0 AND 61 
+                THEN 1 
+                ELSE 0 
+            END
+        ) = 1 THEN 2 
         WHEN l.lap_status = -1 THEN -1 
         ELSE 1 
     END AS lap_status
@@ -106,11 +114,10 @@ LEFT JOIN models m
     ON m.mod_id = l.lap_model
 INNER JOIN lockers lck 
     ON lck.lock_id = l.lap_locker
-GROUP BY l.lap_id;
-");
+GROUP BY l.lap_id;");
 
 
-    $stmt->bind_param("sss", $day, $start_time, $end_time);
+    $stmt->bind_param("sssss", $day, $start_time, $end_time, $day, $start_time);
 
     // Execute the statement
     $stmt->execute();
@@ -173,7 +180,7 @@ GROUP BY l.lap_id;
 
                             <div class="box right">
                                 <div class="text-icon">
-                                    <i class="fa-solid fa-culock"></i>
+                                    <i class="fa-solid fa-clock"></i>
                                     <label for="start-time">Ora inizio</label>
                                 </div>
                                 <div class="time-picker-container">

@@ -43,14 +43,61 @@
 
     $conn = connectToDatabase();
 
+    // Update reservation statuses based on current time
+    $now = date('Y-m-d H:i:s');
+
+    /*
+    // Set to completed if end time is in the past and not canceled
+    $conn->query("
+    UPDATE reservations
+    SET res_flag = -1
+    WHERE res_end_time < '$now' AND res_flag != 0
+    ");
+
+    // Set to active if current time is between start and end and not canceled
+    $conn->query("
+    UPDATE reservations
+    SET res_flag = 1
+    WHERE res_start_time <= '$now' AND res_end_time > '$now' AND res_flag != 0
+    ");
+
+    // Set to pending if start time is in the future and not canceled
+    $conn->query("
+    UPDATE reservations
+    SET res_flag = 0
+    WHERE res_start_time > '$now' AND res_flag != 0
+    ");
+    */
+
     // Fetch all reservations for the logged-in user
-    $reservations_result = $conn->query("
+    /*$reservations_result = $conn->query("
     SELECT r.res_id, r.res_start_time, r.res_end_time, r.res_day, r.res_flag, u.u_name, u.u_surname
     FROM reservations r
     INNER JOIN users u ON u.u_id = r.res_user 
     WHERE u.u_id = " . $_SESSION['id'] . "
     ORDER BY res_day DESC, res_start_time DESC
-");
+");*/
+    $reservations_result = $conn->query("
+    SELECT 
+        r.res_id, 
+        r.res_start_time, 
+        r.res_end_time, 
+        r.res_day, 
+        r.res_flag, 
+        u.u_name, 
+        u.u_surname,
+        CASE 
+            WHEN r.res_flag = 0 THEN -1
+            WHEN r.res_flag = 1 AND NOW() < r.res_start_time THEN 0
+            WHEN r.res_flag = 1 AND NOW() BETWEEN r.res_start_time AND r.res_end_time THEN 1
+            WHEN r.res_flag = 1 AND NOW() > r.res_end_time THEN 2
+            ELSE 'unknown'
+        END AS res_status
+    FROM reservations r
+    INNER JOIN users u ON u.u_id = r.res_user 
+    WHERE u.u_id = " . $_SESSION['id'] . "
+    ORDER BY res_day DESC, res_start_time DESC
+    ");
 
     // Initialize an array to store reservations with laptops
     $reservations = array();
@@ -123,26 +170,31 @@
                     </div>
                 </div>
 
+                <!--<?php echo "<pre>" . print_r($reservations, true) . "</pre>"; ?>-->
                 <!-- Booking list -->
                 <div class="bookings-list" id="bookings_page">
                     <?php if (isset($reservations) && !empty($reservations)): ?>
                         <!-- Fa la query a inizio pagina per ottenere $reservations, dopodichè  -->
                         <?php foreach ($reservations as $reservation): ?>
-                            <div class="booking-card <?php echo $status[$reservation["res_flag"]] ?>"
+                            <div class="booking-card <?php echo $status[$reservation["res_status"]] ?>"
                                 data-booking-id="PR-2023-001">
                                 <div class="booking-header">
                                     <h3 class="booking-id">
                                         <?php echo "PR-" . $reservation["res_day"] . "_" . $reservation["res_id"] ?>
                                     </h3>
-                                    <?php if ($reservation["res_flag"] == 0): ?>
+                                    <?php if ($reservation["res_status"] == -1): ?>
+                                        <span class="booking-status cancelled">
+                                            <i class="fa-solid fa-xmark"></i> Cancellata
+                                        </span>
+                                    <?php elseif ($reservation["res_status"] == 0): ?>
                                         <span class="booking-status pending">
                                             <i class="fas fa-hourglass-half"></i> In attesa di accettazione
                                         </span>
-                                    <?php elseif ($reservation["res_flag"] == 1): ?>
+                                    <?php elseif ($reservation["res_status"] == 1): ?>
                                         <span class="booking-status active">
                                             <i class="fas fa-laptop"></i> In corso
                                         </span>
-                                    <?php else: ?>
+                                    <?php elseif ($reservation["res_status"] == 2): ?>
                                         <span class="booking-status completed">
                                             <i class="fas fa-check-circle"></i> Terminata
                                         </span>
@@ -176,14 +228,12 @@
                                 </div>
 
                                 <div class="booking-actions">
-                                    <?php if ($status[$reservation["res_flag"]] == "pending"): ?>
-                                        <button class="btn btn-confirm">
-                                            <i class="fa-solid fa-check"></i> Conferma
+                                    <?php if ($status[$reservation["res_status"]] == "pending"): ?>
+                                        <button class="btn btn-danger cancel-booking"
+                                            data-id="<?php echo $reservation["res_id"] ?>">
+                                            <i class="fa-solid fa-xmark"></i> Elimina
                                         </button>
                                     <?php endif ?>
-                                    <button class="btn btn-danger">
-                                        <i class="fa-solid fa-xmark"></i> Elimina
-                                    </button>
                                 </div>
                             </div>
                         <?php endforeach ?>

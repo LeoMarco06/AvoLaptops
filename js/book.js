@@ -61,24 +61,35 @@ document.addEventListener("DOMContentLoaded", function () {
   // Initialize date picker and set up filters
   const today = new Date();
   const yyyy = today.getFullYear();
-  const mm = String(today.getMonth() + 1).padStart(2, '0');
-  const dd = String(today.getDate()).padStart(2, '0');
+  const mm = String(today.getMonth() + 1).padStart(2, "0");
+  const dd = String(today.getDate()).padStart(2, "0");
   const formattedToday = `${yyyy}-${mm}-${dd}`;
 
   // Calcola la data massima (oggi + 14 giorni)
   const maxDateObj = new Date(today);
   maxDateObj.setDate(today.getDate() + 14);
   const maxY = maxDateObj.getFullYear();
-  const maxM = String(maxDateObj.getMonth() + 1).padStart(2, '0');
-  const maxD = String(maxDateObj.getDate()).padStart(2, '0');
+  const maxM = String(maxDateObj.getMonth() + 1).padStart(2, "0");
+  const maxD = String(maxDateObj.getDate()).padStart(2, "0");
   const formattedMax = `${maxY}-${maxM}-${maxD}`;
 
   // Passa minDate e maxDate a initDatePicker
-  initDatePicker("start-date", "start-date-picker", formattedToday, formattedMax);
-  setupDatePickerListeners(startDatePicker, new Date(formattedToday), new Date(formattedMax));
+  initDatePicker(
+    "start-date",
+    "start-date-picker",
+    formattedToday,
+    formattedMax
+  );
+  setupDatePickerListeners(
+    startDatePicker,
+    new Date(formattedToday),
+    new Date(formattedMax)
+  );
 
   document.getElementById("filter-btn").addEventListener("click", function () {
-    const selectedDate = document.getElementById("start-date").value;
+    const selectedDate = parseCustomDate(
+      document.getElementById("start-date").value
+    );
     const selectedStartTime = document.getElementById("start-time").value;
     const selectedEndTime = document.getElementById("end-time").value;
     document.getElementById("day-hid").value = parseCustomDate(selectedDate);
@@ -132,11 +143,11 @@ document.addEventListener("DOMContentLoaded", function () {
     xmlhttp.open(
       "GET",
       "../include/functions/laptop_filter.php?date=" +
-      selectedDate +
-      "&start_time=" +
-      selectedStartTime +
-      "&end_time=" +
-      selectedEndTime,
+        selectedDate +
+        "&start_time=" +
+        selectedStartTime +
+        "&end_time=" +
+        selectedEndTime,
       true
     );
     xmlhttp.send();
@@ -145,8 +156,18 @@ document.addEventListener("DOMContentLoaded", function () {
   // Create a laptop item element
   function createLaptop(laptop) {
     const laptopItem = document.createElement("div");
-    const possibleStatuses = ["maintenance", "unavailable", "available"];
-    const statusNames = ["Maintenance", "Unavailable", "Available"];
+    const possibleStatuses = [
+      "maintenance",
+      "unavailable",
+      "available",
+      "charging",
+    ];
+    const statusNames = [
+      "Manutenzione",
+      "Non disponibile",
+      "Disponibile",
+      "Ricarica",
+    ];
     const statusClass = possibleStatuses[laptop.status + 1];
     const statusLabel = statusNames[laptop.status + 1];
 
@@ -158,13 +179,15 @@ document.addEventListener("DOMContentLoaded", function () {
         <i class="fas fa-laptop"></i>
         <span>${laptop.name} (${laptop.model})</span>
       </div>
-      ${laptop.status === 1
-        ? `<button class="btn-icon select-laptop">
+      ${
+        laptop.status === 1
+          ? `<button class="btn-icon select-laptop">
                <i class="fas fa-plus"></i>
              </button>`
-        : `<span class="status-badge">
-               <i class="fas ${laptop.status === -1 ? "fa-tools" : "fa-times"
-        }"></i> ${statusLabel}
+          : `<span class="status-badge">
+               <i class="fas ${
+                 laptop.status === -1 ? "fa-tools" : "fa-times"
+               }"></i> ${statusLabel}
              </span>`
       }
     `;
@@ -339,7 +362,9 @@ document.addEventListener("DOMContentLoaded", function () {
   updateSummary();
 
   function selectLaptopById(lap_id) {
-    const laptopItem = document.querySelector(`.laptop-item[data-laptop-id="${lap_id}"]`);
+    const laptopItem = document.querySelector(
+      `.laptop-item[data-laptop-id="${lap_id}"]`
+    );
     if (!laptopItem) {
       alert("Laptop non trovato o non disponibile per la selezione.");
       return;

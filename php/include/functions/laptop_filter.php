@@ -1,12 +1,17 @@
 <?php
-$date = htmlspecialchars($_GET['date']);
+$day = htmlspecialchars($_GET['date']);
 $start_time = htmlspecialchars($_GET['start_time']);
 $end_time = htmlspecialchars($_GET['end_time']);
 
-include "../connection.php";
+
+$check = true;
+$path = "../../";
+include_once '../session_check.php';
 
 // Query to the database to get the laptops that are available for the given date and time
 $conn = connectToDatabase();
+
+$current_datetime = date('Y-m-d H:i:s');
 
 $sql = "SELECT 
     l.lap_id, 
@@ -23,6 +28,14 @@ $sql = "SELECT
                 ELSE 0 
             END
         ) = 1 THEN 0 
+        WHEN MAX(
+            CASE 
+                WHEN r.res_day = ?
+                     AND TIME_TO_SEC(TIMEDIFF(?, r.res_end_time)) / 60 BETWEEN 0 AND 61 
+                THEN 1 
+                ELSE 0 
+            END
+        ) = 1 THEN 2 
         WHEN l.lap_status = -1 THEN -1 
         ELSE 1 
     END AS lap_status
@@ -39,7 +52,7 @@ GROUP BY l.lap_id;";
 
 $stmt = $conn->prepare($sql);
 
-$stmt->bind_param("sss", $date, $start_time, $end_time);
+$stmt->bind_param("sssss", $day, $start_time, $end_time, $day, $start_time);
 
 $stmt->execute();
 

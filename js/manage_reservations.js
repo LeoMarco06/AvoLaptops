@@ -89,6 +89,25 @@ document.addEventListener("DOMContentLoaded", function () {
   document.querySelectorAll(".cancel-booking").forEach((btn) => {
     btn.addEventListener("click", function () {
       // AJAX call to cancel the booking
+      const bookingId = btn.dataset.id;
+      console.log(`Cancel booking with ID: ${bookingId}`);
+
+      /// Perform AJAX request to filter laptops
+      var xmlhttp = new XMLHttpRequest();
+      xmlhttp.onreadystatechange = function () {
+        if (this.readyState == 4 && this.status == 200) {
+          window.location.reload();
+        } else if (this.readyState == 4) {
+          alert("Error: " + this.statusText);
+        }
+      };
+
+      xmlhttp.open(
+        "GET",
+        "../include/functions/cancel_reservation.php?id=" + bookingId,
+        true
+      );
+      xmlhttp.send();
     });
   });
 

@@ -69,7 +69,7 @@ document.addEventListener("DOMContentLoaded", function () {
   // Create a laptop card element
   function createLaptopCard(laptop) {
     const laptopItem = document.createElement("div");
-    const possibleStatuses = ["maintenance", "available", "unavailable"];
+    const possibleStatuses = ["maintenance", "unavailable", "available"];
     const statusClass = possibleStatuses[laptop.lap_status + 1];
 
     laptopItem.className = `laptop-item ${statusClass}`;
@@ -80,7 +80,9 @@ document.addEventListener("DOMContentLoaded", function () {
         <div>
           <i class="fas fa-laptop"></i>
           <span>${laptop.lap_model}</span></div>
-            <button type="button" id="open-qr-popup" class="btn btn-outline btn-small qr-btn" onclick='showQrPopup(${JSON.stringify(laptop)})'>
+            <button type="button" id="open-qr-popup" class="btn btn-outline btn-small qr-btn" onclick='showQrPopup(${JSON.stringify(
+              laptop
+            )})'>
               <i class="fa-solid fa-qrcode"></i> <p>QR</p>
             </button>
         </div>
@@ -91,12 +93,15 @@ document.addEventListener("DOMContentLoaded", function () {
       </div>
       <div class="buttons-container" style="display: flex; flex-direction: column; gap: 10px;">
         <select>
-          <option value="0" ${laptop.lap_status === 0 ? `selected` : ""
-      }>Disponibile</option>
-          <option value="1" ${laptop.lap_status === 1 ? `selected` : ""
-      }>Non disponibile</option>
-          <option value="-1" ${laptop.lap_status === -1 ? `selected` : ""
-      }>Manutenzione</option>
+          <option value="0" ${
+            laptop.lap_status === 0 ? `selected` : ""
+          }>Disponibile</option>
+          <option value="1" ${
+            laptop.lap_status === 1 ? `selected` : ""
+          }>Non disponibile</option>
+          <option value="-1" ${
+            laptop.lap_status === -1 ? `selected` : ""
+          }>Manutenzione</option>
         </select>
         <button class="btn btn-danger">Elimina</button>
       </div>
@@ -161,8 +166,8 @@ document.addEventListener("DOMContentLoaded", function () {
   // Update the status of a laptop card
   function updateLaptopStatus(laptopId, status) {
     const statusMap = {
-      0: "available",
-      1: "unavailable",
+      1: "available",
+      0: "unavailable",
       "-1": "maintenance",
     };
     const statusClass = statusMap[status];
