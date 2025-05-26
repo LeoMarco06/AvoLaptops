@@ -26,25 +26,16 @@ function getMonthIndex(monthName) {
 // Parse a custom date string into a JavaScript Date object
 function parseCustomDate(dateStr) {
   if (!dateStr) return null;
-
   const [day, monthAbbr, year] = dateStr.split(" ");
   const monthNames = [
-    "Gen",
-    "Feb",
-    "Mar",
-    "Apr",
-    "Mag",
-    "Giu",
-    "Lug",
-    "Ago",
-    "Set",
-    "Ott",
-    "Nov",
-    "Dic",
+    "Gen", "Feb", "Mar", "Apr", "Mag", "Giu",
+    "Lug", "Ago", "Set", "Ott", "Nov", "Dic"
   ];
-  const monthIndex = monthNames.indexOf(monthAbbr) + 1;
-
-  return year + "-" + monthIndex + "-" + day;
+  let monthIndex = monthNames.indexOf(monthAbbr) + 1;
+  if (monthIndex < 10) monthIndex = "0" + monthIndex;
+  let dayNum = parseInt(day, 10);
+  if (dayNum < 10) dayNum = "0" + dayNum;
+  return `${year}-${monthIndex}-${dayNum}`;
 }
 
 // Disabilita i giorni fuori da un intervallo di date
@@ -296,6 +287,7 @@ function initDatePicker(inputId, pickerId, minDate = null, maxDate = null) {
   function selectDate(date) {
     selectedDate = date;
     input.value = formatDate(date);
+    input.dispatchEvent(new Event('change', { bubbles: true }));
     picker.style.display = "none";
     renderCalendar();
   }

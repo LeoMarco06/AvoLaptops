@@ -37,7 +37,7 @@
     $status = array(
         0 => 'pending',
         1 => 'active',
-        -1 => 'completed'
+        2 => 'completed'
     );
 
 
@@ -78,26 +78,32 @@
     ORDER BY res_day DESC, res_start_time DESC
 ");*/
     $reservations_result = $conn->query("
-    SELECT 
-        r.res_id, 
-        r.res_start_time, 
-        r.res_end_time, 
-        r.res_day, 
-        r.res_flag, 
-        u.u_name, 
-        u.u_surname,
-        CASE 
-            WHEN r.res_flag = 0 THEN -1
-            WHEN r.res_flag = 1 AND NOW() < r.res_start_time THEN 0
-            WHEN r.res_flag = 1 AND NOW() BETWEEN r.res_start_time AND r.res_end_time THEN 1
-            WHEN r.res_flag = 1 AND NOW() > r.res_end_time THEN 2
-            ELSE 'unknown'
-        END AS res_status
-    FROM reservations r
-    INNER JOIN users u ON u.u_id = r.res_user 
-    WHERE u.u_id = " . $_SESSION['id'] . "
-    ORDER BY res_day DESC, res_start_time DESC
-    ");
+SELECT 
+    r.res_id, 
+    r.res_start_time, 
+    r.res_end_time, 
+    r.res_day, 
+    r.res_flag, 
+    u.u_name, 
+    u.u_surname,
+    CASE 
+        WHEN r.res_flag = 0 THEN -1
+        WHEN r.res_flag = 1 AND (
+            (r.res_day > CURDATE())
+            OR (r.res_day = CURDATE() AND NOW() < CONCAT(r.res_day, ' ', r.res_start_time))
+        ) THEN 0
+        WHEN r.res_flag = 1 AND r.res_day = CURDATE() AND NOW() BETWEEN CONCAT(r.res_day, ' ', r.res_start_time) AND CONCAT(r.res_day, ' ', r.res_end_time) THEN 1
+        WHEN r.res_flag = 1 AND (
+            r.res_day < CURDATE()
+            OR (r.res_day = CURDATE() AND NOW() >= CONCAT(r.res_day, ' ', r.res_end_time))
+        ) THEN 2
+        ELSE 'unknown'
+    END AS res_status
+FROM reservations r
+INNER JOIN users u ON u.u_id = r.res_user 
+WHERE u.u_id = " . $_SESSION['id'] . "
+ORDER BY r.res_day DESC, r.res_start_time DESC
+");
 
     // Initialize an array to store reservations with laptops
     $reservations = array();
@@ -131,13 +137,14 @@
 
             // Add reservation to the main array
             $reservations[] = $reservation;
+
         }
     }
 
     // Close the connection
     $conn->close();
 
-    //echo "<pre>" . print_r($reservations, true) . "</pre>";
+    // echo "<pre>" . print_r($reservations, true) . "</pre>";
     ?>
 
     <main>
@@ -188,7 +195,7 @@
                                         </span>
                                     <?php elseif ($reservation["res_status"] == 0): ?>
                                         <span class="booking-status pending">
-                                            <i class="fas fa-hourglass-half"></i> In attesa di accettazione
+                                            <i class="fas fa-hourglass-half"></i> In attesa
                                         </span>
                                     <?php elseif ($reservation["res_status"] == 1): ?>
                                         <span class="booking-status active">
@@ -220,10 +227,6 @@
                                     <div class="detail-group">
                                         <h4 class="detail-label">Data prenotazione:</h4>
                                         <p><?php echo date("d/m/Y", strtotime($reservation["res_day"])); ?></p>
-                                    </div>
-                                    <div class="detail-group">
-                                        <h4 class="detail-label">Utente:</h4>
-                                        <p><?php echo $reservation["u_surname"] . " " . $reservation["u_name"] ?></p>
                                     </div>
                                 </div>
 

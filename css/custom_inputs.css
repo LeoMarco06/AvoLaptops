@@ -117,8 +117,7 @@
 
 .date-picker-days .prev-month,
 .date-picker-days .next-month {
-  color: var(--color-text-light);
-  opacity: 0.5;
+  visibility: hidden !important;
 }
 
 .date-picker-days .selected {

@@ -78,10 +78,15 @@ document.addEventListener("DOMContentLoaded", function () {
     );
     const noBookingsMsg = document.querySelector(".no-bookings-message");
 
-    if (visibleCards.length === 0) {
-      noBookingsMsg.style.display = "flex";
-    } else {
+    // Rimuovi la classe no-hover da tutte le card
+    bookingCards.forEach((card) => card.classList.remove("no-hover"));
+
+    // Aggiungi la classe solo alla prima visibile
+    if (visibleCards.length > 0) {
+      visibleCards[0].classList.add("no-hover");
       noBookingsMsg.style.display = "none";
+    } else {
+      noBookingsMsg.style.display = "flex";
     }
   }
 
@@ -92,10 +97,14 @@ document.addEventListener("DOMContentLoaded", function () {
       const bookingId = btn.dataset.id;
       console.log(`Cancel booking with ID: ${bookingId}`);
 
+      if (!confirm("Are you sure you want to cancel this booking?")) {
+        return;
+      }
       /// Perform AJAX request to filter laptops
       var xmlhttp = new XMLHttpRequest();
       xmlhttp.onreadystatechange = function () {
         if (this.readyState == 4 && this.status == 200) {
+          alert("Prenotazione annullata con successo.");
           window.location.reload();
         } else if (this.readyState == 4) {
           alert("Error: " + this.statusText);
@@ -109,7 +118,40 @@ document.addEventListener("DOMContentLoaded", function () {
       );
       xmlhttp.send();
     });
+
   });
+
+  if (document.querySelectorAll(".delete-booking").length > 0) {
+    const deleteButtons = document.querySelectorAll(".delete-booking");
+    deleteButtons.forEach((btn) => {
+      btn.addEventListener("click", function () {
+        // AJAX call to delete the booking
+        const bookingId = btn.dataset.id;
+        console.log(`Delete booking with ID: ${bookingId}`);
+
+        if (!confirm("Are you sure you want to delete this booking?")) {
+          return;
+        }
+        /// Perform AJAX request to filter laptops
+        var xmlhttp = new XMLHttpRequest();
+        xmlhttp.onreadystatechange = function () {
+          if (this.readyState == 4 && this.status == 200) {
+            alert("Prenotazione eliminata con successo.");
+            window.location.reload();
+          } else if (this.readyState == 4) {
+            alert("Error: " + this.statusText);
+          }
+        };
+
+        xmlhttp.open(
+          "GET",
+          "../include/functions/delete_reservation.php?id=" + bookingId,
+          true
+        );
+        xmlhttp.send();
+      });
+    });
+  };
 
   // Initialize the "no bookings" message visibility
   updateNoBookingsMessage();

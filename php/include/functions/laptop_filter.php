@@ -1,4 +1,10 @@
 <?php
+header("Content-Type: application/json");
+
+ini_set('display_errors', 1);
+ini_set('display_startup_errors', 1);
+error_reporting(E_ALL);
+
 $day = htmlspecialchars($_GET['date']);
 $start_time = htmlspecialchars($_GET['start_time']);
 $end_time = htmlspecialchars($_GET['end_time']);
@@ -51,14 +57,32 @@ INNER JOIN lockers lck
 GROUP BY l.lap_id;";
 
 $stmt = $conn->prepare($sql);
+if (!$stmt) {
+    http_response_code(500);
+    echo json_encode(['error' => 'Errore nella preparazione della query', 'details' => $conn->error]);
+    exit;
+}
 
-$stmt->bind_param("sssss", $day, $start_time, $end_time, $day, $start_time);
+if (!$stmt->bind_param("sssss", $day, $start_time, $end_time, $day, $start_time)) {
+    http_response_code(500);
+    echo json_encode(['error' => 'Errore nel bind dei parametri', 'details' => $stmt->error]);
+    exit;
+}
 
-$stmt->execute();
+if (!$stmt->execute()) {
+    http_response_code(500);
+    echo json_encode(['error' => 'Errore nell\'esecuzione della query', 'details' => $stmt->error]);
+    exit;
+}
 
-$result = $stmt->get_result()->fetch_all(MYSQLI_ASSOC);
+$result = $stmt->get_result();
+if (!$result) {
+    http_response_code(500);
+    echo json_encode(['error' => 'Errore nel recupero dei risultati', 'details' => $stmt->error]);
+    exit;
+}
 
-header("Content-Type: application/json");
-echo json_encode($result);
+$data = $result->fetch_all(MYSQLI_ASSOC);
+echo json_encode($data);
 
 $conn->close();

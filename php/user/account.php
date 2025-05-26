@@ -38,7 +38,7 @@
 
 <body>
     <?php
-    $check = true;
+    $check = false;
     $path = "../";
     include_once '../page/header_navbar.php';
     ?>

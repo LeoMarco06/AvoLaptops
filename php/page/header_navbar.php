@@ -24,20 +24,11 @@ include_once $path . "include/session_check.php";
             <!-- Use the user's name and last name if the user is logged -->
             <?php if (isset($_SESSION["id"]) && !empty($_SESSION["id"])): ?>
                 <div class="profile-actions" id="profile-actions">
-                    <select class="btn btn-outline" onchange="profileActionChanged(this.value); this.selectedIndex = 0;">
-                        <option value="" style="display: none;" selected>Account</option>
-                        <option value="account">I tuoi dati</option>
-                        <option value="logout">Logout</option>
+                    <select class="btn btn-outline">
+                        <option value="" disabled selected hidden>Account</option>
+                        <option onclick="window.location.assign('<?php echo $path ?>user/account.php#home')">I tuoi dati</option>
+                        <option onclick="window.location.assign('<?php echo $path ?>user/logout.php#home')">Logout</option>
                     </select>
-                    <script>
-                        function profileActionChanged(val) {
-                            if (val === "account") {
-                                window.location.assign('<?php echo $path ?>user/account.php#home');
-                            } else if (val === "logout") {
-                                window.location.assign('<?php echo $path ?>user/logout.php#home');
-                            }
-                        }
-                    </script>
                 </div>
             <?php else: ?>
                 <button class="btn btn-outline"

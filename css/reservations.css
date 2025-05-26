@@ -95,12 +95,12 @@
   display: flex;
   flex-direction: column;
   gap: var(--spacing-md);
-  max-height: 50vh;
+  max-height: 45vh;
   overflow-y: auto;
 }
 
 /* ===== Booking Card ===== */
-.booking-card {
+.bookings-list > .booking-card {
   background-color: var(--color-card);
   border: 2px solid var(--color-border);
   border-radius: var(--border-radius-md);
@@ -109,9 +109,16 @@
   transition: transform var(--transition-normal);
 }
 
-.booking-card:not(.booking-card:first-child):hover {
+/* Il primo elemento non ha animazione hover (anche quando si filtra con un tab) */
+.bookings-list > .booking-card:not(:first-child):hover {
   transform: translateY(-3px);
   box-shadow: var(--shadow-md);
+}
+
+/* Disabilita hover per la card con classe .no-hover */
+.booking-card.no-hover:hover {
+  transform: none !important;
+  box-shadow: var(--shadow-sm) !important;
 }
 
 /* ===== Booking Header ===== */
@@ -153,6 +160,11 @@
 .booking-status.completed {
   background-color: rgba(67, 97, 238, 0.1);
   color: var(--color-primary);
+}
+
+.booking-status.cancelled {
+  background-color: rgba(239, 35, 60, 0.1);
+  color: var(--color-error);
 }
 
 /* ===== Booking Details ===== */

@@ -175,10 +175,8 @@
 
                     <!--ESEMPIO INFOGRAFICA-->
                     <div class="statistic-item">
-                        <h2 class="header2">Prenotazioni durante l'anno <?php echo $year ?></h2>
+                        <h2 class="header2">RESERVATIONS DURING THE YEAR <?php echo $year ?></h2>
                         <div id="StockChartContainer" style="width: 55%; height: 300px; display: inline-block;"></div>
-                        <!--PULSANTE CHE ESPORRTA SOLO IN PDF-->
-                        <!--<div class="pulsante"><input type="submit" id="exportReservations" value="Esporta come PDF" class="btn btn-primary"></div>-->
                     </div>
                 </div>
         </section>
@@ -188,18 +186,16 @@
                 /*  GRAPHIC FOR THE RESERVATIONS OF THE YEAR */
                 var stockChart = new CanvasJS.StockChart("StockChartContainer",
                     {
-                        //backgroundColor: "transparent",
-                        exportEnabled: true,
-                        exportFileName: "GraficoPrenotazioni",
+                        backgroundColor: "transparent",
                         animationEnabled: true,
                         charts: [{
                             axisX: {
-                                title: "Mesi",
+                                title: "Month",
                                 valueFormatString: "MMM YYYY",
                                 titleFontSize: 14
                             },
                             axisY: {
-                                title: "Quantità di portatili",
+                                title: "Quantity of laptops",
                                 titleFontSize: 14
                             },
                             data: [{
@@ -223,10 +219,6 @@
                         }],
                     });
                 stockChart.render();
-                
-                document.getElementById("exportReservations").addEventListener("click", function () {
-                    var image = stockChart.exportChart({ format: "jpeg" });
-                });
             };
         </script>
     </main>

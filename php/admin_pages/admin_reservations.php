@@ -38,10 +38,30 @@
 
     // Fetch all reservations for the logged-in user
     $reservations_result = $conn->query("
-    SELECT r.res_id, r.res_start_time, r.res_end_time, r.res_day, r.res_flag, u.u_name, u.u_surname
-    FROM reservations r
-    INNER JOIN users u ON u.u_id = r.res_user 
-    ORDER BY res_day DESC, res_start_time DESC
+SELECT 
+    r.res_id, 
+    r.res_start_time, 
+    r.res_end_time, 
+    r.res_day, 
+    r.res_flag, 
+    u.u_name, 
+    u.u_surname,
+    CASE
+        WHEN r.res_flag = 1 AND (
+            (r.res_day > CURDATE())
+            OR (r.res_day = CURDATE() AND NOW() < CONCAT(r.res_day, ' ', r.res_start_time))
+        ) THEN 0
+        WHEN r.res_flag = 1 AND r.res_day = CURDATE() AND NOW() BETWEEN CONCAT(r.res_day, ' ', r.res_start_time) AND CONCAT(r.res_day, ' ', r.res_end_time) THEN 1
+        WHEN r.res_flag = 1 AND (
+            r.res_day < CURDATE()
+            OR (r.res_day = CURDATE() AND NOW() >= CONCAT(r.res_day, ' ', r.res_end_time))
+        ) THEN 2
+        ELSE 'unknown'
+    END AS res_status
+FROM reservations r
+INNER JOIN users u ON u.u_id = r.res_user 
+WHERE u.u_id = r.res_user AND res_flag = 1
+ORDER BY r.res_day DESC, r.res_start_time DESC
 ");
 
     // Initialize an array to store reservations with laptops
@@ -110,6 +130,19 @@
                                     <h3 class="booking-id">
                                         <?php echo "PR-" . $reservation["res_day"] . "-" . $reservation["res_id"] ?>
                                     </h3>
+                                    <?php if ($reservation["res_status"] == 0): ?>
+                                        <span class="booking-status pending">
+                                            <i class="fas fa-hourglass-half"></i> In attesa
+                                        </span>
+                                    <?php elseif ($reservation["res_status"] == 1): ?>
+                                        <span class="booking-status active">
+                                            <i class="fas fa-laptop"></i> In corso
+                                        </span>
+                                    <?php elseif ($reservation["res_status"] == 2): ?>
+                                        <span class="booking-status completed">
+                                            <i class="fas fa-check-circle"></i> Terminata
+                                        </span>
+                                    <?php endif ?>
                                 </div>
 
                                 <div class="booking-details">
@@ -137,12 +170,20 @@
                                         <p><?php echo $reservation["u_surname"] . " " . $reservation["u_name"] ?></p>
                                     </div>
                                 </div>
-
-                                <div class="booking-actions">
-                                    <button class="btn btn-danger">
-                                        <i class="fa-solid fa-xmark"></i> Elimina
-                                    </button>
-                                </div>
+                                <?php if ($reservation["res_status"] != 2): ?>
+                                    <div class="booking-actions">
+                                        <button class="btn btn-danger cancel-booking"
+                                            data-id="<?php echo $reservation['res_id'] ?>">
+                                            <i class="fa-solid fa-xmark"></i> Annulla
+                                        </button>
+                                    </div>
+                                <?php else: ?>
+                                    <div class="booking-actions">
+                                        <button class="btn btn-danger delete-booking" data-id="<?php echo $reservation['res_id'] ?>">
+                                            <i class="fa-solid fa-trash"></i> Elimina
+                                        </button>
+                                    </div>
+                                <?php endif ?>
                             </div>
                         <?php endforeach ?>
                     <?php endif ?>

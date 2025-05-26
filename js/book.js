@@ -36,10 +36,6 @@ document.addEventListener("DOMContentLoaded", function () {
     document.getElementById("hidden-end-time").value = end;
 
     if (selectedLaptops.length > 0) {
-      alert(
-        `Booking confirmed for ${selectedLaptops.length} laptop(s)!\nFrom ${day} to ${end}`
-      );
-
       //submit the form
       document.getElementById("booking-summary-form").submit();
     }
@@ -86,13 +82,22 @@ document.addEventListener("DOMContentLoaded", function () {
     new Date(formattedMax)
   );
 
-  document.getElementById("filter-btn").addEventListener("click", function () {
+  // Function that change period of the reservation
+  function changeReservationPeriod() {
+    // Deseleziona tutti i laptop
+    selectedLaptops.length = 0;
+    selectedList.innerHTML = "";
+    updateSummary();
+
+    document.querySelectorAll(".locker-header").forEach((locker) => {
+      deselectAllLaptopsInLocker(locker.dataset.lockerId);
+    });
     const selectedDate = parseCustomDate(
       document.getElementById("start-date").value
     );
     const selectedStartTime = document.getElementById("start-time").value;
     const selectedEndTime = document.getElementById("end-time").value;
-    document.getElementById("day-hid").value = parseCustomDate(selectedDate);
+    document.getElementById("day-hid").value = selectedDate;
 
     if (!selectedDate || !selectedStartTime || !selectedEndTime) {
       alert("Please fill in all fields to apply the filter.");
@@ -103,38 +108,43 @@ document.addEventListener("DOMContentLoaded", function () {
     var xmlhttp = new XMLHttpRequest();
     xmlhttp.onreadystatechange = function () {
       if (this.readyState == 4 && this.status == 200) {
-        locker_container.innerHTML = "";
+        try {
+          const response = JSON.parse(this.responseText);
+          locker_container.innerHTML = "";
 
-        const response = JSON.parse(this.responseText);
-        const lockers = {};
+          const lockers = {};
 
-        response.forEach((laptop) => {
-          if (!lockers[laptop.lap_locker]) {
-            lockers[laptop.lap_locker] = [];
-          }
-          lockers[laptop.lap_locker].push({
-            id: laptop.lap_id,
-            name: laptop.lap_name,
-            model: laptop.lap_model,
-            status: laptop.lap_status,
-            lock_class: laptop.lock_class,
+          response.forEach((laptop) => {
+            if (!lockers[laptop.lap_locker]) {
+              lockers[laptop.lap_locker] = [];
+            }
+            lockers[laptop.lap_locker].push({
+              id: laptop.lap_id,
+              name: laptop.lap_name,
+              model: laptop.lap_model,
+              status: laptop.lap_status,
+              lock_class: laptop.lock_class,
+            });
           });
-        });
 
-        Object.keys(lockers).forEach((lockerId) => {
-          const lockerCard = createLocker(
-            lockerId,
-            lockers[lockerId],
-            selectedLaptops,
-            lockers[lockerId][0].lock_class
-          );
-          locker_container.appendChild(lockerCard);
-        });
+          Object.keys(lockers).forEach((lockerId) => {
+            const lockerCard = createLocker(
+              lockerId,
+              lockers[lockerId],
+              selectedLaptops,
+              lockers[lockerId][0].lock_class
+            );
+            locker_container.appendChild(lockerCard);
+          });
 
-        toggleButtonFunction();
-        laptopListener(selectedLaptops);
-        document.getElementById("selected-laptops").innerHTML = "";
-        updateSummary();
+          toggleButtonFunction();
+          laptopListener(selectedLaptops);
+          document.getElementById("selected-laptops").innerHTML = "";
+          updateSummary();
+        } catch (e) {
+          console.error("Risposta non valida dal server:", this.responseText);
+          alert("Errore interno del server. Contatta l'amministratore.");
+        }
       } else if (this.readyState == 4) {
         alert("Error: " + this.statusText);
       }
@@ -143,31 +153,47 @@ document.addEventListener("DOMContentLoaded", function () {
     xmlhttp.open(
       "GET",
       "../include/functions/laptop_filter.php?date=" +
-        selectedDate +
-        "&start_time=" +
-        selectedStartTime +
-        "&end_time=" +
-        selectedEndTime,
+      selectedDate +
+      "&start_time=" +
+      selectedStartTime +
+      "&end_time=" +
+      selectedEndTime,
       true
     );
     xmlhttp.send();
+  };
+
+  // Add event listener to the date picker
+  document.getElementById("start-date").addEventListener("change", function () {
+    changeReservationPeriod();
+  });
+
+  // Add event listener to the start time input
+  document.getElementById("start-time").addEventListener("change", function () {
+    changeReservationPeriod();
+  });
+
+  // Add event listener to the end time input
+  document.getElementById("end-time").addEventListener("change", function () {
+    changeReservationPeriod();
   });
 
   // Create a laptop item element
   function createLaptop(laptop) {
     const laptopItem = document.createElement("div");
     const possibleStatuses = [
-      "maintenance",
-      "unavailable",
-      "available",
-      "charging",
+      "maintenance",    // -1
+      "unavailable",    // 0
+      "available",      // 1
+      "charging",       // 2
     ];
     const statusNames = [
-      "Manutenzione",
-      "Non disponibile",
-      "Disponibile",
-      "Ricarica",
+      "Manutenzione",   // -1
+      "Non disponibile",// 0
+      "Disponibile",    // 1
+      "Ricarica",       // 2
     ];
+    // status va da -1 a 2, quindi aggiungi 1 per l'indice
     const statusClass = possibleStatuses[laptop.status + 1];
     const statusLabel = statusNames[laptop.status + 1];
 
@@ -178,19 +204,23 @@ document.addEventListener("DOMContentLoaded", function () {
       <div class="laptop-info ${statusClass}">
         <i class="fas fa-laptop"></i>
         <span>${laptop.name} (${laptop.model})</span>
-      </div>
-      ${
-        laptop.status === 1
-          ? `<button class="btn-icon select-laptop">
+      </div>`;
+
+    if (laptop.status === 1) {
+      // Disponibile: mostra il bottone
+      laptopItem.innerHTML += `<button class="btn-icon select-laptop">
                <i class="fas fa-plus"></i>
-             </button>`
-          : `<span class="status-badge">
-               <i class="fas ${
-                 laptop.status === -1 ? "fa-tools" : "fa-times"
-               }"></i> ${statusLabel}
-             </span>`
-      }
-    `;
+             </button>`;
+    } else if (laptop.status === -1) {
+      // Manutenzione
+      laptopItem.innerHTML += `<span class="status-badge"><i class="fas fa-tools"></i>${statusLabel}</span>`;
+    } else if (laptop.status === 0) {
+      // Non disponibile
+      laptopItem.innerHTML += `<span class="status-badge"><i class="fas fa-times"></i>${statusLabel}</span>`;
+    } else if (laptop.status === 2) {
+      // Ricarica
+      laptopItem.innerHTML += `<span class="status-badge"><i class="fa-solid fa-bolt"></i>${statusLabel}</span>`;
+    }
 
     return laptopItem;
   }
@@ -204,7 +234,7 @@ document.addEventListener("DOMContentLoaded", function () {
     ).length;
 
     lockerCard.innerHTML = `
-      <div class="locker-header">
+    <div class="locker-header" data-locker-id="${lockerId}">
         <h4 class="heading-4">Armadietto ${lockerId} - ${lock_class}</h4>
         <div>
         <span class="locker-status">${availableLaptops}/${laptops.length} disponibili</span>
@@ -212,10 +242,14 @@ document.addEventListener("DOMContentLoaded", function () {
           <i class="fas fa-chevron-down"></i>
         </button>
         </div>
-      </div>
-      <div class="locker-laptops" style="display: none;">
-      </div>
-    `;
+    </div>
+    <div class="locker-buttons">
+      <button type="button" class="btn btn-outline btn-small" onclick="selectAllLaptopsInLocker(${lockerId})">Seleziona tutto</button>
+      <button type="button" class="btn btn-outline btn-small" onclick="deselectAllLaptopsInLocker(${lockerId})">Deseleziona tutto</button>
+    </div>
+    <div class="locker-laptops" style="display: none;">
+    </div>
+  `;
 
     const lockerLaptops = lockerCard.querySelector(".locker-laptops");
 
@@ -266,7 +300,7 @@ document.addEventListener("DOMContentLoaded", function () {
           const listItem = document.createElement("li");
           listItem.dataset.laptopId = laptopId;
           listItem.innerHTML = `
-                              <span>${laptopName}</span>
+    <span > ${laptopName}</span >
                               <button class="btn-icon remove-laptop">
                                   <i class="fas fa-times"></i>
                               </button>
@@ -380,5 +414,45 @@ document.addEventListener("DOMContentLoaded", function () {
     }
   }
 
+
+  function selectAllLaptopsInLocker(lockerId) {
+    let lockerCard = null;
+    document.querySelectorAll('.locker-card').forEach(card => {
+      const heading = card.querySelector('.heading-4');
+      if (heading && heading.textContent.includes(`Armadietto ${lockerId}`)) {
+        lockerCard = card;
+      }
+    });
+    if (!lockerCard) return;
+    lockerCard.querySelectorAll('.laptop-item.available .select-laptop:not(.selected)').forEach(btn => btn.click());
+  }
+
+
+  function deselectAllLaptopsInLocker(lockerId) {
+    let lockerCard = null;
+    document.querySelectorAll('.locker-card').forEach(card => {
+      const heading = card.querySelector('.heading-4');
+      if (heading && heading.textContent.includes(`Armadietto ${lockerId}`)) {
+        lockerCard = card;
+      }
+    });
+    if (!lockerCard) return;
+    lockerCard.querySelectorAll('.laptop-item .select-laptop.selected').forEach(btn => {
+      const laptopItem = btn.closest('.laptop-item');
+      const laptopId = laptopItem.dataset.laptopId;
+      const removeBtn = document.querySelector(`#selected-laptops li[data-laptop-id="${laptopId}"] .remove-laptop`);
+      if (removeBtn) removeBtn.click();
+    });
+  }
+
+  // Esporre le funzioni globalmente per l'onclick HTML
+  window.selectAllLaptopsInLocker = selectAllLaptopsInLocker;
+  window.deselectAllLaptopsInLocker = deselectAllLaptopsInLocker;
   window.selectLaptopById = selectLaptopById;
+
+  // Remove the laptop data hidden div
+  const laptopDataDiv = document.getElementById("laptops-data");
+  if (laptopDataDiv) {
+    laptopDataDiv.remove();
+  }
 });

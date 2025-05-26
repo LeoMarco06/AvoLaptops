@@ -48,65 +48,13 @@ include_once '../page/header_navbar.php';
 
 $conn = connectToDatabase();
 
-// Get the current timestamp
-$current_time = time();
-
-// Round down to the nearest 00 or 30 minutes
-$minutes = date('i', $current_time); // Get current minutes
-$rounded_minutes = $minutes < 30 ? '00' : '30'; // Round to 00 or 30
-
-$start_time = date('H', $current_time) . ':' . $rounded_minutes; // Combine hours and rounded minutes
-
-// Set end time to 30 minutes later
-$end_time = date('H:i', strtotime($start_time . ' +30 minutes')); // Add 30 minutes to start time
-
-
-// Get today's date
-$day = date('Y-m-d');
-
-$sql = "SELECT 
-    l.lap_id as lap_id, 
-    l.lap_name as lap_name, 
-    l.lap_locker as lap_locker,
-    m.mod_name AS lap_model,
-    m.mod_RAM as lap_ram, 
-    m.mod_memory as lap_memory,
-    CASE 
-        WHEN MAX(
-            CASE 
-                WHEN r.res_day = ? 
-                     AND ? < r.res_end_time AND ? > r.res_start_time 
-                THEN 1 
-                ELSE 0 
-            END
-        ) = 1 THEN 0 
-        WHEN MAX(
-            CASE 
-                WHEN r.res_day = ?
-                     AND TIME_TO_SEC(TIMEDIFF(?, r.res_end_time)) / 60 BETWEEN 0 AND 61 
-                THEN 1 
-                ELSE 0 
-            END
-        ) = 1 THEN 2 
-        WHEN l.lap_status = -1 THEN -1 
-        ELSE 1 
-    END AS lap_status
-FROM laptops l
-LEFT JOIN laptops_reservations lr 
-    ON lr.lap_id = l.lap_id
-LEFT JOIN reservations r 
-    ON r.res_id = lr.res_id
-LEFT JOIN models m 
-    ON m.mod_id = l.lap_model
-INNER JOIN lockers lck 
-    ON lck.lock_id = l.lap_locker
-GROUP BY l.lap_id;";
-
-
+$sql = "SELECT lap_id, lap_locker, m.mod_name as lap_model, m.mod_RAM as lap_ram, m.mod_memory as lap_memory, lap_status, lap_name, k.lock_id
+        FROM laptops l
+        INNER JOIN models as m
+        INNER JOIN lockers as k
+        ON m.mod_id = l.lap_model AND l.lap_locker = k.lock_id";
 $stmt = $conn->prepare($sql);
-$stmt->bind_param("sssss", $day, $start_time, $end_time, $day, $start_time);
 $stmt->execute();
-
 $laptops = $stmt->get_result()->fetch_all(MYSQLI_ASSOC);
 
 $stmt = $conn->prepare("SELECT lock_id, lock_class FROM lockers");

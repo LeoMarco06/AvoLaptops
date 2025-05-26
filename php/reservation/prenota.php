@@ -57,23 +57,39 @@
 
     // Get the current timestamp
     $current_time = time();
+$current_hour = (int)date('H', $current_time);
 
-    // Round down to the nearest 00 or 30 minutes
-    $minutes = date('i', $current_time); // Get current minutes
-    $rounded_minutes = $minutes < 30 ? '00' : '30'; // Round to 00 or 30
-    
-    $start_time = date('H', $current_time) . ':' . $rounded_minutes; // Combine hours and rounded minutes
-    
-    // Set end time to 30 minutes later
-    $end_time = date('H:i', strtotime($start_time . ' +30 minutes')); // Add 30 minutes to start time
-    
+// Imposta orari di apertura e chiusura
+$open_hour = 8;
+$close_hour = 17;
 
-    // Get today's date
-    $day = $_GET['day'] ?? date('Y-m-d');
+if ($current_hour < $open_hour) {
+    // Prima delle 8:00: oggi alle 8:00
+    $day = date('Y-m-d');
+    $start_time = sprintf('%02d:00', $open_hour);
+} elseif ($current_hour >= $close_hour) {
+    // Dopo le 17:00: domani alle 8:00
+    $day = date('Y-m-d', strtotime('+1 day'));
+    $start_time = sprintf('%02d:00', $open_hour);
+} else {
+    // Tra 8:00 e 17:00: logica attuale
+    $minutes = date('i', $current_time);
+    $rounded_minutes = $minutes < 30 ? '00' : '30';
+    $day = date('Y-m-d');
+    $start_time = date('H', $current_time) . ':' . $rounded_minutes;
+}
 
-    // Final fallback for start_time and end_time
-    $start_time = $_GET['start_time'] ?? $start_time;
-    $end_time = $_GET['end_time'] ?? $end_time;
+// Set end time to 30 minutes later
+$end_time = date('H:i', strtotime($start_time . ' +30 minutes'));
+
+// Override con GET se presenti
+$day = $_GET['day'] ?? $day;
+$start_time = $_GET['start_time'] ?? $start_time;
+$end_time = $_GET['end_time'] ?? $end_time;
+
+
+    // Get current datetime for status 2 check
+    $current_datetime = date('Y-m-d H:i:s');
 
     // query to get all laptops with their status
 // and model name, and check if they are reserved during the specified time
@@ -193,7 +209,6 @@ GROUP BY l.lap_id;");
                                 <div class="text-icon">
                                     <i class="fa-solid fa-clock"></i>
                                     <label for="end-time">Ora fine</label>
-
                                 </div>
                                 <div class="time-picker-container">
                                     <input type="text" id="end-time" class="time-picker-input"
@@ -202,9 +217,6 @@ GROUP BY l.lap_id;");
                                 </div>
                             </div>
                         </div>
-
-                        <button type="button" id="filter-btn" class="btn btn-primary filter-btn" style="gap: 10px;"><i
-                                class="fa-solid fa-magnifying-glass"></i>Cerca</button>
                     </div>
                 </form>
 
