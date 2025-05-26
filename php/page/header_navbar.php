@@ -24,11 +24,22 @@ include_once $path . "include/session_check.php";
             <!-- Use the user's name and last name if the user is logged -->
             <?php if (isset($_SESSION["id"]) && !empty($_SESSION["id"])): ?>
                 <div class="profile-actions" id="profile-actions">
-                    <select class="btn btn-outline">
-                        <option value="" disabled selected hidden>Account</option>
-                        <option onclick="window.location.assign('<?php echo $path ?>user/account.php#home')">I tuoi dati</option>
-                        <option onclick="window.location.assign('<?php echo $path ?>user/logout.php#home')">Logout</option>
-                    </select>
+                    <button class="btn btn-account" id="account-menu-btn">
+                        <i class="fas fa-user-circle"></i>
+                        Account <i class="fas fa-caret-down"></i>
+                    </button>
+                    <ul class="account-menu" id="account-menu">
+                        <li>
+                            <a href="<?php echo $path ?>user/account.php#home">
+                                <i class="fas fa-id-card"></i> I tuoi dati
+                            </a>
+                        </li>
+                        <li>
+                            <a href="<?php echo $path ?>user/logout.php#home">
+                                <i class="fas fa-sign-out-alt"></i> Logout
+                            </a>
+                        </li>
+                    </ul>
                 </div>
             <?php else: ?>
                 <button class="btn btn-outline"
@@ -53,3 +64,20 @@ include_once $path . "include/session_check.php";
         <i class="fas fa-arrow-up"></i>
     </button>
 </header>
+
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        if (document.getElementById("account-menu-btn")) {
+            const btn = document.getElementById("account-menu-btn");
+            const menu = document.getElementById("account-menu");
+            btn.addEventListener("click", function (e) {
+                e.stopPropagation();
+                menu.style.width = btn.offsetWidth + "px";
+                menu.style.display = menu.style.display === "block" ? "none" : "block";
+            });
+            document.addEventListener("click", function () {
+                menu.style.display = "none";
+            });
+        }
+    });
+</script>

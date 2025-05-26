@@ -211,6 +211,25 @@ a:hover {
   opacity: 0.8;
 }
 
+.btn-account {
+  background: var(--color-bg-secondary);
+  color: var(--color-primary);
+  border: 1.5px solid var(--color-primary);
+  border-radius: var(--border-radius-md);
+  padding: var(--spacing-xs) var(--spacing-md);
+  font-weight: 600;
+  display: flex;
+  align-items: center;
+  gap: 0.5em;
+  transition: background 0.15s, color 0.15s, border 0.15s;
+}
+
+.btn-account:hover, .btn-account:focus {
+  background: var(--color-primary);
+  color: #fff;
+  border-color: var(--color-primary);
+}
+
 /*
   ================================================
   ================ LAYOUT SECTIONS ===============
@@ -624,4 +643,65 @@ main > .main-container {
 
 .input-error {
   border-color: var(--color-error) !important;
+}
+
+/* ===== Account Dropdown Menu ===== */
+.profile-actions {
+  position: relative;
+  display: inline-block;
+}
+
+.account-menu {
+  position: absolute;
+  top: 100%;
+  left: 0;
+  width: 100%; /* stessa larghezza del bottone */
+  min-width: 180px;
+  background: var(--color-card);
+  border: 1px solid var(--color-border);
+  border-radius: var(--border-radius-md);
+  box-shadow: var(--shadow-md);
+  padding: 0.5em 0;
+  margin-top: 6px;
+  z-index: 200;
+  display: none;
+  animation: fadeIn 0.2s;
+}
+
+.account-menu li {
+  list-style: none;
+}
+
+.account-menu a {
+  display: flex;
+  align-items: center;
+  gap: 0.7em;
+  padding: 0.7em 1.2em;
+  color: var(--color-text);
+  text-decoration: none;
+  font-size: 1em;
+  transition: background 0.15s, color 0.15s;
+  width: 100%;
+}
+
+.account-menu a:hover,
+.account-menu a:focus {
+  background: var(--color-primary-light);
+  color: #fff;
+}
+
+.account-menu li:last-child a {
+  color: var(--color-error);
+  font-weight: 500;
+}
+
+.account-menu li:last-child a:hover,
+.account-menu li:last-child a:focus {
+  background: var(--color-error);
+  color: #fff;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(-10px);}
+  to { opacity: 1; transform: translateY(0);}
 }

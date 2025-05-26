@@ -11,12 +11,26 @@ document.addEventListener("DOMContentLoaded", function () {
     let qrReader;
     let scannerIsRunning = false;
 
-    openBtn.addEventListener('click', () => {
+    openBtn.addEventListener('click', async () => {
         popup.style.display = 'block';
         qr_screen.style.display = 'none';
         qr_reader.style.display = "block";
         qr_screen.innerHTML = "";
         resultContainer.innerHTML = "Inquadra il codice qr presente sul pc e conferma la selezione premendo sul pulsante \"conferma\".";
+
+        // Controllo permessi
+        if (!navigator.mediaDevices || !navigator.mediaDevices.getUserMedia) {
+            resultContainer.innerHTML = "Il tuo browser non supporta l'accesso alla fotocamera.";
+            return;
+        }
+
+        try {
+            // Prova ad accedere alla fotocamera per forzare la richiesta permessi
+            await navigator.mediaDevices.getUserMedia({ video: { facingMode: "environment" } });
+        } catch (err) {
+            resultContainer.innerHTML = "Permesso per la fotocamera negato o non disponibile.";
+            return;
+        }
 
         qrReader = new Html5Qrcode("qr-reader");
 
