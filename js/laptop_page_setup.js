@@ -166,6 +166,7 @@ document.addEventListener("DOMContentLoaded", function () {
       0: "available",
       1: "unavailable",
       "-1": "maintenance",
+      2: "charging"
     };
     const statusClass = statusMap[status];
 

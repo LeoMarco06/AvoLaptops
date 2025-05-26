@@ -3,25 +3,17 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost
--- Generation Time: May 14, 2025 at 02:17 PM
--- Server version: 10.4.28-MariaDB
--- PHP Version: 8.2.4
+-- Generation Time: May 26, 2025 at 08:05 PM
+-- Server version: 10.4.32-MariaDB
+-- PHP Version: 8.2.12
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 START TRANSACTION;
 SET time_zone = "+00:00";
 
-
-/*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
-/*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
-/*!40101 SET @OLD_COLLATION_CONNECTION=@@COLLATION_CONNECTION */;
-/*!40101 SET NAMES utf8mb4 */;
-
 --
 -- Database: `avo_laptops_db`
 --
-CREATE DATABASE IF NOT EXISTS `avo_laptops_db` DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci;
-USE `avo_laptops_db`;
 
 -- --------------------------------------------------------
 
@@ -189,17 +181,19 @@ CREATE TABLE `models` (
   `mod_id` int(11) NOT NULL,
   `mod_name` varchar(50) DEFAULT NULL,
   `mod_RAM` int(11) DEFAULT NULL,
-  `mod_memory` int(11) DEFAULT NULL
+  `mod_memory` int(11) DEFAULT NULL,
+  `mod_CPU` varchar(30) DEFAULT NULL,
+  `mod_display` decimal(5,2) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
 -- Dumping data for table `models`
 --
 
-INSERT INTO `models` (`mod_id`, `mod_name`, `mod_RAM`, `mod_memory`) VALUES
-(1, 'Dell Latitude 5400', 8, 256),
-(2, 'HP EliteBook 850', 16, 512),
-(3, 'Lenovo ThinkPad X1', 16, 1024);
+INSERT INTO `models` (`mod_id`, `mod_name`, `mod_RAM`, `mod_memory`, `mod_CPU`, `mod_display`) VALUES
+(1, 'Dell Latitude 5400', 8, 256, 'Intel Core i5-8265U', 14.00),
+(2, 'HP EliteBook 850', 16, 512, 'Intel Core i5-5300U', 15.60),
+(3, 'Lenovo ThinkPad X1', 16, 1024, 'Intel Core i5-4200U', 14.00);
 
 -- --------------------------------------------------------
 
@@ -381,7 +375,3 @@ ALTER TABLE `log_maintenance`
 ALTER TABLE `reservations`
   ADD CONSTRAINT `reservations_ibfk_1` FOREIGN KEY (`res_user`) REFERENCES `users` (`u_id`) ON DELETE CASCADE;
 COMMIT;
-
-/*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
-/*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
-/*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;

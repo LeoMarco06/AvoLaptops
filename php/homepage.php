@@ -27,6 +27,11 @@
     $check = false;
     $path = "./";
     include_once './page/header_navbar.php';
+    include_once 'include/connection.php';
+    $conn = connectToDatabase();
+    $stmt = $conn->prepare("SELECT * FROM models");
+    $stmt->execute();
+    $models = $stmt->get_result()->fetch_all(MYSQLI_ASSOC);
     ?>
 
     <main>
@@ -91,37 +96,22 @@
                 <h2 class="section-header">Modelli</h2>
                 <div class="products-grid">
                     <!-- Device models -->
-                    <div class="product-card">
-                        <div class="product-image">
-                            <img src="../img/model1.png" alt="Portatile base">
+                    <?php foreach ($models as $model): ?>
+                        <div class="product-card">
+                            <div class="product-image">
+                                <img src="../img/deafult_model.png" alt="Portatile base">
+                            </div>
+                            <div class="product-details">
+                                <h3 class="heading-3">Modello <?php echo $model["mod_id"]?></h3>
+                                <ul class="product-specs">
+                                    <li><i class="fas fa-microchip"></i> <?php echo $model["mod_CPU"]?></li>
+                                    <li><i class="fas fa-memory"></i> <?php echo $model["mod_RAM"]?>GB RAM</li>
+                                    <li><i class="fas fa-hdd"></i> <?php echo $model["mod_memory"]?>GB SSD</li>
+                                    <li><i class="fas fa-tv"></i> <?php echo $model["mod_display"]?>" FHD</li>
+                                </ul>
+                            </div>
                         </div>
-                        <div class="product-details">
-                            <h3 class="heading-3">Modello 1</h3>
-                            <ul class="product-specs">
-                                <li><i class="fas fa-microchip"></i> Intel i3-1115G4</li>
-                                <li><i class="fas fa-memory"></i> 8GB RAM</li>
-                                <li><i class="fas fa-hdd"></i> 256GB SSD</li>
-                                <li><i class="fas fa-tv"></i> 15.6" FHD</li>
-                            </ul>
-                        </div>
-                    </div>
-
-                    <div class="product-card">
-                        <div class="product-image">
-                            <img src="../img/model2.png" alt="Portatile base">
-                        </div>
-                        <div class="product-details">
-                            <h3 class="heading-3">Modello 2</h3>
-                            <ul class="product-specs">
-                                <li><i class="fas fa-microchip"></i> Intel i3-1115G4</li>
-                                <li><i class="fas fa-memory"></i> 8GB RAM</li>
-                                <li><i class="fas fa-hdd"></i> 256GB SSD</li>
-                                <li><i class="fas fa-tv"></i> 15.6" FHD</li>
-                            </ul>
-                        </div>
-                    </div>
-
-                    <!-- Other models... -->
+                    <?php endforeach ?>
                 </div>
             </div>
         </section>
