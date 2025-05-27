@@ -3,9 +3,11 @@ include $path . "include/connection.php";
 
 $conn = connectToDatabase();
 
-session_set_cookie_params(0); // Session expires when browser closes
 // Start session if not already started
-session_start();
+if (session_status() === PHP_SESSION_NONE) {
+    session_set_cookie_params(0); // Session expires when browser closes
+    session_start();
+}
 
 if ($check) {
     // Check if the login_token cookie exists
