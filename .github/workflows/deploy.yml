@@ -1,0 +1,32 @@
+name: Deploy from my private repo to Altervista
+
+on:
+  schedule:
+    - cron: '*/30 * * * *'
+  workflow_dispatch:
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout repo
+      uses: actions/checkout@v3
+
+    - name: Configure Git
+      run: |
+        git config --global user.email "your.email@example.com"
+        git config --global user.name "Your Name"
+
+    # If you want to update local branch (optional if just deploying current commit)
+    - name: Pull latest changes
+      run: |
+        git pull origin main
+
+    - name: Upload to Altervista via FTP
+      uses: SamKirkland/FTP-Deploy-Action@v4.3.5
+      with:
+        server: ftp.avolaptops.altervista.org
+        username: avolaptops
+        password: ${{ secrets.ALTERVISTA_FTP_PASSWORD }}
+        local-dir: ./
