@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost
--- Generation Time: May 26, 2025 at 08:05 PM
+-- Generation Time: Jun 02, 2025 at 02:48 PM
 -- Server version: 10.4.32-MariaDB
 -- PHP Version: 8.2.12
 
@@ -37,8 +37,8 @@ INSERT INTO `laptops` (`lap_id`, `lap_model`, `lap_locker`, `lap_name`, `lap_sta
 (1, 1, 1, 'PC-01', 1),
 (2, 1, 1, 'PC-02', 0),
 (3, 1, 1, 'PC-03', 0),
-(4, 1, 1, 'PC-04', 1),
-(5, 1, 1, 'PC-05', -1),
+(4, 1, 1, 'PC-04', 2),
+(5, 1, 1, 'PC-05', 2),
 (6, 1, 1, 'PC-06', 1),
 (7, 1, 1, 'PC-07', 0),
 (8, 1, 1, 'PC-08', 0),
@@ -97,34 +97,87 @@ CREATE TABLE `laptops_reservations` (
 --
 
 INSERT INTO `laptops_reservations` (`lap_id`, `res_id`) VALUES
-(1, 1),
 (1, 7),
 (1, 8),
 (1, 10),
+(1, 12),
+(1, 13),
+(1, 14),
 (2, 2),
 (2, 7),
 (2, 8),
 (2, 10),
+(2, 12),
+(2, 13),
+(2, 14),
 (3, 3),
 (3, 11),
+(3, 12),
+(3, 13),
+(3, 14),
 (4, 3),
 (4, 4),
 (4, 11),
+(4, 12),
+(4, 14),
 (5, 5),
-(7, 1),
+(5, 12),
+(5, 14),
+(6, 12),
+(6, 14),
+(7, 12),
+(7, 14),
 (8, 2),
+(8, 12),
+(8, 14),
 (9, 3),
+(9, 12),
+(9, 14),
 (10, 4),
+(10, 12),
+(10, 14),
 (11, 5),
-(13, 1),
+(11, 12),
+(11, 14),
+(13, 12),
+(13, 14),
 (14, 2),
+(14, 12),
+(14, 14),
 (15, 3),
+(15, 12),
+(15, 14),
 (16, 4),
+(16, 12),
+(16, 14),
 (17, 5),
-(19, 1),
+(17, 12),
+(17, 14),
+(18, 12),
+(18, 14),
 (20, 2),
+(20, 12),
+(20, 14),
+(21, 12),
+(21, 14),
+(22, 12),
+(22, 14),
+(23, 12),
+(23, 14),
+(24, 12),
+(24, 14),
 (25, 9),
-(26, 9);
+(25, 12),
+(25, 14),
+(26, 9),
+(26, 12),
+(26, 14),
+(28, 12),
+(28, 14),
+(29, 12),
+(29, 14),
+(30, 12),
+(30, 14);
 
 -- --------------------------------------------------------
 
@@ -169,7 +222,9 @@ CREATE TABLE `log_maintenance` (
 
 INSERT INTO `log_maintenance` (`log_id`, `log_lap_id`, `log_date`, `log_time`, `log_status`) VALUES
 (1, 7, '2025-04-23', '11:36:44', 0),
-(2, 2, '2025-04-24', '19:04:45', 0);
+(2, 2, '2025-04-24', '19:04:45', 0),
+(3, 5, '2025-05-26', '20:09:17', 2),
+(4, 4, '2025-05-26', '20:11:33', 2);
 
 -- --------------------------------------------------------
 
@@ -215,7 +270,6 @@ CREATE TABLE `reservations` (
 --
 
 INSERT INTO `reservations` (`res_id`, `res_start_time`, `res_end_time`, `res_day`, `res_flag`, `res_user`) VALUES
-(1, '08:00:00', '10:00:00', '2025-04-20', 1, 37),
 (2, '10:00:00', '12:00:00', '2025-04-20', 1, 38),
 (3, '13:00:00', '15:00:00', '2025-04-20', 1, 39),
 (4, '11:00:00', '13:00:00', '2025-01-15', 0, 39),
@@ -224,7 +278,10 @@ INSERT INTO `reservations` (`res_id`, `res_start_time`, `res_end_time`, `res_day
 (8, '15:00:00', '15:30:00', '2025-05-07', 1, 37),
 (9, '16:00:00', '16:30:00', '2025-05-07', 1, 37),
 (10, '13:30:00', '14:00:00', '2025-05-14', 1, 37),
-(11, '13:30:00', '14:00:00', '2025-05-14', 1, 37);
+(11, '13:30:00', '14:00:00', '2025-05-14', 1, 37),
+(12, '08:00:00', '08:30:00', '2025-05-27', 1, 37),
+(13, '10:00:00', '13:00:00', '2025-05-29', 0, 37),
+(14, '10:00:00', '10:30:00', '2025-05-27', 1, 37);
 
 -- --------------------------------------------------------
 
@@ -234,12 +291,12 @@ INSERT INTO `reservations` (`res_id`, `res_start_time`, `res_end_time`, `res_day
 
 CREATE TABLE `users` (
   `u_id` int(11) NOT NULL,
-  `u_name` varchar(50) DEFAULT NULL,
-  `u_surname` varchar(50) DEFAULT NULL,
-  `u_email` varchar(64) DEFAULT NULL,
-  `u_cf` varchar(16) DEFAULT NULL,
-  `u_password` varchar(61) DEFAULT NULL,
-  `u_role` int(11) DEFAULT NULL,
+  `u_name` varchar(50) NOT NULL,
+  `u_surname` varchar(50) NOT NULL,
+  `u_date_birth` date NOT NULL,
+  `u_email` varchar(64) NOT NULL,
+  `u_password` varchar(61) NOT NULL,
+  `u_role` int(11) NOT NULL,
   `u_authorized` tinyint(1) DEFAULT NULL,
   `u_token` varchar(65) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
@@ -248,11 +305,11 @@ CREATE TABLE `users` (
 -- Dumping data for table `users`
 --
 
-INSERT INTO `users` (`u_id`, `u_name`, `u_surname`, `u_email`, `u_cf`, `u_password`, `u_role`, `u_authorized`, `u_token`) VALUES
-(37, 'Mario', 'Rossi', 'mario.rossi@itisavogadro.it', 'MROSSI1234567890', '$2y$10$bUTASuIFIeiq8/xSq7ppM.brt9.J/8dB1s.SjeAVJW4g4ulFqx7N6', 1, 1, '86a94807a3dbbd516ca5b5df54ef4f4ae5d833535639b50b188bc126d5c335b6'),
-(38, 'Anna', 'Verdi', 'anna.verdi@itisavogadro.it', 'AVERDI1234567890', '$2y$10$bUTASuIFIeiq8/xSq7ppM.brt9.J/8dB1s.SjeAVJW4g4ulFqx7N6', 1, 1, NULL),
-(39, 'Luigi', 'Bianchi', 'luigi.bianchi@itisavogadro.it', 'LBIANCHI12345678', '$2y$10$bUTASuIFIeiq8/xSq7ppM.brt9.J/8dB1s.SjeAVJW4g4ulFqx7N6', 1, 1, NULL),
-(41, 'Nome', 'Cognome', 'ncognome@itisavogadro.it', 'NCOGNOME12345678', '$2y$10$bUTASuIFIeiq8/xSq7ppM.brt9.J/8dB1s.SjeAVJW4g4ulFqx7N6', 10, 1, NULL);
+INSERT INTO `users` (`u_id`, `u_name`, `u_surname`, `u_date_birth`, `u_email`, `u_password`, `u_role`, `u_authorized`, `u_token`) VALUES
+(37, 'Mario', 'Rossi', '2025-06-10', 'mario.rossi@itisavogadro.it', '$2y$10$bUTASuIFIeiq8/xSq7ppM.brt9.J/8dB1s.SjeAVJW4g4ulFqx7N6', 1, 1, '86a94807a3dbbd516ca5b5df54ef4f4ae5d833535639b50b188bc126d5c335b6'),
+(38, 'Anna', 'Verdi', '0000-00-00', 'anna.verdi@itisavogadro.it', '$2y$10$bUTASuIFIeiq8/xSq7ppM.brt9.J/8dB1s.SjeAVJW4g4ulFqx7N6', 1, 1, NULL),
+(39, 'Luigi', 'Bianchi', '0000-00-00', 'luigi.bianchi@itisavogadro.it', '$2y$10$bUTASuIFIeiq8/xSq7ppM.brt9.J/8dB1s.SjeAVJW4g4ulFqx7N6', 1, 1, NULL),
+(41, 'Nome', 'Cognome', '0000-00-00', 'ncognome@itisavogadro.it', '$2y$10$bUTASuIFIeiq8/xSq7ppM.brt9.J/8dB1s.SjeAVJW4g4ulFqx7N6', 10, 1, NULL);
 
 --
 -- Indexes for dumped tables
@@ -325,7 +382,7 @@ ALTER TABLE `lockers`
 -- AUTO_INCREMENT for table `log_maintenance`
 --
 ALTER TABLE `log_maintenance`
-  MODIFY `log_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+  MODIFY `log_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
 
 --
 -- AUTO_INCREMENT for table `models`
@@ -337,7 +394,7 @@ ALTER TABLE `models`
 -- AUTO_INCREMENT for table `reservations`
 --
 ALTER TABLE `reservations`
-  MODIFY `res_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=12;
+  MODIFY `res_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=15;
 
 --
 -- AUTO_INCREMENT for table `users`

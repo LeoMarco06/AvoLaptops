@@ -116,15 +116,10 @@ $users_json = json_encode($users);
                     <div class="form-group">
                         <label for="user-role">Ruolo</label>
                         <select id="user-role" name="user-role" disabled>
-                            <option value="" disabled>Seleziona un ruolo</option>
-                            <option value="0">Admin</option>
-                            <option value="1">Utente</option>
+                            <option value="" disabled hidden>Seleziona un ruolo</option>
+                            <option value="1">Admin</option>
+                            <option value="10">Utente</option>
                         </select>
-                    </div>
-                    <div class="form-group">
-                        <label for="user-codFis">Codice Fiscale</label>
-                        <input type="text" id="user-codFis" name="user-codFis" disabled>
-                        <div id="codFisFeedback" class="feedback"></div>
                     </div>
                     <div class="form-group">
                         <label for="date-birth">Data di Nascita</label>

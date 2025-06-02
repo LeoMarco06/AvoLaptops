@@ -23,6 +23,7 @@ $conn->close();
 if (ob_get_level()) {
     ob_clean();
 }
+
 header('Content-Type: application/json');
 echo json_encode($user);
 ?>

@@ -86,22 +86,24 @@ function viewUser(id) {
   xmlhttp.onreadystatechange = function () {
     if (this.readyState == 4 && this.status == 200) {
       const user = JSON.parse(this.responseText)[0];
-      document.getElementById("user-name").value = user["u_name"];
-      document.getElementById("user-surname").value = user["u_surname"];
-      document.getElementById("user-codFis").value = user["u_cf"];
-      document.getElementById("date-birth").value = formatDate(
-        new Date("2001-01-01")
-      );
       document
         .getElementById("user-role")
         .querySelectorAll("option")
         .forEach((option) => {
-          if (option.value == user["u_role"]) {
-            option.setAttribute("selected", "selected");
+          if (!option.value || isNaN(option.value)) return;
+
+          const optionValue = parseInt(option.value, 10);
+          const userRole = parseInt(user["u_role"], 10);
+
+          if (optionValue === userRole) {
+            option.selected = true;
           } else {
-            option.removeAttribute("selected");
+            option.selected = false;
           }
         });
+      document.getElementById("user-name").value = user["u_name"];
+      document.getElementById("user-surname").value = user["u_surname"];
+      document.getElementById("date-birth").value = user["u_date_birth"] ? formatDate(new Date(user["u_date_birth"])) : "";
     }
   };
   xmlhttp.open("GET", `./ajax/getUser_data.php?u_id=${id}`, true);

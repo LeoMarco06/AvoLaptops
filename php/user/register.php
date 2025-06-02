@@ -117,16 +117,6 @@
                         </div>
 
                         <div class="form-group">
-                            <label for="codFis">Codice fiscale</label>
-                            <div class="input-group">
-                                <i class="fas fa-id-card" id="codFis-id-icon"></i>
-                                <input type="text" id="codFis" name="codFis" placeholder="Il tuo codice fiscale"
-                                    required>
-                            </div>
-                            <div id="codFisFeedback" class="feedback-message"></div>
-                        </div>
-
-                        <div class="form-group">
                             <label for="password">Password</label>
                             <div class="input-group">
                                 <i class="fas fa-lock" id="password-icon"></i>

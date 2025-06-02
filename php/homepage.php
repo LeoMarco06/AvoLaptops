@@ -102,12 +102,12 @@
                                 <img src="../img/deafult_model.png" alt="Portatile base">
                             </div>
                             <div class="product-details">
-                                <h3 class="heading-3">Modello <?php echo $model["mod_id"]?></h3>
+                                <h3 class="heading-3">Modello <?php echo $model["mod_id"] ?></h3>
                                 <ul class="product-specs">
-                                    <li><i class="fas fa-microchip"></i> <?php echo $model["mod_CPU"]?></li>
-                                    <li><i class="fas fa-memory"></i> <?php echo $model["mod_RAM"]?>GB RAM</li>
-                                    <li><i class="fas fa-hdd"></i> <?php echo $model["mod_memory"]?>GB SSD</li>
-                                    <li><i class="fas fa-tv"></i> <?php echo $model["mod_display"]?>" FHD</li>
+                                    <li><i class="fas fa-microchip"></i> <?php echo $model["mod_CPU"] ?></li>
+                                    <li><i class="fas fa-memory"></i> <?php echo $model["mod_RAM"] ?>GB RAM</li>
+                                    <li><i class="fas fa-hdd"></i> <?php echo $model["mod_memory"] ?>GB SSD</li>
+                                    <li><i class="fas fa-tv"></i> <?php echo $model["mod_display"] ?>" FHD</li>
                                 </ul>
                             </div>
                         </div>
@@ -119,10 +119,16 @@
         <section class="cta-section">
             <div class="main-container">
                 <div class="cta-content">
-                    <h2 class="heading-2">Pronto a noleggiare?</h2>
-                    <p>Accedi con le tue credenziali scolastiche per prenotare il tuo dispositivo</p>
-                    <button class="btn btn-primary" onclick="window.location.replace('./user/login.php#login')">Accedi
-                        ora</button>
+                    <h2 class="heading-2">Pronto a prenotare?</h2>
+                    <?php if (!isset($_SESSION['id'])): ?>
+                        <p>Accedi con le tue credenziali scolastiche per prenotare il tuo dispositivo</p>
+                        <button class="btn" onclick="window.location.replace('./user/login.php#login')">Accedi
+                            ora</button>
+                    <?php else: ?>
+                        <p>Visita la pagina dedicata per prenotare i laptop</p>
+                        <button class="btn" onclick="window.location.replace('./reservation/prenota.php#login')">Prenota
+                            ora</button>
+                    <?php endif ?>
                 </div>
             </div>
         </section>

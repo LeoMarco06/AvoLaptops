@@ -26,7 +26,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $name = htmlspecialchars(trim($_POST['name']));
     $surname = htmlspecialchars(trim($_POST['surname']));
     $dateOfBirth = htmlspecialchars(trim($_POST['date']));
-    $codFis = htmlspecialchars(trim($_POST['codFis']));
     $password = $_POST['password'];
     $role = 10; // Default role for new users
     $authorized = 0; // Default authorization status
@@ -35,8 +34,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $hashedPassword = password_hash($password, PASSWORD_BCRYPT);
 
     // Insert user into the database
-    $stmt = $conn->prepare("INSERT INTO users (u_email, u_name, u_surname, u_date_of_birth, u_cf, u_password, u_role, u_authorized) VALUES (?, ?, ?, ?, ?, ?, ?, ?)");
-    $stmt->bind_param("ssssssii", $email, $name, $surname, $dateOfBirth, $codFis, $hashedPassword, $role, $authorized);
+    $stmt = $conn->prepare("INSERT INTO users (u_email, u_name, u_surname, u_date_of_birth, u_password, u_role, u_authorized) VALUES (?, ?, ?, ?, ?, ?, ?, ?)");
+    $stmt->bind_param("ssssssii", $email, $name, $surname, $dateOfBirth, $hashedPassword, $role, $authorized);
 
     if ($stmt->execute()) {
         echo "<script>alert('Registrazione completata con successo. Attendi la verifica dell'admin.');</script>";

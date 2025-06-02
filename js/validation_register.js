@@ -52,7 +52,6 @@ function validateForm() {
   isValid &= !validateEmailInput();
   isValid &= !validateNameInput();
   isValid &= !validateSurnameInput();
-  isValid &= !validateCodFisInput();
   isValid &= !validatePasswordInput();
   isValid &= !validateConfirmPasswordInput();
 
@@ -211,37 +210,6 @@ function validateSurnameInput() {
   surnameInput.style.borderColor = error
     ? "#fd5757"
     : getComputedStyle(surnameInput).getPropertyValue("--color-border");
-  feedbackElement.style.display = error ? "block" : "none";
-  feedbackElement.style.color = "#fd5757";
-
-  return error;
-}
-
-// Validate the tax code input field
-function validateCodFisInput() {
-  const codFisInput = document.getElementById("codFis");
-  const codFisValue = codFisInput.value.trim().toUpperCase();
-  const feedbackElement = document.getElementById("codFisFeedback");
-  const taxCodeRegex = /^[A-Z]{6}[0-9]{2}[A-Z][0-9]{2}[A-Z][0-9]{3}[A-Z]$/;
-  let error = false;
-
-  if (codFisValue === "") {
-    error = true;
-    feedbackElement.textContent = "Il codice fiscale è obbligatorio";
-  } else if (codFisValue.length !== 16) {
-    error = true;
-    feedbackElement.textContent =
-      "Il codice fiscale deve essere di 16 caratteri";
-  } else if (!taxCodeRegex.test(codFisValue)) {
-    error = true;
-    feedbackElement.textContent = "Formato codice fiscale non valido";
-  } else {
-    feedbackElement.textContent = "";
-  }
-
-  codFisInput.style.borderColor = error
-    ? "#fd5757"
-    : getComputedStyle(codFisInput).getPropertyValue("--color-border");
   feedbackElement.style.display = error ? "block" : "none";
   feedbackElement.style.color = "#fd5757";
 
