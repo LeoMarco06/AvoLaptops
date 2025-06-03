@@ -26,6 +26,9 @@
     <!-- Script that manages the theme mode, animations, navbar... -->
     <script src="../../js/page_setup.js" defer></script>
     <script type="text/javascript" src="https://cdn.canvasjs.com/ga/canvasjs.min.js"></script>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/1.5.3/jspdf.debug.js"></script>
 </head>
 
 <body id="home">
@@ -131,14 +134,18 @@
 
                     <!--INFOGRAFICA 1-->
                     <div class="statistic-item">
-                        <h2 class="header2">STATUS DEI LAPTOPS</h2>
+                        <h2 class="header2">Stato dei portatili</h2>
                         <div id="chartContainer1" style="width: 55%; height: 300px; display: inline-block;"></div>
+                        <!--PULSANTE CHE ESPORRTA SOLO IN PDF-->
+                        <!--<div class="pulsante"><input type="submit" id="exportLaptops" value="Esporta come PDF" class="btn btn-primary"></div>-->
                     </div>
 
                     <!--INFOGRAFICA 2-->
                     <div class="statistic-item">
-                        <h2 class="header2">UTENTI</h2>
+                        <h2 class="header2">Utenti</h2>
                         <div id="chartContainer2" style="width: 90%; height: 300px; display: inline-block;"></div>
+                        <!--PULSANTE CHE ESPORRTA SOLO IN PDF-->
+                        <!--<div class="pulsante"><input type="submit" id="exportUsers" value="Esporta come PDF" class="btn btn-primary"></div>-->
                     </div>
 
                     <?php
@@ -161,7 +168,7 @@
                         ?>
                     </select><br>
 
-                    <div class="pulsante"><input type="submit" value="Submit" class="btn btn-primary"></div>
+                    <div class="pulsante"><input type="submit" value="Invia" class="btn btn-primary"></div>
                 </form>
             </div>
         </section>
@@ -171,7 +178,9 @@
                 /*  GRAPHIC FOR THE STATUS OF ALL LAPTOPS */
                 var chart = new CanvasJS.Chart("chartContainer1",
                     {
-                        backgroundColor: "transparent",
+                        //backgroundColor: "transparent",
+                        exportEnabled: true,
+                        exportFileName: "GraficoPortatili",
                         animationEnabled: true,
                         data: [
                             {
@@ -180,35 +189,54 @@
                                 indexLabel: "{label} {y}",
                                 showInLegend: true,
                                 dataPoints: [
-                                    { y: <?php echo ($available_laptops) ?>, legendText: " <?php echo "available laptops: " . $available_laptops ?>", label: "<?php echo "% available" ?>" },
-                                    { y: <?php echo ($maintenance_laptops) ?>, legendText: "<?php echo "maintenance laptops: " . $maintenance_laptops ?>", label: "<?php echo '%  maintenance' ?>" },
-                                    { y: <?php echo ($unavailable_laptops) ?>, legendText: "<?php echo "unavailable laptops: " . $unavailable_laptops ?>", label: "<?php echo '%  unavailable' ?>" }
+                                    { y: <?php echo ($available_laptops) ?>, legendText: " <?php echo "portatili disponibili: " . $available_laptops ?>", label: "<?php echo "% disponibili" ?>" },
+                                    { y: <?php echo ($maintenance_laptops) ?>, legendText: "<?php echo "portatili in manutenzione: " . $maintenance_laptops ?>", label: "<?php echo '%  in manutenzione' ?>" },
+                                    { y: <?php echo ($unavailable_laptops) ?>, legendText: "<?php echo "portatili non disponibili: " . $unavailable_laptops ?>", label: "<?php echo '%  non disponibili' ?>" }
+                                ]
+                            }
+                        ]
+                    });
+                chart.render();
+                /*** SCARICA IN FORMATO PDF !!***/
+                /*var canvasLaptop = $("#chartContainer1 .canvasjs-chart-canvas").get(0);
+                $("#exportLaptops").click(function () {
+                    var dataURL = canvasLaptop.toDataURL();
+                    var pdf = new jsPDF();
+                    pdf.addImage(dataURL, 'JPEG', 15, 10); //addImage(image, format, x-coordinate, y-coordinate, width, height)
+                    pdf.save("chartLaptop.pdf");
+                }); */
+
+                var chart = new CanvasJS.Chart("chartContainer2",
+                    {
+                        //backgroundColor: "transparent",
+                        exportEnabled: true,
+                        exportFileName: "GraficoUtenti",
+                        animationEnabled: true,
+                        data: [
+                            {
+                                type: "pie",
+                                yValueFormatString: "##0.00\"%\"",
+                                indexLabel: "{label} {y}",
+                                showInLegend: true,
+                                dataPoints: [
+                                    { y: <?php echo ($total_users) ?>, legendText: " <?php echo "totale degli utenti registrati: " . $total_users ?>", label: " <?php echo "% registrati" ?>" },
+                                    { y: <?php echo ($users_res) ?>, legendText: "<?php echo "utenti con almeno una prenotazione effettuata: " . $users_res ?>", label: " <?php echo "% almeno 1 prenotazione effettuata" ?>" },
+                                    { y: <?php echo ($users_auth) ?>, legendText: "<?php echo "utenti autorizzati: " . $users_auth ?>", label: " <?php echo "%  autorizzati" ?>" },
+                                    { y: <?php echo ($users_unauth) ?>, legendText: "<?php echo "utenti non autorizzati: " . $users_unauth ?>", label: " <?php echo "%  non autorizzati" ?>" },
                                 ]
                             }
                         ]
                     });
                 chart.render();
 
-                var chart = new CanvasJS.Chart("chartContainer2",
-                    {
-                        backgroundColor: "transparent",
-                        animationEnabled: true,
-                        data: [
-                            {
-                                type: "pie",
-                                yValueFormatString: "##0.00\"%\"",
-                                indexLabel: "{label} {y}",
-                                showInLegend: true,
-                                dataPoints: [
-                                    { y: <?php echo ($total_users) ?>, legendText: " <?php echo "total registered users: " . $total_users ?>", label: " <?php echo "% registered" ?>" },
-                                    { y: <?php echo ($users_res) ?>, legendText: "<?php echo "users who made minimum 1 reservation: " . $users_res ?>", label: " <?php echo "%  made reservation" ?>" },
-                                    { y: <?php echo ($users_auth) ?>, legendText: "<?php echo "authorized users: " . $users_auth ?>", label: " <?php echo "%  authorized" ?>" },
-                                    { y: <?php echo ($users_unauth) ?>, legendText: "<?php echo "unauthorized users: " . $users_unauth ?>", label: " <?php echo "%  unauthorized" ?>" },
-                                ]
-                            }
-                        ]
-                    });
-                chart.render();
+                /*** SCARICA IN FORMATO PDF !!***/
+                /*var canvasUsers = $("#chartContainer2 .canvasjs-chart-canvas").get(0);
+                $("#exportUsers").click(function () {
+                    var dataURL = canvasUsers.toDataURL();
+                    var pdf = new jsPDF();
+                    pdf.addImage(dataURL, 'JPEG', 15, 10); //addImage(image, format, x-coordinate, y-coordinate, width, height)
+                    pdf.save("chartUsers.pdf");
+                });*/
             };
         </script>
     </main>
