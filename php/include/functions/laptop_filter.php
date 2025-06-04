@@ -12,6 +12,7 @@ $end_time = htmlspecialchars($_GET['end_time']);
 
 $check = true;
 $path = "../../";
+$admin = false;
 include_once '../session_check.php';
 
 // Query to the database to get the laptops that are available for the given date and time

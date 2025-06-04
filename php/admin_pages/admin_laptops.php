@@ -49,12 +49,83 @@ include_once '../page/header_navbar.php';
 
 $conn = connectToDatabase();
 
-$sql = "SELECT lap_id, lap_locker, m.mod_name as lap_model, m.mod_RAM as lap_ram, m.mod_memory as lap_memory, lap_status, lap_name, k.lock_id
-        FROM laptops l
-        INNER JOIN models as m
-        INNER JOIN lockers as k
-        ON m.mod_id = l.lap_model AND l.lap_locker = k.lock_id";
+// Get the current timestamp
+$current_time = time();
+$current_hour = (int) date('H', $current_time);
+
+// Imposta orari di apertura e chiusura
+$open_hour = 8;
+$close_hour = 17;
+
+if ($current_hour < $open_hour) {
+    // Prima delle 8:00: oggi alle 8:00
+    $day = date('Y-m-d');
+    $start_time = sprintf('%02d:00', $open_hour);
+} elseif ($current_hour >= $close_hour) {
+    // Dopo le 17:00: domani alle 8:00
+    $day = date('Y-m-d', strtotime('+1 day'));
+    $start_time = sprintf('%02d:00', $open_hour);
+} else {
+    // Tra 8:00 e 17:00: logica attuale
+    $minutes = date('i', $current_time);
+    $rounded_minutes = $minutes < 30 ? '00' : '30';
+    $day = date('Y-m-d');
+    $start_time = date('H', $current_time) . ':' . $rounded_minutes;
+}
+
+// Set end time to 30 minutes later
+$end_time = date('H:i', strtotime($start_time . ' +30 minutes'));
+
+// Override con GET se presenti
+$day = $_GET['day'] ?? $day;
+$start_time = $_GET['start_time'] ?? $start_time;
+$end_time = $_GET['end_time'] ?? $end_time;
+
+
+// Get current datetime for status 2 check
+$current_datetime = date('Y-m-d H:i:s');
+
+$sql = "SELECT 
+    l.lap_id, 
+    l.lap_name, 
+    l.lap_locker, 
+    k.lock_class, 
+    m.mod_name AS lap_model, 
+    m.mod_RAM AS lap_ram, 
+    m.mod_memory AS lap_memory, 
+    CASE 
+        WHEN MAX(
+            CASE 
+                WHEN r.res_day = ? 
+                     AND ? < r.res_end_time AND ? > r.res_start_time 
+                THEN 1 
+                ELSE 0 
+            END
+        ) = 1 THEN 0 
+        WHEN MAX(
+            CASE 
+                WHEN r.res_day = ? 
+                     AND TIME_TO_SEC(TIMEDIFF(?, r.res_end_time)) / 60 BETWEEN 0 AND 61 
+                THEN 1 
+                ELSE 0 
+            END
+        ) = 1 THEN 2 
+        WHEN l.lap_status = -1 THEN -1 
+        ELSE 1 
+    END AS lap_status
+FROM laptops l
+LEFT JOIN laptops_reservations lr 
+    ON lr.lap_id = l.lap_id
+LEFT JOIN reservations r 
+    ON r.res_id = lr.res_id
+LEFT JOIN models m 
+    ON m.mod_id = l.lap_model
+INNER JOIN lockers k 
+    ON k.lock_id = l.lap_locker
+GROUP BY l.lap_id;";
+
 $stmt = $conn->prepare($sql);
+$stmt->bind_param("sssss", $day, $start_time, $end_time, $day, $start_time);
 $stmt->execute();
 $laptops = $stmt->get_result()->fetch_all(MYSQLI_ASSOC);
 

@@ -26,6 +26,7 @@
     $admin = true; // This variable is used to check if the user is an admin
     $check = true;
     $path = "./";
+    $admin = false;
     include_once './page/header_navbar.php';
     ?>
 

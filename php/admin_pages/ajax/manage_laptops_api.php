@@ -1,7 +1,8 @@
 <?php
-include "../../include/connection.php";
-
-$conn = connectToDatabase();
+$check = true;
+$path = "../../";
+$admin = true;
+include_once '../../page/header_navbar.php';
 
 session_start();
 

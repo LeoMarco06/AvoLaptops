@@ -1,5 +1,8 @@
 <?php
-include "../../include/connection.php";
+$check = true;
+$path = "../../";
+$admin = true;
+include_once '../../page/header_navbar.php';
 
 $conn = connectToDatabase();
 

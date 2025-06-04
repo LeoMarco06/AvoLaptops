@@ -50,6 +50,7 @@
     <?php
     $check = true;
     $path = "../";
+    $admin = false;
     include_once '../page/header_navbar.php';
     include_once '../include/connection.php';
 
@@ -57,35 +58,35 @@
 
     // Get the current timestamp
     $current_time = time();
-$current_hour = (int)date('H', $current_time);
+    $current_hour = (int) date('H', $current_time);
 
-// Imposta orari di apertura e chiusura
-$open_hour = 8;
-$close_hour = 17;
+    // Imposta orari di apertura e chiusura
+    $open_hour = 8;
+    $close_hour = 17;
 
-if ($current_hour < $open_hour) {
-    // Prima delle 8:00: oggi alle 8:00
-    $day = date('Y-m-d');
-    $start_time = sprintf('%02d:00', $open_hour);
-} elseif ($current_hour >= $close_hour) {
-    // Dopo le 17:00: domani alle 8:00
-    $day = date('Y-m-d', strtotime('+1 day'));
-    $start_time = sprintf('%02d:00', $open_hour);
-} else {
-    // Tra 8:00 e 17:00: logica attuale
-    $minutes = date('i', $current_time);
-    $rounded_minutes = $minutes < 30 ? '00' : '30';
-    $day = date('Y-m-d');
-    $start_time = date('H', $current_time) . ':' . $rounded_minutes;
-}
+    if ($current_hour < $open_hour) {
+        // Prima delle 8:00: oggi alle 8:00
+        $day = date('Y-m-d');
+        $start_time = sprintf('%02d:00', $open_hour);
+    } elseif ($current_hour >= $close_hour) {
+        // Dopo le 17:00: domani alle 8:00
+        $day = date('Y-m-d', strtotime('+1 day'));
+        $start_time = sprintf('%02d:00', $open_hour);
+    } else {
+        // Tra 8:00 e 17:00: logica attuale
+        $minutes = date('i', $current_time);
+        $rounded_minutes = $minutes < 30 ? '00' : '30';
+        $day = date('Y-m-d');
+        $start_time = date('H', $current_time) . ':' . $rounded_minutes;
+    }
 
-// Set end time to 30 minutes later
-$end_time = date('H:i', strtotime($start_time . ' +30 minutes'));
+    // Set end time to 30 minutes later
+    $end_time = date('H:i', strtotime($start_time . ' +30 minutes'));
 
-// Override con GET se presenti
-$day = $_GET['day'] ?? $day;
-$start_time = $_GET['start_time'] ?? $start_time;
-$end_time = $_GET['end_time'] ?? $end_time;
+    // Override con GET se presenti
+    $day = $_GET['day'] ?? $day;
+    $start_time = $_GET['start_time'] ?? $start_time;
+    $end_time = $_GET['end_time'] ?? $end_time;
 
 
     // Get current datetime for status 2 check

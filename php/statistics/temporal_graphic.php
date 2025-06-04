@@ -30,6 +30,7 @@
     <?php
     $check = true;
     $path = "../";
+    $admin = false;
     include_once '../page/header_navbar.php';
 
     $conn = connectToDatabase();
@@ -223,7 +224,7 @@
                         }],
                     });
                 stockChart.render();
-                              
+
                 document.getElementById("exportReservations").addEventListener("click", function () {
                     var image = stockChart.exportChart({ format: "jpeg" });
                 });

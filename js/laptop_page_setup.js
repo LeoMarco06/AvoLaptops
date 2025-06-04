@@ -71,8 +71,8 @@ document.addEventListener("DOMContentLoaded", function () {
     const laptopItem = document.createElement("div");
     const possibleStatuses = [
       "maintenance",
-      "available",
       "unavailable",
+      "available",
       "charging",
     ];
     const statusClass = possibleStatuses[laptop.lap_status + 1];

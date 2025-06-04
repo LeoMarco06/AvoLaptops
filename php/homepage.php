@@ -26,6 +26,7 @@
     <?php
     $check = false;
     $path = "./";
+    $admin = false;
     include_once './page/header_navbar.php';
     include_once 'include/connection.php';
     $conn = connectToDatabase();

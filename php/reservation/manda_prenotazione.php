@@ -1,6 +1,7 @@
 <?php
 $check = true;
 $path = "../";
+$admin = false;
 include_once '../page/header_navbar.php';
 
 $conn = connectToDatabase();

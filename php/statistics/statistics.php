@@ -35,57 +35,58 @@
     <?php
     $check = true;
     $path = "../";
+    $admin = false;
     include_once '../page/header_navbar.php';
 
     $conn = connectToDatabase();
 
     /***  COUNTING AVAILABLE LAPTOPS  ***/
-    $query = "  SELECT COUNT(lap_id) as id
+    $query = "  SELECT COUNT(lap_id) as lap_id
                     FROM laptops
                     WHERE lap_status = 1 ";
     $result = $conn->query($query);
     //echo $conn->error;
     if ($result) {
         $row = $result->fetch_array();
-        $available_laptops = $row["id"];
+        $available_laptops = $row["lap_id"];
         //echo $available_laptops;
     }
 
     /***  COUNTING UNAVAILABLE LAPTOPS   ***/
-    $query = "  SELECT COUNT(lap_id) as id
+    $query = "  SELECT COUNT(lap_id) as lap_id
                     FROM laptops
                     WHERE lap_status = 0 ";
     $result = $conn->query($query);
     //echo $conn->error;
     if ($result) {
         $row = $result->fetch_array();
-        $unavailable_laptops = $row["id"];
+        $unavailable_laptops = $row["lap_id"];
         //echo $unavailable_laptops;
     }
 
     /***  COUNTING LAPTOPS IN MAINTENANCE  ***/
-    $query = "  SELECT COUNT(lap_id) as id
+    $query = "  SELECT COUNT(lap_id) as lap_id
                     FROM laptops
                     WHERE lap_status = -1 ";
     $result = $conn->query($query);
     //echo $conn->error;
     if ($result) {
         $row = $result->fetch_array();
-        $maintenance_laptops = $row["id"];
+        $maintenance_laptops = $row["lap_id"];
         //echo $maintenance_laptops;
     }
 
     /****  ABOUT USERS   ****/
     /***  COUNT ALL USERS REGISTERED   ***/
-    $query = "  SELECT COUNT(u_id)
+    $query = "  SELECT COUNT(u_id) as u_id
                     FROM users";
     $result = $conn->query($query);
     if ($result) {
         $row = $result->fetch_array();
-        $total_users = $row["COUNT(u_id)"];
+        $total_users = $row["u_id"];
     }
     /***  COUNT ALL USERS WITH FLAG 1 (authorized) THAT MADE A MINIMUM OF 1 RESERVATION  ***/
-    $query = "  SELECT COUNT(DISTINCT u_id)
+    $query = "  SELECT COUNT(DISTINCT u_id) as u_id
                     FROM users 
                     INNER JOIN reservations r 
                     ON u_id = res_user 
@@ -93,25 +94,25 @@
     $result = $conn->query($query);
     if ($result) {
         $row = $result->fetch_array();
-        $users_res = $row["COUNT(DISTINCT u_id)"];
+        $users_res = $row["u_id"];
     }
     /***  COUNT USERS NOT AUTHORIZED   ***/
-    $query = "  SELECT COUNT(u_id)
+    $query = "  SELECT COUNT(u_id) as u_id
                     FROM users
                     WHERE u_authorized = 0";
     $result = $conn->query($query);
     if ($result) {
         $row = $result->fetch_array();
-        $users_unauth = $row["COUNT(u_id)"];
+        $users_unauth = $row["u_id"];
     }
     /***  COUNT USERS AUTHORIZED   ***/
-    $query = "  SELECT COUNT(u_id)
+    $query = "  SELECT COUNT(u_id) as u_id
                     FROM users
                     WHERE u_authorized = 1";
     $result = $conn->query($query);
     if ($result) {
         $row = $result->fetch_array();
-        $users_auth = $row["COUNT(u_id)"];
+        $users_auth = $row["u_id"];
     }
     ?>
 

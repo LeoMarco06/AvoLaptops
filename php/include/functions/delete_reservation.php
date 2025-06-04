@@ -1,6 +1,7 @@
 <?php
 $check = true;
 $path = "../../";
+$admin = false;
 include '../session_check.php';
 
 ini_set('display_errors', 1);
