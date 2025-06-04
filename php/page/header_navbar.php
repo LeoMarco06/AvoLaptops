@@ -26,7 +26,7 @@ include_once $path . "include/session_check.php";
                 <div class="profile-actions" id="profile-actions">
                     <button class="btn btn-account" id="account-menu-btn">
                         <i class="fas fa-user-circle"></i>
-                        Account <i class="fas fa-caret-down"></i>
+                        <?php echo $_SESSION['role'] ?>Account <i class="fas fa-caret-down"></i>
                     </button>
                     <ul class="account-menu" id="account-menu">
                         <li>

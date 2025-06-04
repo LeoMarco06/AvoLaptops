@@ -1,7 +1,16 @@
 <?php
-include "../include/connection.php";
+include "../../include/connection.php";
 
 $conn = connectToDatabase();
+
+session_start();
+
+if ($_SESSION['role'] != 1) {
+    // Admin is logged in, no action needed
+    header("Location: ../../homepage.php");
+    exit();
+}
+
 
 if ($_SERVER["REQUEST_METHOD"] == "DELETE") {
     $lock_id = $_REQUEST['lock_id'];
@@ -26,6 +35,7 @@ if ($_SERVER["REQUEST_METHOD"] == "DELETE") {
     $result = $conn->query("SELECT * FROM lockers WHERE lock_id = $last_id");
     $newLocker = $result->fetch_assoc();
 
+    header("Content-Type: application/json");
     echo json_encode($newLocker);
 }
 

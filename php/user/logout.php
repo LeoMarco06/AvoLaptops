@@ -11,6 +11,8 @@ setcookie("login_token", "", time() - 3600, "/", "", false, true);
 session_unset();
 session_destroy();
 
+$_SESSION = array();
+
 header("Location: ../homepage.php");
 
 exit;

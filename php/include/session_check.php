@@ -10,6 +10,12 @@ if (session_status() === PHP_SESSION_NONE) {
 }
 
 if ($check) {
+    // Check if there is the admin logged in
+    if ($admin && $_SESSION['role'] != 1) {
+        // Admin is logged in, no action needed
+        header("Location: " . $path . "homepage.php");
+        exit();
+    }
     // Check if the login_token cookie exists
     if (isset($_COOKIE['login_token'])) {
         $loginToken = $_COOKIE['login_token'];

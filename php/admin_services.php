@@ -23,6 +23,7 @@
 
 <body id="home">
     <?php
+    $admin = true; // This variable is used to check if the user is an admin
     $check = true;
     $path = "./";
     include_once './page/header_navbar.php';
@@ -49,28 +50,28 @@
                             <i class="fa-solid fa-users"></i>
                         </div>
                         <h4 class="heading-4">Utenti</h3>
-                        <p>Aggiungi o elimina i dati degli utenti registrati</p>
+                            <p>Aggiungi o elimina i dati degli utenti registrati</p>
                     </a>
                     <a class="feature-item" href="admin_pages/admin_laptops.php">
                         <div class="feature-icon">
                             <i class="fas fa-laptop"></i>
                         </div>
                         <h4 class="heading-4">Gestione laptop</h3>
-                        <p>Aggiungi/Elimina i laptop salvati nel database</p>
+                            <p>Aggiungi/Elimina i laptop salvati nel database</p>
                     </a>
                     <a class="feature-item" href="admin_pages/admin_lockers.php">
                         <div class="feature-icon">
                             <i class="fa-solid fa-box"></i>
                         </div>
                         <h4 class="heading-4">Gestione armadietti</h3>
-                        <p>Aggiungi/Elimina gli armadietti salvati nel database</p>
+                            <p>Aggiungi/Elimina gli armadietti salvati nel database</p>
                     </a>
                     <a class="feature-item" href="admin_pages/admin_reservations.php">
                         <div class="feature-icon">
                             <i class="fa-solid fa-calendar-days"></i>
                         </div>
                         <h4 class="heading-4">Gestione prenotazioni</h3>
-                        <p>Gestisci le prenotazioni effettuate dagli utenti registrati</p>
+                            <p>Gestisci le prenotazioni effettuate dagli utenti registrati</p>
                     </a>
                 </div>
             </div>

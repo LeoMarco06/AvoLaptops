@@ -42,7 +42,8 @@
 </head>
 
 <?php
-$check = false;
+$check = true;
+$admin = true;
 $path = "../";
 include_once '../page/header_navbar.php';
 
@@ -112,7 +113,7 @@ $models_json = json_encode($models);
                         <label for="laptop-name">Nome</label>
                         <div class="input-group">
                             <i class="fa-solid fa-hashtag" id="name-icon"></i>
-                            <input type="text" name="laptop-name" id="laptop-name" placeholder="Nome del laptop"
+                            <input type="text" name="lap_name" id="laptop-name" placeholder="Nome del laptop"
                                 pattern="^PC-\d{1,3}$"
                                 title="Il nome deve contenere 'PC-' seguito dal numero del laptop nell'armadietto"
                                 class="input-field" required>
@@ -123,8 +124,8 @@ $models_json = json_encode($models);
                         <label for="laptop-model">Modello</label>
                         <div class="input-group">
                             <i class="fa-solid fa-laptop" id="model-icon"></i>
-                            <select name="laptop-model" id="laptop-model" required>
-                                <option value="" selected disabled>Seleziona un armadietto</option>
+                            <select name="lap_model" id="laptop-model" required>
+                                <option value="" selected disabled>Seleziona un modello</option>
                             </select>
                         </div>
                     </div>
@@ -133,14 +134,15 @@ $models_json = json_encode($models);
                         <label for="locker">Armadietto</label>
                         <div class="input-group">
                             <i class="fa-solid fa-box" id="locker-icon"></i>
-                            <select name="laptop-locker" id="laptop-locker" required>
+                            <select name="lap_locker" id="laptop-locker" required>
                                 <option value="" selected disabled>Seleziona un armadietto</option>
                             </select>
                         </div>
                     </div>
                     <div class="buttons_div">
                         <button class="btn btn-primary" type="button" onclick="closePopup()">Chiudi</button>
-                        <button type="submit" class="btn btn-primary" onclick="validateForm()">Aggiungi</button>
+                        <button id="addBtn" type="button" class="btn btn-primary"
+                            onclick="validateForm()">Aggiungi</button>
                     </div>
                 </form>
             </div>

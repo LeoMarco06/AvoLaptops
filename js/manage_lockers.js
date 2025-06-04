@@ -54,7 +54,7 @@ document.addEventListener("DOMContentLoaded", () => {
       };
       xmlhttp.open(
         "DELETE",
-        `manage_lockers_api.php?lock_id=${lockerId}`,
+        `./ajax/manage_lockers_api.php?lock_id=${lockerId}`,
         true
       );
       xmlhttp.send();
@@ -84,7 +84,7 @@ document.addEventListener("DOMContentLoaded", () => {
       }
     };
 
-    xmlhttp.open("POST", "manage_lockers_api.php", true);
+    xmlhttp.open("POST", "./ajax/manage_lockers_api.php", true);
     xmlhttp.setRequestHeader(
       "Content-Type",
       "application/x-www-form-urlencoded"

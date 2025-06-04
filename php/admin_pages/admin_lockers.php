@@ -34,7 +34,8 @@
 </head>
 
 <?php
-$check = false;
+$check = true;
+$admin = true;
 $path = "../";
 include_once '../page/header_navbar.php';
 $conn = connectToDatabase();

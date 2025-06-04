@@ -29,7 +29,8 @@
 
 <body id="home">
     <?php
-    $check = false;
+    $check = true;
+    $admin = true;
     $path = "../";
     include_once '../page/header_navbar.php';
 
@@ -179,7 +180,8 @@ ORDER BY r.res_day DESC, r.res_start_time DESC
                                     </div>
                                 <?php else: ?>
                                     <div class="booking-actions">
-                                        <button class="btn btn-danger delete-booking" data-id="<?php echo $reservation['res_id'] ?>">
+                                        <button class="btn btn-danger delete-booking"
+                                            data-id="<?php echo $reservation['res_id'] ?>">
                                             <i class="fa-solid fa-trash"></i> Elimina
                                         </button>
                                     </div>
