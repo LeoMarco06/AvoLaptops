@@ -74,12 +74,12 @@ document.addEventListener("DOMContentLoaded", function () {
     "start-date",
     "start-date-picker",
     formattedToday,
-    formattedMax
+    formattedMax, true, true
   );
   setupDatePickerListeners(
     startDatePicker,
     new Date(formattedToday),
-    new Date(formattedMax)
+    new Date(formattedMax), true, true
   );
 
   // Function that change period of the reservation

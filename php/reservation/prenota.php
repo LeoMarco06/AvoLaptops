@@ -188,7 +188,6 @@ GROUP BY l.lap_id;");
                                         <div class="date-picker-days"></div>
                                         <div class="date-picker-footer">
                                             <button type="button" class="today-btn">Oggi</button>
-                                            <button type="button" class="clear-btn">Cancella</button>
                                         </div>
                                     </div>
                                 </div>

@@ -23,6 +23,38 @@ function getMonthIndex(monthName) {
   return months.indexOf(monthName);
 }
 
+function disableDayToday(picker) {
+  const currentMonthElement = picker.querySelector(".current-month");
+  const currentYearElement = picker.querySelector(".current-year");
+
+  const currentMonth = getMonthIndex(currentMonthElement.textContent);
+  const currentYear = parseInt(currentYearElement.textContent);
+
+  const today = new Date();
+  const days = picker.querySelectorAll(
+    ".date-picker-days div:not(.prev-month):not(.next-month)"
+  );
+
+  days.forEach((day) => {
+    const dayNumber = parseInt(day.textContent);
+    if (isNaN(dayNumber)) return;
+    const dayDate = new Date(currentYear, currentMonth, dayNumber);
+    if (
+      dayDate.getFullYear() === today.getFullYear() &&
+      dayDate.getMonth() === today.getMonth() &&
+      dayDate.getDate() === today.getDate()
+    ) {
+      day.classList.add("disabled");
+      day.style.pointerEvents = "none";
+      day.style.opacity = "0.5";
+    }
+  });
+
+  // Rimuovi il pulsante "Oggi" se presente
+  const todayBtn = picker.querySelector(".today-btn");
+  if (todayBtn) todayBtn.style.display = "none";
+}
+
 // Parse a custom date string into a JavaScript Date object
 function parseCustomDate(dateStr) {
   if (!dateStr) return null;
@@ -90,29 +122,50 @@ function disableSundays(picker) {
     if (isNaN(dayNumber)) return;
 
     const dayDate = new Date(currentYear, currentMonth, dayNumber);
-    if (dayDate.getDay() === 0) { // 0 = Domenica
+    if (dayDate.getDay() === 0) { // 0 = Sunday
       day.classList.add("disabled");
+      day.classList.add("sunday-red");
       day.style.pointerEvents = "none";
       day.style.opacity = "0.5";
+    } else {
+      day.classList.remove("sunday-red");
     }
   });
 }
 
 // Set up navigation buttons for the date picker
-function setupDatePickerListeners(picker, minDate = null, maxDate = null) {
+function setupDatePickerListeners(picker, minDate = null, maxDate = null, disableRedSundays = false, disableToday = false) {
   const headerButtons = picker.querySelectorAll(".date-picker-header button");
 
   headerButtons.forEach((button) => {
     button.addEventListener("click", () => {
-      setTimeout(() => disableDates(picker, minDate, maxDate), 10);
+      setTimeout(() => {
+        disableDates(picker, minDate, maxDate);
+        if (disableRedSundays) {
+          disableSundays(picker);
+        }
+        if (disableToday && new Date().getHours() >= 17) {
+          disableDayToday(picker);
+        }
+      }, 10);
     });
   });
 
-  setTimeout(() => disableDates(picker, minDate, maxDate), 100);
+  setTimeout(() => {
+    disableDates(picker, minDate, maxDate);
+    if (disableRedSundays) {
+      disableSundays(picker);
+    }
+    if (disableToday && new Date().getHours() >= 17) {
+      disableDayToday(picker);
+    }
+  }, 100);
+
+
 }
 
 // Modifica initDatePicker per accettare minDate e maxDate
-function initDatePicker(inputId, pickerId, minDate = null, maxDate = null) {
+function initDatePicker(inputId, pickerId, minDate = null, maxDate = null, disableRedSundays = false, disableToday = false) {
   const input = document.getElementById(inputId);
   const picker = document.getElementById(pickerId);
 
@@ -162,12 +215,6 @@ function initDatePicker(inputId, pickerId, minDate = null, maxDate = null) {
   picker.querySelector(".today-btn").addEventListener("click", function () {
     currentDate = new Date();
     selectDate(new Date());
-  });
-
-  picker.querySelector(".clear-btn").addEventListener("click", function () {
-    selectedDate = null;
-    input.value = "";
-    renderCalendar();
   });
 
   function renderCalendar() {
@@ -280,8 +327,7 @@ function initDatePicker(inputId, pickerId, minDate = null, maxDate = null) {
     if (max) max.setHours(0, 0, 0, 0);
 
     disableDates(picker, min, max);
-    disableSundays(picker);
-    setupDatePickerListeners(picker, min, max);
+    setupDatePickerListeners(picker, min, max, disableRedSundays, disableToday);
   }
 
   function selectDate(date) {

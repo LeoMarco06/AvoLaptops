@@ -11,6 +11,10 @@
     <!-- Link to the styles sheet -->
     <link rel="stylesheet" href="../../css/styles.css">
 
+    <!-- Link to the custom styles sheet -->
+    <link rel="stylesheet" href="../../css/custom_inputs.css">
+
+
     <!-- Link to the authentication styles sheet -->
     <link rel="stylesheet" href="../../css/auth.css">
 
@@ -19,10 +23,6 @@
 
     <!-- Link to the users page styles sheet -->
     <link rel="stylesheet" href="../../css/users.css">
-
-    <!-- Link to the custom styles sheet -->
-    <link rel="stylesheet" href="../../css/custom_inputs.css">
-
     <!-- Icons -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 
@@ -129,22 +129,21 @@ $users_json = json_encode($users);
                                 placeholder="Seleziona data" readonly>
                             <div class="date-picker" id="date-birth-picker">
                                 <div class="date-picker-header">
-                                    <button class="prev-year">&lt;&lt;</button>
-                                    <button class="prev-month">&lt;</button>
+                                    <button type="button" class="prev-year">&lt;&lt;</button>
+                                    <button type="button" class="prev-month">&lt;</button>
                                     <h2 class="current-date">
                                         <span class="month-year">
                                             <span class="current-month"></span>
                                             <span class="current-year"></span>
                                         </span>
                                     </h2>
-                                    <button class="next-month">&gt;</button>
-                                    <button class="next-year">&gt;&gt;</button>
+                                    <button type="button" class="next-month">&gt;</button>
+                                    <button type="button" class="next-year">&gt;&gt;</button>
                                 </div>
                                 <div class="date-picker-weekdays"></div>
                                 <div class="date-picker-days"></div>
                                 <div class="date-picker-footer">
                                     <button class="today-btn">Oggi</button>
-                                    <button class="clear-btn">Cancella</button>
                                 </div>
                             </div>
                         </div>

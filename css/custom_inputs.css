@@ -132,6 +132,10 @@
   font-weight: var(--font-weight-medium);
 }
 
+.sunday-red {
+  color: var(--color-error) !important;
+}
+
 /* ===== Date Picker Footer ===== */
 .date-picker-footer {
   display: flex;

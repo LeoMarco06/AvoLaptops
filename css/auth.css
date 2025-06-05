@@ -327,5 +327,6 @@ select {
 .date-picker {
   width: 100%;
   top: 100%;
+  margin-top: var(--spacing-sm);
   left: auto;
 }
