@@ -2,12 +2,11 @@
 // filepath: /opt/lampp/htdocs/AvoLaptops/php/user/register_handler.php
 $check = false;
 $path = "../";
-include_once $path . "include/session_check_.php";
+include_once $path . "include/session_check.php";
 include_once $path . "include/functions/functions.php";
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $conn = connectToDatabase();
-
     // Validate inputs using the checkRegisterInput function
     $errors = checkRegisterInput($_POST);
 
@@ -34,8 +33,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $hashedPassword = password_hash($password, PASSWORD_BCRYPT);
 
     // Insert user into the database
-    $stmt = $conn->prepare("INSERT INTO users (u_email, u_name, u_surname, u_date_of_birth, u_password, u_role, u_authorized) VALUES (?, ?, ?, ?, ?, ?, ?, ?)");
-    $stmt->bind_param("ssssssii", $email, $name, $surname, $dateOfBirth, $hashedPassword, $role, $authorized);
+    $stmt = $conn->prepare("INSERT INTO users (u_email, u_name, u_surname, u_date_birth, u_password, u_role, u_authorized) VALUES (?, ?, ?, ?, ?, ?, ?)");
+    $stmt->bind_param("sssssii", $email, $name, $surname, $dateOfBirth, $hashedPassword, $role, $authorized);
 
     if ($stmt->execute()) {
         echo "<script>alert('Registrazione completata con successo. Attendi la verifica dell'admin.');</script>";

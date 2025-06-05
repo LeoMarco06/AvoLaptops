@@ -1,7 +1,4 @@
 <?php
-// include the function that allows to connect to the database
-include_once "connection.php";
-
 // Set the timezone
 date_default_timezone_set('Europe/Rome');
 
@@ -33,18 +30,6 @@ function checkRegisterInput($data)
         $errors['surname'] = "Il cognome è obbligatorio";
     } elseif (!preg_match('/^[A-Za-zÀ-ÖØ-öø-ÿ\s\']+$/u', $data['surname'])) {
         $errors['surname'] = "Il cognome può contenere solo lettere e spazi";
-    }
-
-    // Fiscal code validation
-    if (empty($data['codFis'])) {
-        $errors['codFis'] = "Il codice fiscale è obbligatorio";
-    } else {
-        $codFis = strtoupper(trim($data['codFis']));
-        if (strlen($codFis) !== 16) {
-            $errors['codFis'] = "Il codice fiscale deve essere di 16 caratteri";
-        } elseif (!preg_match('/^[A-Z]{6}[0-9]{2}[A-Z][0-9]{2}[A-Z][0-9]{3}[A-Z]$/', $codFis)) {
-            $errors['codFis'] = "Formato codice fiscale non valido";
-        }
     }
 
     // Password validation
