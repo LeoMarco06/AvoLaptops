@@ -17,7 +17,6 @@
     flex-direction: column;
     justify-content: center;
     align-items: center;
-    /*background-color: var(--color-statistics);*/
     background-color: white;
     border: 1px solid var(--color-border);
     box-shadow: var(--shadow-md);
@@ -25,7 +24,18 @@
     text-align: center;
     border-radius: var(--border-radius-md);
     padding: var(--spacing-md);
+    position: relative;
 }
+
+.statistic-item h2{
+    width: 100%;
+    padding: 0;
+    margin: 0;
+    padding-bottom: var(--spacing-md);
+    margin-bottom: var(--spacing-md);
+    border-bottom: 2px solid var(--color-border);
+}
+
 
 /* ===== Statistics Graph ===== */
 .statistics-item .statistics-graph {
@@ -33,14 +43,14 @@
     object-fit: cover;
 }
 
-.form-year{
+.form-year {
     margin-top: var(--spacing-md);
     width: 100%;
     display: flex;
     gap: var(--spacing-md);
 }
 
-.form-year select{
+.form-year select {
     width: 20%;
     min-width: 250px;
 }

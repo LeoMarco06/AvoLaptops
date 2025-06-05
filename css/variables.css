@@ -12,13 +12,13 @@
   --color-accent: #f72585;
   --color-text: #2b2d42;
   --color-text-light: #8d99ae;
-  --color-bg: #f8f9fa;
+  --color-bg: #FFFFFF;
   --color-bg-secondary: #e9ecef;
   --color-bg-success: #2bdf2e;
   --color-statistics: #f0f4f8;
   --color-statistics-text: #2b2d42;
-  --color-card: #ffffff;
-  --color-border: #dee2e6;
+  --color-card: #cdcccc;
+  --color-border: #adadad;
   --color-success: #4cc9f0;
   --color-warning: #f8961e;
   --color-error: #ef233c;
