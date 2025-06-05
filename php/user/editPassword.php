@@ -32,8 +32,9 @@
 
 <body>
     <?php
-    $check = false;
+    $check = true;
     $path = "../";
+    $admin = false;
     include_once '../page/header_navbar.php';
     ?>
 
@@ -51,7 +52,8 @@
                             <label for="old-password">Vecchia password</label>
                             <div class="input-group">
                                 <i class="fas fa-lock" id="old-password-icon"></i>
-                                <input type="password" id="old-password" name="old-password" placeholder="La tua vecchia password" required>
+                                <input type="password" id="old-password" name="old-password"
+                                    placeholder="La tua vecchia password" required>
                                 <button type="button" class="btn-icon password-toggle">
                                     <i class="fas fa-eye"></i>
                                 </button>
@@ -63,12 +65,14 @@
                             <label for="new-password">Nuova password</label>
                             <div class="input-group">
                                 <i class="fas fa-lock" id="new-password-icon"></i>
-                                <input type="password" id="new-password" name="new-password" placeholder="La tua nuova password" required>
+                                <input type="password" id="new-password" name="new-password"
+                                    placeholder="La tua nuova password" required>
                                 <button type="button" class="btn-icon password-toggle">
                                     <i class="fas fa-eye"></i>
                                 </button>
                             </div>
-                            <small>Deve contenere: almeno 8 caratteri, 1 maiuscola, 1 minuscola, 1 numero, 1 speciale (!@#$%^&*)</small>
+                            <small>Deve contenere: almeno 8 caratteri, 1 maiuscola, 1 minuscola, 1 numero, 1 speciale
+                                (!@#$%^&*)</small>
                             <div id="newPasswordFeedback" class="feedback-message"></div>
                         </div>
 
@@ -76,7 +80,8 @@
                             <label for="confirm-password">Conferma nuova password</label>
                             <div class="input-group">
                                 <i class="fas fa-lock" id="confirm-password-icon"></i>
-                                <input type="password" id="confirm-password" name="confirm-password" placeholder="Conferma la tua nuova password" required>
+                                <input type="password" id="confirm-password" name="confirm-password"
+                                    placeholder="Conferma la tua nuova password" required>
                                 <button type="button" class="btn-icon password-toggle">
                                     <i class="fas fa-eye"></i>
                                 </button>

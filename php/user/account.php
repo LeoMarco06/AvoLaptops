@@ -87,8 +87,9 @@
                             <div class="input-group">
                                 <i class="fa-solid fa-calendar" id="date-birth-icon"></i>
                                 <div class="date-picker-container">
-                                    <input type="text" class="date-picker-input" id="date-birth" name="date"
+                                    <input type="text" class="date-picker-input" id="date-birth" name="dateUnformatted"
                                         placeholder="Seleziona data">
+                                    <input type="hidden" id="date" name="date" value="">
                                     <div class="date-picker" id="date-birth-picker">
                                         <div class="date-picker-header">
                                             <button type="button" class="prev-year">&lt;&lt;</button>
@@ -114,16 +115,6 @@
                             <div id="dateFeedback" class="feedback-message"></div>
                         </div>
 
-                        <div class="form-group">
-                            <label for="codFis">Codice fiscale</label>
-                            <div class="input-group">
-                                <i class="fas fa-id-card" id="codFis-id-icon"></i>
-                                <input type="text" id="cod-Fis" name="codFis" placeholder="Il tuo codice fiscale"
-                                    required>
-                            </div>
-                            <div id="codFisFeedback" class="feedback-message"></div>
-                        </div>
-
                         <p><a href="editPassword.php">Vuoi modificare la tua password ? Premi qui.</a></p>
 
                         <div class="buttons_div">
@@ -140,5 +131,35 @@
     <?php include_once "../page/footer.php" ?>
 
 </body>
+
+<?php
+$check = true;
+$path = "../";
+$admin = false;
+include_once $path . "include/session_check.php";
+include_once $path . "include/functions/functions.php";
+
+$conn = connectToDatabase();
+
+if ($_SERVER["REQUEST_METHOD"] == "POST") {
+    // Sanitize inputs
+    $name = htmlspecialchars(trim($_POST['name']));
+    $surname = htmlspecialchars(trim($_POST['surname']));
+    $dateOfBirth = htmlspecialchars(trim($_POST['date']));
+    $userId = $_SESSION['id'];
+
+    // Update user in the database
+    $stmt = $conn->prepare("UPDATE users SET u_name = ?, u_surname = ?, u_date_birth = ? WHERE u_id = ?");
+    $stmt->bind_param("sssi", $name, $surname, $dateOfBirth, $_SESSION['id']);
+
+    if ($stmt->execute()) {
+        echo "<script>alert('Dati aggiornati con successo.'); window.location.href = './account.php';</script>";
+    } else {
+        echo "<script>alert('Errore durante l\'aggiornamento: " . $stmt->error . "');</script>";
+    }
+    $stmt->close();
+
+}
+?>
 
 </html>

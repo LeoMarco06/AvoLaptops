@@ -13,9 +13,8 @@ document.addEventListener("DOMContentLoaded", e => {
         name: document.getElementById("name").value || document.getElementById("name").textContent,
         surname: document.getElementById("surname").value || document.getElementById("surname").textContent,
         date_birth: document.getElementById("date-birth").value || document.getElementById("date-birth").textContent,
-        cod_Fis: document.getElementById("cod-Fis").value || document.getElementById("cod-Fis").textContent
     };
-    const inputs_content = [originalValues.email, originalValues.name, originalValues.surname, originalValues.date_birth, originalValues.cod_Fis];
+    const inputs_content = [originalValues.email, originalValues.name, originalValues.surname, originalValues.date_birth];
 
     initDatePicker('date-birth', 'date-birth-picker', '1945-01-01', formattedToday);
 
@@ -62,5 +61,16 @@ document.addEventListener("DOMContentLoaded", e => {
             input.value = originalValues[input.id.replace("-", "_")];
             console.log(input.id.replace("-", "_"));
         });
+    });
+
+    // Add listener for save button to set hidden input and submit form
+    save_button.addEventListener("click", function(e) {
+        e.preventDefault();
+        // Copy value from visible date input to hidden input
+        const dateBirthInput = document.getElementById("date-birth");
+        const hiddenDateInput = document.getElementById("date");
+        hiddenDateInput.value = parseCustomDate(dateBirthInput.value);
+        // Submit the form
+        document.getElementById("register-form").submit();
     });
 });
