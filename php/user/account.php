@@ -38,9 +38,21 @@
 
 <body>
     <?php
-    $check = false;
+    $check = true;
     $path = "../";
-    include_once '../page/header_navbar.php';
+    $admin = false;
+    include_once $path . 'page/header_navbar.php';
+    include_once $path . "include/functions/functions.php";
+
+    $conn = connectToDatabase();
+
+    $sql = "SELECT u_name, u_surname, u_date_birth, u_email FROM users WHERE u_id = ?";
+    $stmt = $conn->prepare($sql);
+    $stmt->bind_param("i", $_SESSION['id']);
+    $stmt->execute();
+    $stmt->bind_result($name, $surname, $date_birth, $email);
+    $stmt->fetch();
+    $stmt->close();
     ?>
 
     <main>
@@ -58,7 +70,8 @@
                             <div class="input-group">
                                 <i class="fas fa-envelope" id="email-icon"></i>
                                 <input type="text" id="email" name="email" placeholder="nome.cognome@itisavogadro.it"
-                                    required onkeyup="checkExists(this.value)">
+                                    required onkeyup="checkExists(this.value)"
+                                    value="<?php echo htmlspecialchars($email); ?>">
                             </div>
                             <small>La email deve appartenere al dominio itisavogadro.it</small>
                             <div id="emailFeedback" class="feedback-message" style="display: none;"></div>
@@ -68,7 +81,8 @@
                             <label for="name">Nome</label>
                             <div class="input-group">
                                 <i class="fas fa-user" id="name-icon"></i>
-                                <input type="text" id="name" name="name" placeholder="Il tuo nome" required>
+                                <input type="text" id="name" name="name" placeholder="Il tuo nome"
+                                    value="<?php echo htmlspecialchars($name); ?>" required>
                             </div>
                             <div id="nameFeedback" class="feedback-message"></div>
                         </div>
@@ -77,7 +91,8 @@
                             <label for="surname">Cognome</label>
                             <div class="input-group">
                                 <i class="fas fa-user" id="surname-icon"></i>
-                                <input type="text" id="surname" name="surname" placeholder="Il tuo cognome" required>
+                                <input type="text" id="surname" name="surname" placeholder="Il tuo cognome"
+                                    value="<?php echo htmlspecialchars($surname); ?>" required>
                             </div>
                             <div id="surnameFeedback" class="feedback-message"></div>
                         </div>
@@ -89,7 +104,8 @@
                                 <div class="date-picker-container">
                                     <input type="text" class="date-picker-input" id="date-birth" name="dateUnformatted"
                                         placeholder="Seleziona data">
-                                    <input type="hidden" id="date" name="date" value="">
+                                    <input type="hidden" id="date" name="date"
+                                        value="<?php echo htmlspecialchars($date_birth); ?>">
                                     <div class="date-picker" id="date-birth-picker">
                                         <div class="date-picker-header">
                                             <button type="button" class="prev-year">&lt;&lt;</button>
@@ -132,14 +148,6 @@
 </body>
 
 <?php
-$check = true;
-$path = "../";
-$admin = false;
-include_once $path . "include/session_check.php";
-include_once $path . "include/functions/functions.php";
-
-$conn = connectToDatabase();
-
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
     // Sanitize inputs
     $name = htmlspecialchars(trim($_POST['name']));
@@ -162,3 +170,33 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 ?>
 
 </html>
+
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        document.getElementById("date-birth").value = formatDate(new Date(document.getElementById("date").value));
+    });
+
+    function formatDate(date) {
+        if (!date) return "";
+
+        const day = date.getDate();
+        const monthNames = [
+            "Gen",
+            "Feb",
+            "Mar",
+            "Apr",
+            "Mag",
+            "Giu",
+            "Lug",
+            "Ago",
+            "Set",
+            "Ott",
+            "Nov",
+            "Dic",
+        ];
+        const month = monthNames[date.getMonth()];
+        const year = date.getFullYear();
+
+        return `${day} ${month} ${year}`;
+    }
+</script>
