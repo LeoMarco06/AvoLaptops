@@ -102,3 +102,55 @@
 </body>
 
 </html>
+
+
+<?php
+include_once '../include/functions/functions.php';
+session_start();
+
+$_POST = filter_input_array(INPUT_POST, FILTER_SANITIZE_STRING);
+if (isset($_POST['old-password']) && isset($_POST['new-password']) && isset($_POST['confirm-password'])) {
+    $oldPassword = $_POST['old-password'];
+    $newPassword = $_POST['new-password'];
+    $confirmPassword = $_POST['confirm-password'];
+
+    if ($newPassword !== $confirmPassword) {
+        echo "<script>alert('Le password non corrispondono.');</script>";
+        exit();
+    }
+
+    $userId = $_SESSION['id'];
+
+    // Check if the old password is correct
+    $stmt = $conn->prepare("SELECT u_password FROM users WHERE u_id = ?");
+    $stmt->bind_param("i", $userId);
+    $stmt->execute();
+    $result = $stmt->get_result();
+
+    if ($row = $result->fetch_assoc()) {
+        $hashedOldPassword = $row['u_password'];
+        if (password_verify($oldPassword, $hashedOldPassword)) {
+            // Hash the new password
+            $hashedNewPassword = password_hash($newPassword, PASSWORD_BCRYPT);
+
+            // Update the password in the database
+            $stmt = $conn->prepare("UPDATE users SET u_password = ?, u_token= ? WHERE u_id = ?");
+            $token = generateSecureToken();
+            $stmt->bind_param("ssi", $hashedNewPassword, $token, $userId);
+            if ($stmt->execute()) {
+                echo "<script>alert('La tua password è stata aggiornata con successo.');</script>";
+                header("Location: ./account.php");
+                exit();
+            } else {
+                echo "<script>alert('Si è verificato un errore durante l\'aggiornamento della password.');</script>";
+            }
+            $stmt->close();
+        } else {
+            echo "<script>alert('La vecchia password non è corretta.');</script>";
+        }
+    } else {
+        echo "<script>alert('Utente non trovato.');</script>";
+    }
+    $stmt->close();
+}
+?>

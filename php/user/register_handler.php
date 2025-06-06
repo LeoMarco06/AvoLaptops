@@ -2,6 +2,7 @@
 // filepath: /opt/lampp/htdocs/AvoLaptops/php/user/register_handler.php
 $check = false;
 $path = "../";
+$admin = false;
 include_once $path . "include/session_check.php";
 include_once $path . "include/functions/functions.php";
 
@@ -25,6 +26,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $name = htmlspecialchars(trim($_POST['name']));
     $surname = htmlspecialchars(trim($_POST['surname']));
     $dateOfBirth = htmlspecialchars(trim($_POST['date']));
+    $token = generateSecureToken(); // Generate a secure token for the user
     $password = $_POST['password'];
     $role = 10; // Default role for new users
     $authorized = 0; // Default authorization status
@@ -33,8 +35,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $hashedPassword = password_hash($password, PASSWORD_BCRYPT);
 
     // Insert user into the database
-    $stmt = $conn->prepare("INSERT INTO users (u_email, u_name, u_surname, u_date_birth, u_password, u_role, u_authorized) VALUES (?, ?, ?, ?, ?, ?, ?)");
-    $stmt->bind_param("sssssii", $email, $name, $surname, $dateOfBirth, $hashedPassword, $role, $authorized);
+    $stmt = $conn->prepare("INSERT INTO users (u_email, u_name, u_surname, u_date_birth, u_password, u_role, u_authorized, u_token) VALUES (?, ?, ?, ?, ?, ?, ?, ?)");
+    $stmt->bind_param("sssssiis", $email, $name, $surname, $dateOfBirth, $hashedPassword, $role, $authorized, $token);
 
     if ($stmt->execute()) {
         echo "<script>alert('Registrazione completata con successo. Attendi la verifica dell'admin.');</script>";
