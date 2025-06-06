@@ -1,8 +1,6 @@
 name: Deploy from my private repo to Altervista
 
 on:
-  schedule:
-    - cron: '*/30 * * * *'
   workflow_dispatch:
 
 jobs:
